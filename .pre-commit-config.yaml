@@ -1,0 +1,46 @@
+repos:
+  - repo: local
+    hooks:
+      - id: clang-format
+        name: clang-format
+        description: ""
+        entry: clang-format-20 -i
+        language: python
+        types_or: [c, c++]
+        require_serial: false
+        args: ["-style=file"]
+        minimum_pre_commit_version: "2.9.2"
+
+  - repo: local
+    hooks:
+      - id: clang-tidy
+        name: clang-tidy
+        description: ""
+        entry: clang-tidy-20 -p
+        language: python
+        types_or: [c++]
+        require_serial: false
+        args: ["build/"]
+        minimum_pre_commit_version: "2.9.2"
+
+  - repo: local
+    hooks:
+      - id: format-js
+        name: Format JavaScript (biome)
+        description: "Форматирование JS-файлов с помощью biome"
+        entry: npm run format:js
+        language: system
+        pass_filenames: false
+        types: [javascript]
+        minimum_pre_commit_version: "2.9.2"
+
+  - repo: local
+    hooks:
+      - id: format-qml
+        name: Format QML
+        description: "Форматирование QML-файлов с помощью qmlformat"
+        entry: npm run format:qml
+        language: system
+        pass_filenames: false
+        files: \.qml$
+        minimum_pre_commit_version: "2.9.2"

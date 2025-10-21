@@ -1,0 +1,8 @@
+{
+	"scripts": {
+		"format:js": "biome format --write ./js/*.js",
+		"lint:js": "biome lint ./js/*.js --error-on-warnings",
+		"format:qml": "find . -name '*.qml' -exec qmlformat -i {} +",
+		"lint:qml": "find . -name '*.qml' -exec qmllint {} +"
+	}
+}
