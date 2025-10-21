@@ -1,8 +1,7 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 
-int main(int argc, char *argv[])
-{
+int main(int argc, char *argv[]) {
     QGuiApplication app(argc, argv);
 
     QQmlApplicationEngine engine;
@@ -11,8 +10,9 @@ int main(int argc, char *argv[])
         &QQmlApplicationEngine::objectCreationFailed,
         &app,
         []() { QCoreApplication::exit(-1); },
-        Qt::QueuedConnection);
+        Qt::QueuedConnection
+    );
     engine.loadFromModule("untitled", "Main");
 
-    return app.exec();
+    return QGuiApplication::exec();
 }
