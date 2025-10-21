@@ -10,6 +10,15 @@ qt_standard_project_setup(REQUIRES 6.8)
 
 qt_add_executable(appuntitled
     main.cpp
+    model/include/backend.hpp
+    model/include/userinfo.hpp
+    model/src/backend.cpp
+    model/src/userinfo.cpp
+)
+
+target_include_directories(appuntitled
+    PRIVATE
+        ${CMAKE_CURRENT_SOURCE_DIR}/model/include
 )
 
 qt_add_qml_module(appuntitled
