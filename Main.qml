@@ -5,9 +5,8 @@ Window {
     height: 480
     visible: true
     title: qsTr("Hello World")
-    Rectangle {
-        color: "green"
-        width: 100
-        height: 100
+    LoginScreen {
+        id: loginScreen
+        anchors.fill: parent
     }
 }

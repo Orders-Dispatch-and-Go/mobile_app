@@ -3,6 +3,7 @@
 #include <QQmlContext>
 
 #include "backend.hpp"
+#include "theme_provider.hpp"
 
 int main(int argc, char *argv[]) {
     QGuiApplication app(argc, argv);
@@ -16,6 +17,8 @@ int main(int argc, char *argv[]) {
         Qt::QueuedConnection
     );
     backend_t backend(nullptr);
+    theme_provider_t theme;
+    engine.rootContext()->setContextProperty("theme", &theme);
     engine.rootContext()->setContextProperty("backend", &backend);
     engine.loadFromModule("untitled", "Main");
 
