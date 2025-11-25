@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/">
+        <file alias="pass_hidden">assets/ui/pass_hidden.svg</file>
+        <file alias="pass_shown">assets/ui/pass_shown.svg</file>
+    </qresource>
+</RCC>

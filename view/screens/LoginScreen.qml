@@ -8,30 +8,32 @@ Item {
     id: root
     anchors.fill: parent
     visible: true
-    Column {
+    ColumnLayout {
         anchors.fill: parent
-        spacing: 10
-        TextField {
-            placeholderText: "email"
-            width: parent.width * 0.8
-            height: 40
-            anchors.horizontalCenter: parent.horizontalCenter
+        anchors.margins: 10
+        anchors.topMargin: 20
+        Layout.fillHeight: true
+        spacing: 30
+        EmailField {
+            id: emailField
+            text: "test@gruzowiki.ru"
+            Layout.fillWidth: true
         }
-        TextField {
-            placeholderText: "Password"
-            width: parent.width * 0.8
-            height: 40
-            anchors.horizontalCenter: parent.horizontalCenter
+        PasswordField {
+            id: passwordField
+            Layout.fillWidth: true
         }
-        Button {
+        Rectangle {
+            color: "transparent"
+            Layout.fillHeight: true
+        }
+        ActionButton {
             text: "Login"
-            width: parent.width * 0.8
-            palette.buttonText: theme.background
-            height: 40
-            anchors.horizontalCenter: parent.horizontalCenter
-            background: Rectangle {
-                color: theme.primary
-                radius: 5
+            Layout.fillWidth: true
+            onClicked: {
+                if (emailField.ok && passwordField.text.length > 0) {
+                    backend.login(emailField.text, passwordField.text);
+                }
             }
         }
     }

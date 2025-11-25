@@ -10,12 +10,7 @@
  */
 class user_info_t {
 public:
-    explicit user_info_t()                      = default;
-    user_info_t(const user_info_t &)            = default;
-    user_info_t(user_info_t &&)                 = delete;
-    user_info_t &operator=(const user_info_t &) = default;
-    user_info_t &operator=(user_info_t &&)      = delete;
-    ~user_info_t()                              = default;
+    explicit user_info_t() = default;
 
     void set_email(const QString &email);
     void set_surname(const QString &surname);
@@ -26,6 +21,8 @@ public:
     [[nodiscard]] QString surname() const;
     [[nodiscard]] QString name() const;
     [[nodiscard]] QString patronymic() const;
+
+    [[nodiscard]] bool is_valid() const;
 
 private:
     QString m_email      = "";

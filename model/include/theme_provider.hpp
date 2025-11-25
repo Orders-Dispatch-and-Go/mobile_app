@@ -28,6 +28,8 @@ class theme_provider_t : public QObject {
     Q_PROPERTY(QString error READ error NOTIFY theme_changed)
     Q_PROPERTY(QString error_light READ error_light NOTIFY theme_changed)
 
+    Q_PROPERTY(int font_size READ font_size NOTIFY theme_changed)
+
 public:
     explicit theme_provider_t(QObject *parent = nullptr);
 
@@ -72,6 +74,10 @@ public:
         return m_error_light;
     }
 
+    [[nodiscard]] int font_size() const {
+        return m_font_size;
+    }
+
     // Метод смены темы
     Q_INVOKABLE void set_light_theme(bool light);
 
@@ -93,6 +99,8 @@ private:
     QString m_warning_light;
     QString m_error;
     QString m_error_light;
+
+    int m_font_size = 14;
 
     void apply_light_theme();
     void apply_dark_theme();

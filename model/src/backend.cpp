@@ -1,7 +1,27 @@
 #include "backend.hpp"
 
-backend_t::backend_t(QObject *parent) : QObject(parent) { }
+#include <QDebug>
 
+#include "screens.hpp"
+
+#include "auth/moc_auth.hpp"
+
+backend_t::backend_t(QObject *parent) : QObject(parent) {
+    m_auth_controller = std::make_unique<moc_auth_t>();
+}
+
+void backend_t::login(const QString &email, const QString &password) {
+    m_user_info = m_auth_controller->login(email, password);
+    if (m_user_info.is_valid()) {
+        emit user_logged_in();
+        emit screen_switched(SCREEN_MAIN);
+    }
+}
+
+void backend_t::logout() {
+    m_user_info = m_auth_controller->logout();
+    emit user_logged_out();
+}
 
 void backend_t::set_user_email(const QString &email) {
     m_user_info.set_email(email);

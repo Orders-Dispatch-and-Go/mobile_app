@@ -1,4 +1,4 @@
-#include "userinfo.hpp"
+#include "auth/userinfo.hpp"
 
 
 void user_info_t::set_email(const QString &email) {
@@ -31,4 +31,8 @@ QString user_info_t::name() const {
 
 QString user_info_t::patronymic() const {
     return m_patronymic;
+}
+
+bool user_info_t::is_valid() const {
+    return !m_email.isEmpty();
 }

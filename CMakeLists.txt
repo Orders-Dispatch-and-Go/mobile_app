@@ -10,12 +10,17 @@ qt_standard_project_setup(REQUIRES 6.8)
 
 qt_add_executable(appuntitled
     main.cpp
+
     model/include/backend.hpp
     model/include/theme_provider.hpp
-    model/include/userinfo.hpp
+    model/include/screens.hpp
+    model/include/auth/userinfo.hpp
+    model/include/auth/iauth.hpp
+    model/include/auth/moc_auth.hpp
+
     model/src/backend.cpp
     model/src/theme_provider.cpp
-    model/src/userinfo.cpp
+    model/src/auth/userinfo.cpp
 )
 
 target_include_directories(appuntitled
@@ -29,6 +34,11 @@ qt_add_qml_module(appuntitled
     QML_FILES
         Main.qml
         view/screens/LoginScreen.qml
+        view/components/Login/EmailField.qml
+        view/components/Login/PasswordField.qml
+        view/components/common/ActionButton.qml
+    RESOURCES
+        res.qrc
 )
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.

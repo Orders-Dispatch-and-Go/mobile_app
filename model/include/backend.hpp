@@ -3,9 +3,11 @@
 
 #include <QObject>
 
+#include <memory.h>
 #include <qtmetamacros.h>
 
-#include "userinfo.hpp"
+#include "auth/iauth.hpp"
+#include "auth/userinfo.hpp"
 
 
 /**
@@ -19,6 +21,10 @@ public:
 
     ~backend_t() override = default;
 
+    Q_INVOKABLE void login(const QString &email, const QString &password);
+    Q_INVOKABLE void logout();
+
+    // === это пока не нужно ===
     Q_INVOKABLE void set_user_email(const QString &email);
     Q_INVOKABLE void set_user_surname(const QString &surname);
     Q_INVOKABLE void set_user_name(const QString &name);
@@ -32,6 +38,15 @@ public:
 private:
     Q_DISABLE_COPY_MOVE(backend_t)
     user_info_t m_user_info;
+
+    std::unique_ptr<auth_iface_t> m_auth_controller;
+
+public:
+signals:
+    /// сигнал о том что надо переключиться на какой то экран
+    void screen_switched(int screen_id);
+    void user_logged_in();
+    void user_logged_out();
 };
 
 #endif
