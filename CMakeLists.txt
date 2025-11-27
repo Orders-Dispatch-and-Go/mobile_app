@@ -2,9 +2,11 @@ cmake_minimum_required(VERSION 3.16)
 
 project(untitled VERSION 0.1 LANGUAGES CXX)
 
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(Qt6 REQUIRED COMPONENTS Quick)
+find_package(Qt6 REQUIRED COMPONENTS Quick Qml Gui Widgets)
+find_package(KF6Kirigami2 REQUIRED)   # главный модуль Kirigami
 
 qt_standard_project_setup(REQUIRES 6.8)
 
@@ -23,9 +25,8 @@ qt_add_executable(appuntitled
     model/src/auth/userinfo.cpp
 )
 
-target_include_directories(appuntitled
-    PRIVATE
-        ${CMAKE_CURRENT_SOURCE_DIR}/model/include
+target_include_directories(appuntitled PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/model/include
 )
 
 qt_add_qml_module(appuntitled
@@ -41,21 +42,24 @@ qt_add_qml_module(appuntitled
         res.qrc
 )
 
-# Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
-# If you are developing for iOS or macOS you should consider setting an
-# explicit, fixed bundle identifier manually though.
+# --- Подключаем библиотеки ---
+target_link_libraries(appuntitled
+    PRIVATE
+        Qt6::Quick
+        Qt6::Gui
+        Qt6::Qml
+        KF6::Kirigami2
+)
+
+# --- Параметры сборки ---
 set_target_properties(appuntitled PROPERTIES
-#    MACOSX_BUNDLE_GUI_IDENTIFIER com.example.appuntitled
-    MACOSX_BUNDLE_BUNDLE_VERSION ${PROJECT_VERSION}
-    MACOSX_BUNDLE_SHORT_VERSION_STRING ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}
     MACOSX_BUNDLE TRUE
     WIN32_EXECUTABLE TRUE
+    MACOSX_BUNDLE_BUNDLE_VERSION ${PROJECT_VERSION}
+    MACOSX_BUNDLE_SHORT_VERSION_STRING ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}
 )
 
-target_link_libraries(appuntitled
-    PRIVATE Qt6::Quick
-)
-
+# --- Инсталляция ---
 include(GNUInstallDirs)
 install(TARGETS appuntitled
     BUNDLE DESTINATION .
