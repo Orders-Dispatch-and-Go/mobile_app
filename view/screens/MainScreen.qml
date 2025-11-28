@@ -6,8 +6,6 @@ import org.kde.kirigami as Kirigami
 
 Kirigami.Page {
     id: root
-    anchors.fill: parent
-    visible: true
 
     signal switched(int index)
 

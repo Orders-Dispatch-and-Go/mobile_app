@@ -16,9 +16,13 @@ qt_add_executable(appuntitled
     model/include/backend.hpp
     model/include/theme_provider.hpp
     model/include/screens.hpp
+
     model/include/auth/userinfo.hpp
     model/include/auth/iauth.hpp
     model/include/auth/moc_auth.hpp
+
+    model/include/profile/iprofile.hpp
+    model/include/profile/moc_profile.hpp
 
     model/src/backend.cpp
     model/src/theme_provider.cpp
@@ -36,14 +40,20 @@ qt_add_qml_module(appuntitled
         Main.qml
         view/screens/LoginScreen.qml
         view/screens/MainScreen.qml
+        view/screens/ProfileScreen.qml
+        view/screens/StockScreen.qml
+        view/screens/WayScreen.qml
+
         view/components/Login/EmailField.qml
         view/components/Login/PasswordField.qml
+
         view/components/common/ActionButton.qml
+
+        view/components/Orders/Order.qml
     RESOURCES
         res.qrc
 )
 
-# --- Подключаем библиотеки ---
 target_link_libraries(appuntitled
     PRIVATE
         Qt6::Quick
@@ -52,7 +62,6 @@ target_link_libraries(appuntitled
         KF6::Kirigami2
 )
 
-# --- Параметры сборки ---
 set_target_properties(appuntitled PROPERTIES
     MACOSX_BUNDLE TRUE
     WIN32_EXECUTABLE TRUE
@@ -60,7 +69,6 @@ set_target_properties(appuntitled PROPERTIES
     MACOSX_BUNDLE_SHORT_VERSION_STRING ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}
 )
 
-# --- Инсталляция ---
 include(GNUInstallDirs)
 install(TARGETS appuntitled
     BUNDLE DESTINATION .

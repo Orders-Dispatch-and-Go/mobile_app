@@ -19,6 +19,7 @@ int main(int argc, char *argv[]) {
     );
     auto *backend = new backend_t(&app);           // NOLINT
     auto *theme   = new theme_provider_t(&app);    // NOLINT
+    theme->set_light_theme(false);
     engine.rootContext()->setContextProperty("theme", theme);
     engine.rootContext()->setContextProperty("backend", backend);
     engine.loadFromModule("untitled", "Main");
