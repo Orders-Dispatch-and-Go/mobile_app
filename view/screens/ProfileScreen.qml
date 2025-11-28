@@ -1,8 +1,3 @@
-import QtQuick
-import QtQuick.Layouts
-import QtQuick.Controls as Controls
-import org.kde.kirigami as Kirigami
-
 import QtQuick 2.15
 import QtQuick.Layouts 1.15
 import QtQuick.Controls 2.15 as Controls
@@ -11,102 +6,185 @@ import org.kde.kirigami 2.20 as Kirigami
 Kirigami.ScrollablePage {
     id: page
     title: qsTr("Профиль")
-
     padding: Kirigami.Units.largeSpacing
 
     ColumnLayout {
         anchors.fill: parent
         spacing: Kirigami.Units.smallSpacing
 
-        // Универсальный компонент для строки данных
-        Component {
-            id: rowDelegate
-            RowLayout {
-                spacing: Kirigami.Units.smallSpacing
-                width: parent.width
+        // ---- Email ----
+        RowLayout {
+            Layout.fillWidth: true
+            spacing: Kirigami.Units.smallSpacing
 
-                Controls.Label {
-                    text: model.label
-                    Layout.preferredWidth: parent.width * 0.4
-                    horizontalAlignment: Text.AlignLeft
-                    wrapMode: Text.WordWrap
-                    color: Kirigami.Theme.textColor
-                }
-                Item {
-                    Layout.fillWidth: true
-                }
-
-                RowLayout {
-                    spacing: Kirigami.Units.smallSpacing
-                    Controls.Label {
-                        text: model.value
-                        wrapMode: Text.WordWrap
-                        horizontalAlignment: Text.AlignLeft
-                        color: Kirigami.Theme.textColor
-                    }
-
-                    Controls.ToolButton {
-                        visible: model.editable
-                        icon.name: "document-edit"
-                        onClicked: {}
-                    }
-                }
-
+            Controls.Label {
+                text: qsTr("Email")
+                wrapMode: Text.WordWrap
+                color: Kirigami.Theme.textColor
+            }
+            Item {
                 Layout.fillWidth: true
+            }
+
+            Controls.Label {
+                text: backend.userEmail
+                wrapMode: Text.WordWrap
+                color: Kirigami.Theme.textColor
+            }
+
+            Controls.ToolButton {
+                visible: false
             }
         }
 
-        // Список данных
-        ListView {
-            id: list
-            clip: true
+        // ---- Фамилия ----
+        RowLayout {
             Layout.fillWidth: true
-            Layout.fillHeight: true
             spacing: Kirigami.Units.smallSpacing
 
-            model: ListModel {
-                ListElement {
-                    name: "email"
-                    editable: false
-                    label: qsTr("Email")
-                    value: backend.userEmail
-                }
-                ListElement {
-                    name: "surname"
-                    editable: true
-                    label: qsTr("Фамилия")
-                    value: backend.userSurname
-                }
-                ListElement {
-                    name: "name"
-                    editable: true
-                    label: qsTr("Имя")
-                    value: backend.userName
-                }
-                ListElement {
-                    name: "patronymic"
-                    editable: true
-                    label: qsTr("Отчество")
-                    value: backend.userPatronymic
-                }
-                ListElement {
-                    label: qsTr("Серия паспорта")
-                    editable: true
-                    value: backend.userSeria
-                }
-                ListElement {
-                    label: qsTr("Номер паспорта")
-                    editable: true
-                    value: backend.userNumber
-                }
-                ListElement {
-                    label: "Текущий адрес"
-                    editable: true
-                    value: backend.userAddress
-                }
+            Controls.Label {
+                text: qsTr("Фамилия")
+                wrapMode: Text.WordWrap
+                color: Kirigami.Theme.textColor
+            }
+            Item {
+                Layout.fillWidth: true
+            }
+            Controls.Label {
+                text: backend.userSurname
+                wrapMode: Text.WordWrap
+                color: Kirigami.Theme.textColor
             }
 
-            delegate: rowDelegate
+            Controls.ToolButton {
+                visible: true
+                icon.name: "document-edit"
+            }
+        }
+
+        // ---- Имя ----
+        RowLayout {
+            Layout.fillWidth: true
+            spacing: Kirigami.Units.smallSpacing
+
+            Controls.Label {
+                text: qsTr("Имя")
+                wrapMode: Text.WordWrap
+                color: Kirigami.Theme.textColor
+            }
+            Item {
+                Layout.fillWidth: true
+            }
+            Controls.Label {
+                text: backend.userName
+                wrapMode: Text.WordWrap
+                color: Kirigami.Theme.textColor
+            }
+
+            Controls.ToolButton {
+                visible: true
+                icon.name: "document-edit"
+            }
+        }
+
+        // ---- Отчество ----
+        RowLayout {
+            Layout.fillWidth: true
+            spacing: Kirigami.Units.smallSpacing
+
+            Controls.Label {
+                text: qsTr("Отчество")
+                wrapMode: Text.WordWrap
+                color: Kirigami.Theme.textColor
+            }
+            Item {
+                Layout.fillWidth: true
+            }
+            Controls.Label {
+                text: backend.userPatronymic
+                wrapMode: Text.WordWrap
+                color: Kirigami.Theme.textColor
+            }
+
+            Controls.ToolButton {
+                visible: true
+                icon.name: "document-edit"
+            }
+        }
+
+        // ---- Серия паспорта ----
+        RowLayout {
+            Layout.fillWidth: true
+            spacing: Kirigami.Units.smallSpacing
+
+            Controls.Label {
+                text: qsTr("Серия паспорта")
+                wrapMode: Text.WordWrap
+                color: Kirigami.Theme.textColor
+            }
+            Item {
+                Layout.fillWidth: true
+            }
+            Controls.Label {
+                text: backend.userSeria
+                wrapMode: Text.WordWrap
+                color: Kirigami.Theme.textColor
+            }
+
+            Controls.ToolButton {
+                visible: true
+                icon.name: "document-edit"
+            }
+        }
+
+        // ---- Номер паспорта ----
+        RowLayout {
+            Layout.fillWidth: true
+            spacing: Kirigami.Units.smallSpacing
+
+            Controls.Label {
+                text: qsTr("Номер паспорта")
+                wrapMode: Text.WordWrap
+                color: Kirigami.Theme.textColor
+            }
+            Item {
+                Layout.fillWidth: true
+            }
+            Controls.Label {
+                text: backend.userNumber
+                wrapMode: Text.WordWrap
+                color: Kirigami.Theme.textColor
+            }
+
+            Controls.ToolButton {
+                visible: true
+                icon.name: "document-edit"
+            }
+        }
+
+        // ---- Текущий адрес ----
+        RowLayout {
+            Layout.fillWidth: true
+            spacing: Kirigami.Units.smallSpacing
+
+            Controls.Label {
+                text: qsTr("Текущий адрес")
+                wrapMode: Text.WordWrap
+                color: Kirigami.Theme.textColor
+            }
+            Item {
+                Layout.fillWidth: true
+            }
+            Controls.Label {
+                text: backend.userAddress
+                wrapMode: Text.WordWrap
+                color: Kirigami.Theme.textColor
+            }
+
+            Controls.ToolButton {
+                visible: true
+                icon.name: "document-edit"
+            }
         }
     }
 }

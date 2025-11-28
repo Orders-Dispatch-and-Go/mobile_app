@@ -19,12 +19,14 @@ class backend_t : public QObject {
     Q_OBJECT
 
     Q_PROPERTY(QString userEmail READ user_email)
-    Q_PROPERTY(QString userSurname READ user_surname)
-    Q_PROPERTY(QString userName READ user_name)
-    Q_PROPERTY(QString userPatronymic READ user_patronymic)
-    Q_PROPERTY(int userSeria READ user_seria)
-    Q_PROPERTY(int userNumber READ user_number)
-    Q_PROPERTY(QString userAddress READ user_address)
+    Q_PROPERTY(QString userSurname READ user_surname WRITE set_user_surname)
+    Q_PROPERTY(QString userName READ user_name WRITE set_user_name)
+    Q_PROPERTY(
+        QString userPatronymic READ user_patronymic WRITE set_user_patronymic
+    )
+    Q_PROPERTY(int userSeria READ user_seria WRITE set_user_seria)
+    Q_PROPERTY(int userNumber READ user_number WRITE set_user_number)
+    Q_PROPERTY(QString userAddress READ user_address WRITE set_user_address)
 
 public:
     explicit backend_t(QObject *parent = nullptr);
@@ -38,6 +40,9 @@ public:
     Q_INVOKABLE void set_user_surname(const QString &surname);
     Q_INVOKABLE void set_user_name(const QString &name);
     Q_INVOKABLE void set_user_patronymic(const QString &patronymic);
+    Q_INVOKABLE void set_user_seria(int s);
+    Q_INVOKABLE void set_user_number(int n);
+    Q_INVOKABLE void set_user_address(const QString &patronymic);
 
     Q_INVOKABLE [[nodiscard]] QString user_email() const;
     Q_INVOKABLE [[nodiscard]] QString user_surname() const;

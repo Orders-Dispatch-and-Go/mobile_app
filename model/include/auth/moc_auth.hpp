@@ -21,7 +21,8 @@ public:
     user_info_t login(const QString &email, const QString &password) override {
         user_info_t user;
         user.set_email(email);
-        user.set_name("John Doe");
+        user.set_name("John");
+        user.set_surname("Doe");
         return user;
     }
 
