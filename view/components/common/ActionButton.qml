@@ -4,6 +4,7 @@ import QtQuick.Controls 2.15
 Button {
     palette.buttonText: theme.background
     height: 40
+    highlighted: true
 
     background: Rectangle {
         id: bg

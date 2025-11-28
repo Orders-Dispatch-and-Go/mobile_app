@@ -1,79 +1,64 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 
-TextField {
-    id: passwordField
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Layouts
+import org.kde.kirigami as Kirigami
 
-    property int minLength: 8
-    property bool needDigit: true
-    property bool needLetter: true
+Item {
+    id: root
 
+    property alias text: passwordField.text
+
+    property bool ok: validLength && validDigit && validLetter
     property bool validLength: false
     property bool validDigit: false
     property bool validLetter: false
-    property bool ok: validLength && validDigit && validLetter
 
-    placeholderText: "Введите пароль"
-    font.pointSize: theme.font_size
-    echoMode: showPassword ? TextInput.Normal : TextInput.Password
-    inputMethodHints: Qt.ImhHiddenText | Qt.ImhNoPredictiveText | Qt.ImhNoAutoUppercase
-    selectByMouse: true
+    property int minLength: 8
 
-    property bool showPassword: false
+    RowLayout {
+        id: row
+        spacing: 6
+        width: parent.width
 
-    onEditingFinished: text = text.trim()
+        TextField {
+            id: passwordField
+            Layout.fillWidth: true
+            placeholderText: "Пароль"
+            echoMode: isVisible ? TextInput.Normal : TextInput.Password
 
-    onTextChanged: {
-        validLength = text.length >= minLength;
-        validDigit = needDigit ? /[0-9]/.test(text) : true;
-        validLetter = needLetter ? /[a-zA-Z]/.test(text) : true;
-    }
+            property bool isVisible: false
 
-    // Кнопка с изображением
-    Rectangle {
-        id: showBtn
-        width: parent.height
-        height: parent.height
-        anchors.right: parent.right
-        anchors.top: parent.top
-        color: theme.paper
-        radius: 4
-        z: 100
-
-        Image {
-            fillMode: Image.PreserveAspectFit
-            source: showPassword ? "qrc:/pass_shown" : "qrc:/pass_hidden"
-            anchors.centerIn: parent
-            anchors.fill: parent
-            anchors.margins: 5
-        }
-        MouseArea {
-            anchors.fill: parent
-            onClicked: mouse => {
-                passwordField.showPassword = !passwordField.showPassword;
-                mouse.accepted = false;
+            onEditingFinished: text = text.trim()
+            onTextChanged: {
+                validLength = text.length >= minLength;
+                validDigit = /[0-9]/.test(text);
+                validLetter = /[a-zA-Z]/.test(text);
             }
         }
+
+        ToolButton {
+            icon.name: passwordField.isVisible ? "visibility" : "visibility-off"
+            onClicked: passwordField.isVisible = !passwordField.isVisible
+        }
     }
-
-    // Отступ, чтобы текст не перекрывался иконкой
-    rightPadding: showBtn.width + 10
-
     Text {
         id: errorText
         anchors.horizontalCenter: parent.horizontalCenter
-        anchors.top: parent.bottom
-        anchors.topMargin: 2
+        anchors.top: row.bottom
+        anchors.topMargin: 15
         color: (errorText.text === "" || passwordField.text === "") ? "transparent" : theme.error
 
         text: {
             if (passwordField.text === "")
                 return "";
-            if (!validLength)
-                return "Минимум " + passwordField.minLength + " символов";
-            if (!validDigit)
+            if (!root.validLength)
+                return "Минимум " + root.minLength + " символов";
+            if (!root.validDigit)
                 return "Нужна хотя бы одна цифра";
-            if (!validLetter)
+            if (!root.validLetter)
                 return "Нужна хотя бы одна буква";
             return "";
         }

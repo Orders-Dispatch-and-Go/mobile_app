@@ -35,6 +35,7 @@ qt_add_qml_module(appuntitled
     QML_FILES
         Main.qml
         view/screens/LoginScreen.qml
+        view/screens/MainScreen.qml
         view/components/Login/EmailField.qml
         view/components/Login/PasswordField.qml
         view/components/common/ActionButton.qml
