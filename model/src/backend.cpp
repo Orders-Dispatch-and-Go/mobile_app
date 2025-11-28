@@ -27,19 +27,39 @@ void backend_t::logout() {
 
 void backend_t::set_user_email(const QString &email) {
     m_user_info.set_email(email);
+    emit user_updated();
 }
 
 void backend_t::set_user_surname(const QString &surname) {
     m_user_info.set_surname(surname);
+    emit user_updated();
 }
 
 void backend_t::set_user_name(const QString &name) {
     m_user_info.set_name(name);
+    emit user_updated();
 }
 
 void backend_t::set_user_patronymic(const QString &patronymic) {
     m_user_info.set_patronymic(patronymic);
+    emit user_updated();
 }
+
+void backend_t::set_user_seria(int s) {
+    m_profile_model->set_seria(s);
+    emit user_updated();
+}
+
+void backend_t::set_user_number(int n) {
+    m_profile_model->set_number(n);
+    emit user_updated();
+}
+
+void backend_t::set_user_address(const QString &address) {
+    m_profile_model->set_address(address);
+    emit user_updated();
+}
+
 
 QString backend_t::user_email() const {
     return m_user_info.email();
