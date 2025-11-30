@@ -66,6 +66,10 @@ public:
     Q_INVOKABLE [[nodiscard]] int user_number() const;
     Q_INVOKABLE [[nodiscard]] QString user_address() const;
 
+    Q_INVOKABLE void switch_screen(int screen_id) {
+        emit screen_switched(screen_id);
+    }
+
 private:
     Q_DISABLE_COPY_MOVE(backend_t)
     user_info_t m_user_info;

@@ -23,6 +23,7 @@ void backend_t::login(const QString &email, const QString &password) {
 void backend_t::logout() {
     m_user_info = m_auth_model->logout();
     emit user_logged_out();
+    emit screen_switched(0);
 }
 
 void backend_t::set_user_email(const QString &email) {

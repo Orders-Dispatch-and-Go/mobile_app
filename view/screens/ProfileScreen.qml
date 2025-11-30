@@ -244,55 +244,76 @@ Kirigami.ScrollablePage {
     }
 
     footer: footerItem
-    Item {
+    ColumnLayout {
         id: footerItem
-        visible: editing
-        width: editing ? parent.width : 0
+        width: parent.width
         height: Kirigami.Units.gridUnit * 3
 
         RowLayout {
-            anchors.fill: parent
             spacing: Kirigami.Units.largeSpacing
+            height: page.editing ? Kirigami.Units.gridUnit * 3 : 0
+            visible: page.editing
+            Layout.fillWidth: true
 
             Controls.Button {
                 text: qsTr("Отмена")
                 Layout.fillWidth: true
                 onClicked: {
-                    editing = false;
-                    editingField = "";
-                    editingValue = "";
+                    page.editing = false;
+                    page.editingField = "";
+                    page.editingValue = "";
                 }
             }
 
             Controls.Button {
                 text: qsTr("OK")
                 Layout.fillWidth: true
-                onClicked: {
-                    console.log(editingField, editingValue);
-                    switch (editingField) {
-                    case "surname":
-                        backend.userSurname = editingValue;
-                        break;
-                    case "name":
-                        backend.userName = editingValue;
-                        break;
-                    case "patronymic":
-                        backend.userPatronymic = editingValue;
-                        break;
-                    case "seria":
-                        backend.userSeria = parseInt(editingValue);
-                        break;
-                    case "number":
-                        backend.userNumber = parseInt(editingValue);
-                        break;
-                    case "address":
-                        backend.userAddress = editingValue;
-                        break;
-                    }
-                    console.log(backend.userSurname, backend.userName, backend.userPatronymic, backend.userSeria, backend.userNumber, backend.userAddress);
-                    editing = false;
-                }
+                onClicked: page.saveChanges()
             }
         }
+        RowLayout {
+            Layout.fillWidth: true
+            visible: !page.editing
+            height: page.editing ? 0 : Kirigami.Units.gridUnit * 3
+
+            Controls.Button {
+                text: qsTr("Назад")
+                Layout.fillWidth: true
+                onClicked: {
+                    backend.switch_screen(1);
+                }
+            }
+
+            Controls.Button {
+                text: qsTr("Выход")
+                Layout.fillWidth: true
+                onClicked: backend.logout()
+            }
+        }
+    }
+    function saveChanges() {
+        switch (page.editingField) {
+        case "surname":
+            backend.userSurname = page.editingValue;
+            break;
+        case "name":
+            backend.userName = page.editingValue;
+            break;
+        case "patronymic":
+            backend.userPatronymic = page.editingValue;
+            break;
+        case "seria":
+            backend.userSeria = parseInt(page.editingValue);
+            break;
+        case "number":
+            backend.userNumber = parseInt(page.editingValue);
+            break;
+        case "address":
+            backend.userAddress = page.editingValue;
+            break;
+        }
+        page.editing = false;
+        page.editingField = "";
+        page.editingValue = "";
     }
 }
