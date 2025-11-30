@@ -1,14 +1,29 @@
-import QtQuick
-import QtQuick.Layouts
-import QtQuick.Controls as Controls
-import org.kde.kirigami as Kirigami
+import QtQuick 2.15
+import QtQuick.Controls 2.15
+import QtQuick.Layouts 2.15
+import org.kde.kirigami 2.19 as Kirigami
 
 Kirigami.ApplicationWindow {
     id: root
-    width: 400
-    height: 480
-    visible: true
-    title: qsTr("Hello World")
+    title: "Actions Demo"
+    globalDrawer: Kirigami.GlobalDrawer {
+        title: "Demo"
+        titleIcon: "applications-graphics"
+        actions: [
+            Kirigami.Action {
+                text: qsTr("Get order")
+                onTriggered: root.switchScreen(3)
+            },
+            Kirigami.Action {
+                text: "Profile"
+                onTriggered: root.switchScreen(2)
+            },
+            Kirigami.Action {
+                text: "Logout"
+                onTriggered: backend.logout()
+            }
+        ]
+    }
 
     Component.onCompleted: {
         pageStack.clear();
@@ -21,8 +36,8 @@ Kirigami.ApplicationWindow {
     }
 
     Component {
-        id: mainComponent
-        MainScreen {
+        id: loadingComponent
+        LoadingScreen {
             onSwitched: id => {
                 root.switchScreen(id);
             }
@@ -51,26 +66,26 @@ Kirigami.ApplicationWindow {
         }
     }
     function switchScreen(screenId) {
-        switch (screenId) {
-        case 0:
+        console.log("switchScreen called with id:", screenId);
+        const id = Number(screenId);
+        console.log(id, screens.get_order);
+        switch (id) {
+        case Number(screens.login):
             pageStack.clear();
             pageStack.push(loginComponent);
             break;
-        case 1:
+        case Number(screens.loading):
             pageStack.clear();
-            pageStack.push(mainComponent);
+            pageStack.push(loadingComponent);
             break;
-        case 2:
+        case Number(screens.profile):
             pageStack.clear();
             pageStack.push(profileComponent);
             break;
-        case 3:
+        case Number(screens.get_order):
+            console.log("switch");
             pageStack.clear();
             pageStack.push(wayScreen);
-            break;
-        case 4:
-            pageStack.clear();
-            pageStack.push(stockScreen);
             break;
         }
     }

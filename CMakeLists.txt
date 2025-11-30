@@ -39,7 +39,7 @@ qt_add_qml_module(appuntitled
     QML_FILES
         Main.qml
         view/screens/LoginScreen.qml
-        view/screens/MainScreen.qml
+        view/screens/LoadingScreen.qml
         view/screens/ProfileScreen.qml
         view/screens/StockScreen.qml
         view/screens/WayScreen.qml

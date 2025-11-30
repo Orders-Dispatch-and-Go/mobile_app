@@ -16,14 +16,14 @@ void backend_t::login(const QString &email, const QString &password) {
     m_profile_model->load();
     if (m_user_info.is_valid()) {
         emit user_logged_in();
-        emit screen_switched(SCREEN_MAIN);
+        emit screen_switched(static_cast<int>(screens_t::pGetOrder));
     }
 }
 
 void backend_t::logout() {
     m_user_info = m_auth_model->logout();
     emit user_logged_out();
-    emit screen_switched(0);
+    emit screen_switched(static_cast<int>(screens_t::pLogin));
 }
 
 void backend_t::set_user_email(const QString &email) {

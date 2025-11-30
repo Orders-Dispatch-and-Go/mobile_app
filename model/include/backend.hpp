@@ -4,6 +4,7 @@
 #include <QObject>
 
 #include <memory.h>
+#include <qqml.h>
 #include <qtmetamacros.h>
 
 #include "auth/iauth.hpp"
@@ -17,6 +18,7 @@
  */
 class backend_t : public QObject {
     Q_OBJECT
+    QML_ELEMENT
 
     Q_PROPERTY(QString userEmail READ user_email)
     Q_PROPERTY(
@@ -41,7 +43,6 @@ class backend_t : public QObject {
         QString userAddress READ user_address WRITE set_user_address NOTIFY
             user_updated
     )
-
 public:
     explicit backend_t(QObject *parent = nullptr);
 
