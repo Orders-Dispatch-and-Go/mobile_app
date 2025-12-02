@@ -13,8 +13,8 @@ Kirigami.ApplicationWindow {
         titleIcon: "applications-graphics"
         actions: [
             Kirigami.Action {
-                text: qsTr("Get order")
-                onTriggered: root.switchScreen(screens.get_order)
+                text: qsTr("Start new route")
+                onTriggered: root.switchScreen(screens.start_route)
             },
             Kirigami.Action {
                 text: "Profile"
@@ -36,29 +36,25 @@ Kirigami.ApplicationWindow {
         id: loginComponent
         LoginScreen {}
     }
-
-    Component {
-        id: loadingComponent
-        LoadingScreen {
-            onSwitched: id => {
-                root.switchScreen(id);
-            }
-        }
-    }
-
     Component {
         id: profileComponent
         ProfileScreen {}
     }
-
     Component {
-        id: stockScreen
-        StockScreen {}
+        id: startRouteScreen
+        StartRouteScreen {}
     }
-
     Component {
-        id: wayScreen
-        WayScreen {}
+        id: ordersScreen
+        GetOrdersScreen {}
+    }
+    Component {
+        id: finishRouteScreen
+        FinishRouteScreen {}
+    }
+    Component {
+        id: finishOrderScreen
+        FinishOrderScreen {}
     }
 
     Connections {
@@ -74,18 +70,29 @@ Kirigami.ApplicationWindow {
             pageStack.clear();
             pageStack.push(loginComponent);
             break;
-        case Number(screens.loading):
-            pageStack.clear();
-            pageStack.push(loadingComponent);
-            break;
         case Number(screens.profile):
             pageStack.clear();
             pageStack.push(profileComponent);
             break;
-        case Number(screens.get_order):
-            console.log("switch");
+        case Number(screens.start_route):
             pageStack.clear();
-            pageStack.push(wayScreen);
+            pageStack.push(startRouteScreen);
+            break;
+        case Number(screens.get_orders):
+            pageStack.clear();
+            pageStack.push(ordersScreen);
+            break;
+        case Number(screens.finish_order):
+            pageStack.clear();
+            pageStack.push(finishOrderScreen);
+            break;
+        case Number(screens.finish_route):
+            pageStack.clear();
+            pageStack.push(finishRouteScreen);
+            break;
+        default:
+            pageStack.clear();
+            pageStack.push(loginComponent);
             break;
         }
     }
