@@ -59,6 +59,8 @@ qt_add_qml_module(appuntitled
         view/components/Orders/MinPrice.qml
         view/components/Orders/Sizes.qml
         view/components/Orders/Filter.qml
+        view/components/Orders/RouteDate.qml
+
     RESOURCES
         res.qrc
 )

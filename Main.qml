@@ -5,8 +5,8 @@ import org.kde.kirigami 2.19 as Kirigami
 
 Kirigami.ApplicationWindow {
     id: root
-    width: 240
-    height: 400
+    width: 400
+    height: 600
     title: "Actions Demo"
     globalDrawer: Kirigami.GlobalDrawer {
         title: "Demo"

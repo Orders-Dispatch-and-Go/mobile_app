@@ -12,4 +12,8 @@ ColumnLayout {
         id: minPrice
         Layout.fillWidth: true
     }
+    RouteDate {
+        id: routeDate
+        Layout.fillWidth: true
+    }
 }
