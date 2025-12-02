@@ -5,6 +5,8 @@ import org.kde.kirigami 2.19 as Kirigami
 
 Kirigami.ApplicationWindow {
     id: root
+    width: 240
+    height: 400
     title: "Actions Demo"
     globalDrawer: Kirigami.GlobalDrawer {
         title: "Demo"
@@ -12,11 +14,11 @@ Kirigami.ApplicationWindow {
         actions: [
             Kirigami.Action {
                 text: qsTr("Get order")
-                onTriggered: root.switchScreen(3)
+                onTriggered: root.switchScreen(screens.get_order)
             },
             Kirigami.Action {
                 text: "Profile"
-                onTriggered: root.switchScreen(2)
+                onTriggered: root.switchScreen(screens.profile)
             },
             Kirigami.Action {
                 text: "Logout"
@@ -66,9 +68,7 @@ Kirigami.ApplicationWindow {
         }
     }
     function switchScreen(screenId) {
-        console.log("switchScreen called with id:", screenId);
         const id = Number(screenId);
-        console.log(id, screens.get_order);
         switch (id) {
         case Number(screens.login):
             pageStack.clear();

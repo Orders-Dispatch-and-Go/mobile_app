@@ -6,7 +6,14 @@ import org.kde.kirigami as Kirigami
 Rectangle {
     id: root
     radius: 10
-    color: theme.background
-    height: 100
-    width: 100
+
+    color: Kirigami.Theme.backgroundColor
+    border.color: Kirigami.Theme.activeBackgroundColor
+    border.width: 3
+    Text {
+        text: "Order"
+        color: Kirigami.Theme.activeTextColor
+        font.bold: true
+        anchors.centerIn: parent
+    }
 }

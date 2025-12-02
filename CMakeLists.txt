@@ -13,6 +13,10 @@ qt_standard_project_setup(REQUIRES 6.8)
 qt_add_executable(appuntitled
     main.cpp
 
+    model/include/dto/station_dto.hpp
+    model/include/dto/order_dto.hpp
+    model/include/dto/route_dto.hpp
+
     model/include/backend.hpp
     model/include/theme_provider.hpp
     model/include/screens.hpp

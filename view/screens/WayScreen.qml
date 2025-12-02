@@ -5,6 +5,10 @@ import org.kde.kirigami as Kirigami
 
 Kirigami.Page {
     id: root
+    title: qsTr("Get orders")
 
-    Order {}
+    Order {
+        width: parent.width
+        height: parent.height
+    }
 }
