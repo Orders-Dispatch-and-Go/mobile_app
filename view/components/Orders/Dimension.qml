@@ -9,11 +9,14 @@ RowLayout {
     property alias title: titleLabel.text
     property alias value: spin.value
 
-    signal valueChanged(real value)
+    signal dimensionValueChanged(real value)
 
     Label {
         id: titleLabel
         text: qsTr("width")
+    }
+    Item {
+        Layout.fillWidth: true
     }
     SpinBox {
         id: spin
@@ -22,8 +25,6 @@ RowLayout {
         stepSize: 1
         editable: true
         value: 10
-
-        Layout.fillWidth: true
 
         textFromValue: function (v) {
             return v + " sm";
@@ -41,7 +42,7 @@ RowLayout {
             return parseInt(t);
         }
         onValueChanged: {
-            root.valueChanged(value);
+            root.dimensionValueChanged(value);
         }
     }
 }

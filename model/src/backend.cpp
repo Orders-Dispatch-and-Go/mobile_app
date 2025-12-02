@@ -16,7 +16,7 @@ void backend_t::login(const QString &email, const QString &password) {
     m_profile_model->load();
     if (m_user_info.is_valid()) {
         emit user_logged_in();
-        emit screen_switched(static_cast<int>(screens_t::pGetOrder));
+        emit screen_switched(static_cast<int>(screens_t::pStartRoute));
     }
 }
 

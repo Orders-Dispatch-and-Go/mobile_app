@@ -14,7 +14,7 @@ Kirigami.ApplicationWindow {
         actions: [
             Kirigami.Action {
                 text: qsTr("Start new route")
-                onTriggered: root.switchScreen(screens.start_route)
+                onTriggered: root.switchScreen(screens.startRoute)
             },
             Kirigami.Action {
                 text: "Profile"
@@ -74,19 +74,19 @@ Kirigami.ApplicationWindow {
             pageStack.clear();
             pageStack.push(profileComponent);
             break;
-        case Number(screens.start_route):
+        case Number(screens.startRoute):
             pageStack.clear();
             pageStack.push(startRouteScreen);
             break;
-        case Number(screens.get_orders):
+        case Number(screens.getOrders):
             pageStack.clear();
             pageStack.push(ordersScreen);
             break;
-        case Number(screens.finish_order):
+        case Number(screens.finishOrder):
             pageStack.clear();
             pageStack.push(finishOrderScreen);
             break;
-        case Number(screens.finish_route):
+        case Number(screens.finishRoute):
             pageStack.clear();
             pageStack.push(finishRouteScreen);
             break;

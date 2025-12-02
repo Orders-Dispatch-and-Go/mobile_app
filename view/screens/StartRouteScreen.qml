@@ -5,16 +5,22 @@ import org.kde.kirigami as Kirigami
 
 import untitled
 
-Kirigami.Page {
+Kirigami.ScrollablePage {
     id: root
     title: qsTr("Start new route")
-
     ColumnLayout {
-        width: parent.width
         height: parent.height
+        Filter {
+            id: order
+            Layout.fillWidth: true
+        }
+        Item {
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+        }
         Button {
-            text: qsTr("Start")
-            onClicked: {}
+            Layout.fillWidth: true
+            text: "find orders"
         }
     }
 }

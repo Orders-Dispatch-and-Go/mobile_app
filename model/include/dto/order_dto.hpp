@@ -13,42 +13,16 @@
 /**
  * DTO for order data.
  */
-class order_dto_t : public QObject {
-    Q_OBJECT
-    Q_PROPERTY(float price READ price)
-    Q_PROPERTY(float cost READ cost)
-    Q_PROPERTY(QString description READ description)
-    Q_PROPERTY(station_dto_t start READ start)
-    Q_PROPERTY(station_dto_t finish READ finish)
-
+struct order_dto_t {
 public:
-    order_dto_t(const QJsonObject &json);
-
-    [[nodiscard]] float price() const {
-        return m_price;
-    }
-    [[nodiscard]] float cost() const noexcept {
-        return m_cost;
-    }
-    [[nodiscard]] const QString &description() const noexcept {
-        return m_description;
-    }
-    [[nodiscard]] const station_dto_t &start() const noexcept {
-        return m_start;
-    }
-    [[nodiscard]] const station_dto_t &finish() const noexcept {
-        return m_finish;
-    }
-
-private:
     /// Вознаграждение за заказ
-    float m_price;
+    float price {};
     /// Стоимость заказа
-    float m_cost;
+    float cost {};
     /// Описание заказа
-    QString m_description;
+    QString description;
     /// Начальная остановка
-    station_dto_t m_start;
+    station_dto_t start;
     /// Конечная остановка
-    station_dto_t m_finish;
+    station_dto_t finish;
 };

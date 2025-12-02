@@ -5,35 +5,37 @@ import org.kde.kirigami as Kirigami
 
 import untitled
 
-Item {
+ColumnLayout {
     id: root
 
+    height: Math.min(400, implicitHeight)
+
     property alias used: checkBox.checked
-    property alias width: width.value
-    property alias height: height.value
-    property alias depth: depth.value
+    property alias dimWidth: widthDim.value
+    property alias dimHeight: heightDim.value
+    property alias dimDepth: depthDim.value
 
     CheckBox {
         id: checkBox
         text: qsTr("Use Dimensions")
         checked: true
+        Layout.fillWidth: true
     }
-
     ColumnLayout {
-        visible: checkBox.checked
-        height: checkBox.checked ? Kirigami.Units.gridUnit * 10 : 0
+        enabled: checkBox.checked
+        Layout.fillWidth: true
         Dimension {
-            id: width
+            id: widthDim
             Layout.fillWidth: true
             title: qsTr("Width")
         }
         Dimension {
-            id: height
+            id: heightDim
             Layout.fillWidth: true
             title: qsTr("Height")
         }
         Dimension {
-            id: depth
+            id: depthDim
             Layout.fillWidth: true
             title: qsTr("Depth")
         }

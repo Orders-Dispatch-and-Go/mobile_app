@@ -10,10 +10,10 @@ class screens_t : public QObject {
     Q_PROPERTY(int login READ login)
     Q_PROPERTY(int profile READ profile)
     Q_PROPERTY(int invalid READ invalid)
-    Q_PROPERTY(int start_route READ start_route)
-    Q_PROPERTY(int get_orders READ get_orders)
-    Q_PROPERTY(int finish_order READ finish_order)
-    Q_PROPERTY(int finish_route READ finish_route)
+    Q_PROPERTY(int startRoute READ startroute)
+    Q_PROPERTY(int getOrders READ getorders)
+    Q_PROPERTY(int finishOrder READ finishorder)
+    Q_PROPERTY(int finishRoute READ finishroute)
 
 public:
     enum screens_e {
@@ -38,16 +38,16 @@ public:
     static int invalid() {
         return pInvalid;
     }
-    static int start_route() {
+    static int startroute() {
         return pStartRoute;
     }
-    static int get_orders() {
+    static int getorders() {
         return pGetOrders;
     }
-    static int finish_order() {
+    static int finishorder() {
         return pFinishOrder;
     }
-    static int finish_route() {
+    static int finishroute() {
         return pFinishRoute;
     }
 };

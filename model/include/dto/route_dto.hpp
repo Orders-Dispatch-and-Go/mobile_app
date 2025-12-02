@@ -4,12 +4,7 @@
 
 #include "dto/order_dto.hpp"
 
-class route_t : public QObject {
-    Q_OBJECT
-
+struct route_t {
 public:
-    explicit route_t();
-
-private:
-    QList<order_dto_t> m_orders;
+    QList<order_dto_t> orders;
 };
