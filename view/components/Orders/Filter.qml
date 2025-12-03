@@ -15,7 +15,7 @@ ColumnLayout {
     property alias useSize: sizes.used
     property alias dimHeight: sizes.dimHeight
     property alias dimWidth: sizes.dimWidth
-    property alias dimHeight: sizes.dimHeight
+    property alias dimDepth: sizes.dimDepth
 
     property alias usePrice: minPrice.used
     property alias price: minPrice.value

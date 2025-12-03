@@ -14,16 +14,18 @@ class screens_t : public QObject {
     Q_PROPERTY(int getOrders READ getorders)
     Q_PROPERTY(int finishOrder READ finishorder)
     Q_PROPERTY(int finishRoute READ finishroute)
+    Q_PROPERTY(int currentRoute READ currentroute)
 
 public:
     enum screens_e {
-        pInvalid     = 0,
-        pLogin       = 1,
-        pStartRoute  = 2,
-        pGetOrders   = 3,
-        pFinishOrder = 4,
-        pFinishRoute = 5,
-        pProfile     = 6
+        pInvalid      = 0,
+        pLogin        = 1,
+        pStartRoute   = 2,
+        pGetOrders    = 3,
+        pFinishOrder  = 4,
+        pFinishRoute  = 5,
+        pCurrentRoute = 6,
+        pProfile      = 7
     };
     Q_ENUM(screens_e)    // Делаем enum доступным в QML
 
@@ -49,5 +51,8 @@ public:
     }
     static int finishroute() {
         return pFinishRoute;
+    }
+    static int currentroute() {
+        return pCurrentRoute;
     }
 };

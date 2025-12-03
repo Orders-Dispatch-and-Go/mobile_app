@@ -17,6 +17,10 @@ Kirigami.ApplicationWindow {
                 onTriggered: root.switchScreen(screens.startRoute)
             },
             Kirigami.Action {
+                text: qsTr("current route")
+                onTriggered: root.switchScreen(screens.currentRoute)
+            },
+            Kirigami.Action {
                 text: "Profile"
                 onTriggered: root.switchScreen(screens.profile)
             },
@@ -56,6 +60,10 @@ Kirigami.ApplicationWindow {
         id: finishOrderScreen
         FinishOrderScreen {}
     }
+    Component {
+        id: currentRouteScreen
+        RouteScreen {}
+    }
 
     Connections {
         target: backend
@@ -89,6 +97,10 @@ Kirigami.ApplicationWindow {
         case Number(screens.finishRoute):
             pageStack.clear();
             pageStack.push(finishRouteScreen);
+            break;
+        case Number(screens.currentRoute):
+            pageStack.clear();
+            pageStack.push(currentRouteScreen);
             break;
         default:
             pageStack.clear();
