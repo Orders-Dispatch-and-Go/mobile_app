@@ -8,6 +8,7 @@ import untitled
 ColumnLayout {
     id: root
     property alias used: checkBox.checked
+    property alias value: spin.value
     signal priceChanged(real price)
 
     height: Math.min(100, implicitHeight)

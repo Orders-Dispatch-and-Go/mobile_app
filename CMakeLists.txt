@@ -54,6 +54,7 @@ qt_add_qml_module(appuntitled
 
         view/components/common/ActionButton.qml
 
+        view/components/Orders/AddressButton.qml
         view/components/Orders/Order.qml
         view/components/Orders/Dimension.qml
         view/components/Orders/MinPrice.qml

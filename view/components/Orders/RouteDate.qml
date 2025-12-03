@@ -9,7 +9,7 @@ ColumnLayout {
     id: root
 
     property alias used: checkBox.checked
-    property alias currentRouteDate: textField.text
+    property alias value: textField.text
 
     CheckBox {
         id: checkBox

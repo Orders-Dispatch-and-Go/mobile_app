@@ -21,6 +21,9 @@ Kirigami.ScrollablePage {
         Button {
             Layout.fillWidth: true
             text: "find orders"
+            onClicked: {
+                backend.startRoute(order.address, order.latitude, order.longitude);
+            }
         }
     }
 }
