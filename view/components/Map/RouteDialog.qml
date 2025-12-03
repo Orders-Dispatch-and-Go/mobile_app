@@ -51,23 +51,27 @@ Kirigami.Dialog {
             anchors.fill: parent
             acceptedButtons: Qt.LeftButton | Qt.RightButton
 
-            onPositionChanged: mouse => {
-                if (!map.panEnabled) {
-                    return;
-                }
-                const coord = map.toCoordinate(Qt.point(mouse.x, mouse.y));
-                map.focusCoord = coord;
-            }
+            property real lastX: -1
+            property real lastY: -1
 
+            onPositionChanged: mouse => {
+                if (!map.panEnabled)
+                    return;
+                const dx = mouse.x - lastX;
+                const dy = mouse.y - lastY;
+                map.pan(-dx, -dy);
+                lastX = mouse.x;
+                lastY = mouse.y;
+            }
             onClicked: mouse => {
+                lastX = mouse.x;
+                lastY = mouse.y;
                 map.panEnabled = true;
                 mouse.accepted = true;
             }
             onReleased: mouse => {
-                if (!map.panEnabled)
-                    return;
-                const coord = map.toCoordinate(Qt.point(mouse.x, mouse.y));
-                map.focusCoord = coord;
+                lastX = -1;
+                lastY = -1;
                 map.panEnabled = false;
             }
         }
