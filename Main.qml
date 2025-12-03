@@ -60,10 +60,6 @@ Kirigami.ApplicationWindow {
         id: finishOrderScreen
         FinishOrderScreen {}
     }
-    Component {
-        id: currentRouteScreen
-        RouteScreen {}
-    }
 
     Connections {
         target: backend

@@ -6,7 +6,7 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(Qt6 REQUIRED COMPONENTS Quick Qml Gui Widgets Location Positioning)
-find_package(KF6Kirigami2 REQUIRED)   # главный модуль Kirigami
+find_package(KF6Kirigami2 REQUIRED)
 
 qt_standard_project_setup(REQUIRES 6.8)
 
@@ -48,9 +48,10 @@ qt_add_qml_module(appuntitled
         view/screens/GetOrdersScreen.qml
         view/screens/FinishRouteScreen.qml
         view/screens/FinishOrderScreen.qml
-        view/screens/RouteScreen.qml
 
+        view/components/Map/RouteDialog.qml
         view/components/Map/Marker.qml
+        view/components/Map/ZoomButton.qml
 
         view/components/Login/EmailField.qml
         view/components/Login/PasswordField.qml

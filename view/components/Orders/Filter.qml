@@ -5,13 +5,6 @@ import QtQuick.Layouts 1.15
 ColumnLayout {
     id: root
 
-    property alias beginAddress: beginAddressButton.address
-    property alias beginLat: beginAddressButton.latitude
-    property alias beginLon: beginAddressButton.longitude
-    property alias endAddress: endAddressButton.address
-    property alias endLat: endAddressButton.latitude
-    property alias endLon: endAddressButton.longitude
-
     property alias useSize: sizes.used
     property alias dimHeight: sizes.dimHeight
     property alias dimWidth: sizes.dimWidth
@@ -24,11 +17,9 @@ ColumnLayout {
     property alias routeDate: routeDate.value
 
     AddressButton {
-        id: beginAddressButton
-        Layout.fillWidth: true
-    }
-    AddressButton {
-        id: endAddressButton
+        id: wayButton
+        dialogWidth: root.parent.width
+        dialogHeight: root.parent.height
         Layout.fillWidth: true
     }
     Sizes {
