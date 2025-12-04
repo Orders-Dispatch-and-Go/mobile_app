@@ -25,6 +25,10 @@ Kirigami.ApplicationWindow {
                 onTriggered: root.switchScreen(screens.finishOrder)
             },
             Kirigami.Action {
+                text: qsTr("TEST finish route screen")
+                onTriggered: root.switchScreen(screens.finishRoute)
+            },
+            Kirigami.Action {
                 text: "Profile"
                 onTriggered: root.switchScreen(screens.profile)
             },
