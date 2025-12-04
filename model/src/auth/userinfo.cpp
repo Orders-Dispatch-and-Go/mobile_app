@@ -17,6 +17,10 @@ void user_info_t::set_patronymic(const QString &patronymic) {
     m_patronymic = patronymic;
 }
 
+void user_info_t::set_auth_token(const QString &auth_token) {
+    m_auth_token = auth_token;
+}
+
 QString user_info_t::email() const {
     return m_email;
 }
@@ -31,6 +35,10 @@ QString user_info_t::name() const {
 
 QString user_info_t::patronymic() const {
     return m_patronymic;
+}
+
+QString user_info_t::auth_token() const {
+    return m_auth_token;
 }
 
 bool user_info_t::is_valid() const {

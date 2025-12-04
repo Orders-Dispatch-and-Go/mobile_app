@@ -6,6 +6,7 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(Qt6 REQUIRED COMPONENTS Quick Qml Gui Widgets)
+find_package(Qt6Keychain REQUIRED)
 find_package(KF6Kirigami2 REQUIRED)   # главный модуль Kirigami
 
 qt_standard_project_setup(REQUIRES 6.8)
@@ -19,14 +20,21 @@ qt_add_executable(appuntitled
 
     model/include/auth/userinfo.hpp
     model/include/auth/iauth.hpp
+    model/include/auth/auth.hpp
     model/include/auth/moc_auth.hpp
+
+    model/include/utils/http_client.hpp
 
     model/include/profile/iprofile.hpp
     model/include/profile/moc_profile.hpp
 
     model/src/backend.cpp
     model/src/theme_provider.cpp
+
     model/src/auth/userinfo.cpp
+    model/src/auth/auth.cpp
+
+    model/src/utils/http_client.cpp
 )
 
 target_include_directories(appuntitled PRIVATE
@@ -59,6 +67,7 @@ target_link_libraries(appuntitled
         Qt6::Quick
         Qt6::Gui
         Qt6::Qml
+        Qt6Keychain::Qt6Keychain
         KF6::Kirigami2
 )
 
