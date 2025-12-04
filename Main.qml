@@ -13,12 +13,16 @@ Kirigami.ApplicationWindow {
         titleIcon: "applications-graphics"
         actions: [
             Kirigami.Action {
-                text: qsTr("Start new route")
+                text: qsTr("TEST Start new route")
                 onTriggered: root.switchScreen(screens.startRoute)
             },
             Kirigami.Action {
-                text: qsTr("current route")
+                text: qsTr("TEST current route")
                 onTriggered: root.switchScreen(screens.currentRoute)
+            },
+            Kirigami.Action {
+                text: qsTr("TEST finishOrder")
+                onTriggered: root.switchScreen(screens.finishOrder)
             },
             Kirigami.Action {
                 text: "Profile"

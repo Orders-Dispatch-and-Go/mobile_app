@@ -1,8 +1,8 @@
 #!/bin/zsh
 
-clear
+clear && \
 cmake -S . -B build \
     -DBUILD_TESTING=OFF \
-    -DEXPORT_COMPILE_COMMANDS=ON
-cmake --build build --parallel 6
+    -DCMAKE_EXPORT_COMPILE_COMMANDS=ON && \
+cmake --build build --parallel 6 &&\
 ./build/appuntitled

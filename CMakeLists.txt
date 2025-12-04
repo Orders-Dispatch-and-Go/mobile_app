@@ -28,6 +28,8 @@ qt_add_executable(appuntitled
     model/include/profile/iprofile.hpp
     model/include/profile/moc_profile.hpp
 
+    model/include/state.hpp
+
     model/src/backend.cpp
     model/src/theme_provider.cpp
     model/src/auth/userinfo.cpp
