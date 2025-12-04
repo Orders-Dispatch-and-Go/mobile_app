@@ -15,7 +15,8 @@ public:
     template<typename T, typename U>
     T post(const QString &url, const U &data);
     
-    
 private:
     QNetworkAccessManager m_manager;
+
+    static std::optional<QJsonObject> json_from_byte_array(const QByteArray& data);
 };
