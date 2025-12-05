@@ -78,10 +78,8 @@ Kirigami.Page {
                 index: model.index
                 coordinate: modelData.point
                 onClicked: index => {
+                    orderDialog.open(); // TODO: передать dto
                     console.log("clicked = ", index);
-                }
-                Component.onCompleted: {
-                    console.log("model = ", model);
                 }
             }
         }
@@ -101,6 +99,19 @@ Kirigami.Page {
             anchors.left: parent.left
             text: "-"
             zoomAction: () => map.zoomLevel -= 1
+        }
+    }
+    OrderDialog {
+        id: orderDialog
+        visible: false
+        width: parent.width
+        height: parent.height
+        dto: {
+            id: 42;
+            description: "Sample order description";
+        }
+        onAccepted: {
+            console.log("Accepted");
         }
     }
 }

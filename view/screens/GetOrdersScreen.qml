@@ -31,13 +31,13 @@ Kirigami.Page {
                 width: scrollView.width
                 spacing: Kirigami.Units.largeSpacing
 
-                Order {
+                OrderCard {
                     id: order1
                     dto: root.dto
                     Layout.fillWidth: true
                 }
 
-                Order {
+                OrderCard {
                     id: order2
                     dto: root.dto
                     Layout.fillWidth: true
