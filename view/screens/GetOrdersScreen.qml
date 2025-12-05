@@ -16,12 +16,33 @@ Kirigami.Page {
 
     ColumnLayout {
         anchors.fill: parent
-        anchors.margins: Kirigami.Units.largeSpacing
+        anchors.margins: Kirigami.Units.smallSpacing
 
-        Order {
-            id: order
-            dto: root.dto
+        ScrollView {
+            id: scrollView
+            clip: true
             Layout.fillWidth: true
+            Layout.fillHeight: true
+
+            ScrollBar.vertical.policy: ScrollBar.AlwaysOff
+            ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
+
+            ColumnLayout {
+                width: scrollView.width
+                spacing: Kirigami.Units.largeSpacing
+
+                Order {
+                    id: order1
+                    dto: root.dto
+                    Layout.fillWidth: true
+                }
+
+                Order {
+                    id: order2
+                    dto: root.dto
+                    Layout.fillWidth: true
+                }
+            }
         }
 
         Button {

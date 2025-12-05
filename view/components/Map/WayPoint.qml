@@ -2,13 +2,18 @@ import QtQuick 2.15
 import QtLocation 6.5
 import QtPositioning 6.5
 
+import org.kde.kirigami 2.20 as Kirigami
+
 MapQuickItem {
     id: root
     visible: true
 
-    property color markerColor: "red"
     property int markerSize: 28
     property Map map
+
+    property int index
+
+    signal clicked(int id)
 
     width: markerSize
     height: markerSize
@@ -20,17 +25,22 @@ MapQuickItem {
         width: root.markerSize
         height: root.markerSize
         radius: root.markerSize / 2
-        color: root.markerColor
+        color: Kirigami.Theme.backgroundColor
         border.color: Kirigami.Theme.textColor
         border.width: 2
+        Text {
+            anchors.fill: parent
+            anchors.margins: 3
+            text: (root.index + 1).toString()
+            color: Kirigami.Theme.textColor
+            font.pointSize: 12
+            horizontalAlignment: Text.AlignHCenter
+            verticalAlignment: Text.AlignVCenter
+        }
     }
 
     MouseArea {
         anchors.fill: parent
-        drag.target: parent
-        cursorShape: Qt.OpenHandCursor
-
-        onPressed: cursorShape = Qt.ClosedHandCursor
-        onReleased: cursorShape = Qt.OpenHandCursor
+        onClicked: root.clicked(root.index)
     }
 }

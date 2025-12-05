@@ -8,14 +8,17 @@ Kirigami.ApplicationWindow {
     width: 400
     height: 600
     minimumHeight: 400
-    title: "Actions Demo"
+    title: "GruzoWiki"
     globalDrawer: Kirigami.GlobalDrawer {
-        title: "Demo"
-        titleIcon: "applications-graphics"
+        title: "GruzoWiki"
         actions: [
             Kirigami.Action {
                 text: qsTr("TEST Start new route")
                 onTriggered: root.switchScreen(screens.startRoute)
+            },
+            Kirigami.Action {
+                text: qsTr("TEST get order")
+                onTriggered: root.switchScreen(screens.getOrders)
             },
             Kirigami.Action {
                 text: qsTr("TEST current route")
@@ -69,6 +72,10 @@ Kirigami.ApplicationWindow {
         id: finishOrderScreen
         FinishOrderScreen {}
     }
+    Component {
+        id: currentRouteScreen
+        RouteScreen {}
+    }
 
     Connections {
         target: backend
@@ -99,9 +106,13 @@ Kirigami.ApplicationWindow {
             pageStack.clear();
             pageStack.push(finishRouteScreen);
             break;
-        case Number(screens.currentRoute):
+        case Number(screens.getOrders):
             pageStack.clear();
             pageStack.push(getOrdersScreen);
+            break;
+        case Number(screens.currentRoute):
+            pageStack.clear();
+            pageStack.push(currentRouteScreen);
             break;
         default:
             pageStack.clear();

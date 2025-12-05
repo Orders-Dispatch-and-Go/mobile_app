@@ -50,9 +50,11 @@ qt_add_qml_module(appuntitled
         view/screens/GetOrdersScreen.qml
         view/screens/FinishRouteScreen.qml
         view/screens/FinishOrderScreen.qml
+        view/screens/RouteScreen.qml
 
         view/components/Map/RouteDialog.qml
         view/components/Map/Marker.qml
+        view/components/Map/WayPoint.qml
         view/components/Map/ZoomButton.qml
 
         view/components/Login/EmailField.qml
