@@ -7,6 +7,7 @@ Kirigami.ApplicationWindow {
     id: root
     width: 400
     height: 600
+    minimumHeight: 400
     title: "Actions Demo"
     globalDrawer: Kirigami.GlobalDrawer {
         title: "Demo"
@@ -57,7 +58,7 @@ Kirigami.ApplicationWindow {
         StartRouteScreen {}
     }
     Component {
-        id: ordersScreen
+        id: getOrdersScreen
         GetOrdersScreen {}
     }
     Component {
@@ -90,10 +91,6 @@ Kirigami.ApplicationWindow {
             pageStack.clear();
             pageStack.push(startRouteScreen);
             break;
-        case Number(screens.getOrders):
-            pageStack.clear();
-            pageStack.push(ordersScreen);
-            break;
         case Number(screens.finishOrder):
             pageStack.clear();
             pageStack.push(finishOrderScreen);
@@ -104,7 +101,7 @@ Kirigami.ApplicationWindow {
             break;
         case Number(screens.currentRoute):
             pageStack.clear();
-            pageStack.push(currentRouteScreen);
+            pageStack.push(getOrdersScreen);
             break;
         default:
             pageStack.clear();

@@ -63,10 +63,12 @@ qt_add_qml_module(appuntitled
         view/components/Orders/AddressButton.qml
         view/components/Orders/Order.qml
         view/components/Orders/Dimension.qml
+        view/components/Orders/ShowSizes.qml
         view/components/Orders/MinPrice.qml
         view/components/Orders/Sizes.qml
         view/components/Orders/Filter.qml
         view/components/Orders/RouteDate.qml
+        view/components/Orders/RouteHighlight.qml
 
     RESOURCES
         res.qrc

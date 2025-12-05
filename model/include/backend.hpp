@@ -79,6 +79,8 @@ public:
         emit screen_switched(screen_id);
     }
 
+    Q_INVOKABLE void startTrip();
+
 private:
     Q_DISABLE_COPY_MOVE(backend_t)
     user_info_t m_user_info;

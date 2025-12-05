@@ -89,3 +89,7 @@ int backend_t::user_number() const {
 QString backend_t::user_address() const {
     return m_profile_model->address();
 }
+
+void backend_t::startTrip() {
+    qDebug() << "startTrip";
+}
