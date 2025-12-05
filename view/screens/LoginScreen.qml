@@ -25,7 +25,7 @@ Kirigami.Page {
             color: "transparent"
             Layout.fillHeight: true
         }
-        ActionButton {
+        Button {
             text: "Login"
             Layout.fillWidth: true
             onClicked: {

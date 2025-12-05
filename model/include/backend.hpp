@@ -4,7 +4,10 @@
 #include <QObject>
 
 #include <memory.h>
+#include <qqml.h>
 #include <qtmetamacros.h>
+
+#include "state.hpp"
 
 #include "auth/iauth.hpp"
 #include "auth/userinfo.hpp"
@@ -17,6 +20,7 @@
  */
 class backend_t : public QObject {
     Q_OBJECT
+    QML_ELEMENT
 
     Q_PROPERTY(QString userEmail READ user_email)
     Q_PROPERTY(
@@ -42,6 +46,7 @@ class backend_t : public QObject {
             user_updated
     )
 
+    Q_PROPERTY(int orderToFinish READ order_to_finish)
 public:
     explicit backend_t(QObject *parent = nullptr);
 
@@ -66,13 +71,20 @@ public:
     Q_INVOKABLE [[nodiscard]] int user_number() const;
     Q_INVOKABLE [[nodiscard]] QString user_address() const;
 
+    Q_INVOKABLE [[nodiscard]] int order_to_finish() const {
+        return m_state.get_order_to_finish();
+    }
+
     Q_INVOKABLE void switch_screen(int screen_id) {
         emit screen_switched(screen_id);
     }
 
+    Q_INVOKABLE void startTrip();
+
 private:
     Q_DISABLE_COPY_MOVE(backend_t)
     user_info_t m_user_info;
+    state_t m_state {};
 
     std::unique_ptr<auth_iface_t> m_auth_model;
     std::unique_ptr<profile_iface_t> m_profile_model;
