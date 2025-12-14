@@ -42,6 +42,8 @@ qt_add_executable(appuntitled
     model/src/auth/auth.cpp
 
     model/src/utils/http_client.cpp
+
+    model/src/state.cpp
 )
 
 target_include_directories(appuntitled PRIVATE

@@ -84,6 +84,10 @@ Kirigami.ApplicationWindow {
         }
     }
     function switchScreen(screenId) {
+        if (!backend.isPossibleMove(screenId)) {
+            console.error("Invalid screen transition ", screenId);
+            return;
+        }
         const id = Number(screenId);
         switch (id) {
         case Number(screens.login):

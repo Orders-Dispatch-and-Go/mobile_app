@@ -90,6 +90,14 @@ QString backend_t::user_address() const {
     return m_profile_model->address();
 }
 
+void backend_t::switch_screen(int screen_id) {
+    if (!m_state.isPossibleMove(screen_id)) {
+        return;
+    };
+    m_state.setCurrentScreen(screen_id);
+    emit screen_switched(screen_id);
+}
+
 void backend_t::startTrip() {
     qDebug() << "startTrip";
 }
