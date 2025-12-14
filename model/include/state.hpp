@@ -12,6 +12,8 @@
 class state_t : public QObject {
     Q_OBJECT
 
+    Q_PROPERTY(int currentScreen READ currentScreen)
+
 private:
     screens_t::screens_e m_currentScreen = screens_t::pLogin;
     bool m_isLoginned                    = false;
@@ -31,5 +33,16 @@ public:
     }
     Q_INVOKABLE void setCurrentScreen(int screenId) {
         m_currentScreen = static_cast<screens_t::screens_e>(screenId);
+    }
+
+    [[nodiscard]] int currentScreen() const {
+        return static_cast<int>(m_currentScreen);
+    }
+
+    [[nodiscard]] bool isLoginned() const {
+        return m_isLoginned;
+    }
+    void setLoginned(bool isLoginned) {
+        m_isLoginned = isLoginned;
     }
 };

@@ -16,14 +16,18 @@ void backend_t::login(const QString &email, const QString &password) {
     m_profile_model->load();
     if (m_user_info.is_valid()) {
         emit user_logged_in();
-        emit screen_switched(static_cast<int>(screens_t::pStartRoute));
+        m_state.setLoginned(true);
+        m_state.setCurrentScreen(static_cast<int>(screens_t::pStartRoute));
+        emit screenSwitched();
     }
 }
 
 void backend_t::logout() {
+    m_state.setLoginned(false);
     m_user_info = m_auth_model->logout();
     emit user_logged_out();
-    emit screen_switched(static_cast<int>(screens_t::pLogin));
+    m_state.setCurrentScreen(static_cast<int>(screens_t::pLogin));
+    emit screenSwitched();
 }
 
 void backend_t::set_user_email(const QString &email) {
@@ -90,14 +94,18 @@ QString backend_t::user_address() const {
     return m_profile_model->address();
 }
 
-void backend_t::switch_screen(int screen_id) {
+void backend_t::switchScreen(int screen_id) {
     if (!m_state.isPossibleMove(screen_id)) {
         return;
     };
     m_state.setCurrentScreen(screen_id);
-    emit screen_switched(screen_id);
+    emit screenSwitched();
 }
 
 void backend_t::startTrip() {
     qDebug() << "startTrip";
+}
+
+int backend_t::screenId() const {
+    return m_state.currentScreen();
 }

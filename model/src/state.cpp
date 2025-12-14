@@ -20,9 +20,7 @@ bool state_t::isPossibleMove(int screenId) const {
     case screens_t::pProfile:
     case screens_t::pGetOrders:
         // этот экран доступен только зарегестрированным
-        return m_isLoginned && (m_currentScreen != screens_t::pFinishOrder)
-               && (m_currentScreen != screens_t::pFinishRoute)
-               && (m_currentScreen != screens_t::pCurrentRoute);
+        return m_isLoginned && (m_currentScreen == screens_t::pStartRoute);
     case screens_t::pFinishOrder:
         // этот экран доступен только зарегестрированным и если есть заказы
         return m_isLoginned && (m_currentScreen == screens_t::pCurrentRoute)
