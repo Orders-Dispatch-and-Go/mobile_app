@@ -8,6 +8,7 @@
 
 const QString auth_t::m_url_check_email = "http://51.250.34.151:8074/check/email";
 const QString auth_t::m_url_sign_in = "http://51.250.34.151:8074/auth/sign_in";
+const QString auth_t::m_url_log_out = "http://51.250.34.151:8074/auth/logout";
 
 user_info_t auth_t::login(const QString &email, const QString &password) {
     bool is_email_valid = m_client.post<bool, QString>(m_url_check_email, email);
@@ -29,5 +30,11 @@ user_info_t auth_t::login(const QString &email, const QString &password) {
     user.set_name("John");
     user.set_surname("Doe");
     user.set_auth_token(token_object["accessToken"].toString());
+    return user;
+}
+
+user_info_t auth_t::logout() {
+    m_client.post<void>(m_url_log_out);
+    user_info_t user;
     return user;
 }

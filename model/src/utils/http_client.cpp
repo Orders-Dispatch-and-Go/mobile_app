@@ -3,6 +3,8 @@
 #include <qjsondocument.h>
 #include <qjsonobject.h>
 #include <qlogging.h>
+#include <qnetworkrequest.h>
+#include <qvariant.h>
 
 template<>
 bool http_client_t::get<bool>(const QString &url) {
@@ -79,6 +81,17 @@ bool http_client_t::post<bool, QString>(const QString &url, const QString &data)
     }
 
     return response;
+}
+
+template<>
+void http_client_t::post<void>(const QString &url) {
+    QNetworkRequest request(url);
+
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+    request.setHeader(QNetworkRequest::ContentLengthHeader, 0);
+
+    QNetworkReply *reply = m_manager.post(request, nullptr);
+    reply->deleteLater();
 }
 
 std::optional<QJsonObject> http_client_t::json_from_byte_array(const QByteArray& data) {

@@ -30,6 +30,7 @@ public:
 private:
     static const QString m_url_check_email;
     static const QString m_url_sign_in;
+    static const QString m_url_log_out;
 
     http_client_t m_client;
 };

@@ -14,6 +14,9 @@ public:
 
     template<typename T, typename U>
     T post(const QString &url, const U &data);
+
+    template<typename T>
+    T post(const QString &url);
     
 private:
     QNetworkAccessManager m_manager;
