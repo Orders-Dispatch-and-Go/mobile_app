@@ -20,19 +20,23 @@ void backend_t::login(const QString &email, const QString &password) {
     m_auth_model->login(email, password);
 
     connect(
-        &(*m_auth_model),
+        m_auth_model.get(),
         &auth_iface_t::recv_user_info,
         this,
         [this](const user_info_t &info) {
             qDebug() << "Login successfully";
 
             m_user_info = info;
+            qDebug() << m_user_info.email();
+            qDebug() << m_user_info.name();
+            qDebug() << m_user_info.auth_token();
             if (m_user_info.is_valid()) {
-                emit user_logged_in();
                 m_state.setCurrentScreen(screens_t::pStartRoute);
                 emit screenSwitched();
+                emit user_logged_in();
             }
             else {
+                qDebug() << "error login";
                 // do something more smart then that
             }
         }
