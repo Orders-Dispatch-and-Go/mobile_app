@@ -121,6 +121,18 @@ QString backend_t::user_address() const {
     return m_profile_model->address();
 }
 
+void backend_t::switchScreen(int screen_id) {
+    if (!m_state.isPossibleMove(screen_id)) {
+        return;
+    };
+    m_state.setCurrentScreen(screen_id);
+    emit screenSwitched();
+}
+
 void backend_t::startTrip() {
     qDebug() << "startTrip";
+}
+
+int backend_t::screenId() const {
+    return m_state.currentScreen();
 }

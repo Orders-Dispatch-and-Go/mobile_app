@@ -45,8 +45,8 @@ class backend_t : public QObject {
         QString userAddress READ user_address WRITE set_user_address NOTIFY
             user_updated
     )
+    Q_PROPERTY(int screenId READ screenId)
 
-    Q_PROPERTY(int orderToFinish READ order_to_finish)
 public:
     explicit backend_t(QObject *parent = nullptr);
 
@@ -71,15 +71,14 @@ public:
     Q_INVOKABLE [[nodiscard]] int user_number() const;
     Q_INVOKABLE [[nodiscard]] QString user_address() const;
 
-    Q_INVOKABLE [[nodiscard]] int order_to_finish() const {
-        return m_state.get_order_to_finish();
-    }
-
-    Q_INVOKABLE void switch_screen(int screen_id) {
-        emit screen_switched(screen_id);
-    }
-
+    Q_INVOKABLE void switchScreen(int screen_id);
     Q_INVOKABLE void startTrip();
+
+    Q_INVOKABLE [[nodiscard]] bool isPossibleMove(int screenId) const {
+        return m_state.isPossibleMove(screenId);
+    }
+
+    Q_INVOKABLE int screenId() const;
 
 private:
     Q_DISABLE_COPY_MOVE(backend_t)
@@ -92,7 +91,7 @@ private:
 public:
 signals:
     /// сигнал о том что надо переключиться на какой то экран
-    void screen_switched(int screen_id);
+    void screenSwitched();
     void user_updated();
     void user_logged_in();
     void user_logged_out();

@@ -14,27 +14,27 @@ Kirigami.ApplicationWindow {
         actions: [
             Kirigami.Action {
                 text: qsTr("TEST Start new route")
-                onTriggered: root.switchScreen(screens.startRoute)
+                onTriggered: backend.switchScreen(screens.startRoute)
             },
             Kirigami.Action {
                 text: qsTr("TEST get order")
-                onTriggered: root.switchScreen(screens.getOrders)
+                onTriggered: backend.switchScreen(screens.getOrders)
             },
             Kirigami.Action {
                 text: qsTr("TEST current route")
-                onTriggered: root.switchScreen(screens.currentRoute)
+                onTriggered: backend.switchScreen(screens.currentRoute)
             },
             Kirigami.Action {
                 text: qsTr("TEST finishOrder")
-                onTriggered: root.switchScreen(screens.finishOrder)
+                onTriggered: backend.switchScreen(screens.finishOrder)
             },
             Kirigami.Action {
                 text: qsTr("TEST finish route screen")
-                onTriggered: root.switchScreen(screens.finishRoute)
+                onTriggered: backend.switchScreen(screens.finishRoute)
             },
             Kirigami.Action {
                 text: "Profile"
-                onTriggered: root.switchScreen(screens.profile)
+                onTriggered: backend.switchScreen(screens.profile)
             },
             Kirigami.Action {
                 text: "Logout"
@@ -79,11 +79,13 @@ Kirigami.ApplicationWindow {
 
     Connections {
         target: backend
-        onScreen_switched: screen_id => {
-            root.switchScreen(screen_id);
+        onScreenSwitched: {
+            root.switchScreen();
         }
     }
-    function switchScreen(screenId) {
+    function switchScreen() {
+        const screenId = backend.screenId;
+        console.log("screen id = ", screenId);
         const id = Number(screenId);
         switch (id) {
         case Number(screens.login):

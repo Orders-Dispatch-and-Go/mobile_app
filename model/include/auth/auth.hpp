@@ -1,22 +1,23 @@
 #pragma once
 
+#include <QNetworkAccessManager>
+
 #include <qjsonobject.h>
 #include <qobject.h>
 #include <qqmlengine.h>
 #include <qurl.h>
-#include <QNetworkAccessManager>
+
 #include "userinfo.hpp"
-#include "utils/http_client.hpp"
+
 #include "auth/iauth.hpp"
+#include "utils/http_client.hpp"
 #include "dto/user_dto.hpp"
 
 
 class auth_t final : public auth_iface_t {
 public:
-    explicit auth_t(QObject *parent = nullptr) :
-        auth_iface_t(parent),
-        m_client(this)
-    { }
+    explicit auth_t(QObject *parent = nullptr)
+        : auth_iface_t(parent), m_client(this) { }
     auth_t(const auth_t &)            = delete;
     auth_t(auth_t &&)                 = delete;
     auth_t &operator=(const auth_t &) = delete;
