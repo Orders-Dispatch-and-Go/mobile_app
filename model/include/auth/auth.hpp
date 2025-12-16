@@ -2,6 +2,7 @@
 
 #include <QNetworkAccessManager>
 
+#include <qjsonobject.h>
 #include <qobject.h>
 #include <qqmlengine.h>
 #include <qurl.h>
@@ -10,12 +11,10 @@
 
 #include "auth/iauth.hpp"
 #include "utils/http_client.hpp"
+#include "dto/user_dto.hpp"
 
 
 class auth_t final : public auth_iface_t {
-private slots:
-    void error_handler(const QString &error);
-
 public:
     explicit auth_t(QObject *parent = nullptr)
         : auth_iface_t(parent), m_client(this) { }
@@ -25,14 +24,19 @@ public:
     auth_t &operator=(auth_t &&)      = delete;
     ~auth_t() override                = default;
 
-    user_info_t login(const QString &email, const QString &password) override;
-    user_info_t logout() override {
-        return user_info_t();
-    }
+    void login(const QString &email, const QString &password) override;
+    void logout() override;
 
 private:
     static const QString m_url_check_email;
     static const QString m_url_sign_in;
+    static const QString m_url_log_out;
+    static const QString m_url_user_info;
+
+    void get_user_info();
+
+    void on_token_ready(const QJsonObject&);
+    void on_user_ready(const QJsonObject&, const user_dto_t&);
 
     http_client_t m_client;
 };

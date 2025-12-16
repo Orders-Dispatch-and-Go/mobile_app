@@ -1,6 +1,17 @@
 #include "auth/userinfo.hpp"
 
 
+user_info_t user_info_t::from_user_dto(const user_dto_t &dto)
+{
+    user_info_t user_info;
+    user_info.set_name(dto.first_name);
+    user_info.set_surname(dto.second_name);
+    user_info.set_patronymic(dto.third_name);
+    user_info.set_email(dto.email);
+    
+    return user_info;
+}
+
 void user_info_t::set_email(const QString &email) {
     m_email = email;
 }
