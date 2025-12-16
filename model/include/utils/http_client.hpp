@@ -1,5 +1,10 @@
+#pragma once
+
 #include <qcontainerfwd.h>
+#include <qjsonobject.h>
 #include <qnetworkaccessmanager.h>
+#include "dto/user_dto.hpp"
+#include "utils/reply.hpp"
 #include <QJsonDocument>
 #include <QNetworkReply>
 
@@ -10,10 +15,13 @@ public:
     explicit http_client_t(QObject *parent = nullptr) : QObject(parent) {}
 
     template<typename T>
-    T get(const QString &url);
+    reply_t *get(const QString &url);
 
     template<typename T, typename U>
-    T post(const QString &url, const U &data);
+    reply_t *post(const QString &url, const U &data);
+
+    template<typename T>
+    reply_t *post(const QString &url);
     
 private:
     QNetworkAccessManager m_manager;
