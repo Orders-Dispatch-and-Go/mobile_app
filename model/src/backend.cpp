@@ -1,6 +1,7 @@
-#include <QThread>
 #include <QDebug>
 #include <QObject>
+#include <QThread>
+
 #include <qlogging.h>
 #include <qobject.h>
 
@@ -18,24 +19,34 @@ backend_t::backend_t(QObject *parent) : QObject(parent) {
 void backend_t::login(const QString &email, const QString &password) {
     m_auth_model->login(email, password);
 
-    connect(&(*m_auth_model), &auth_iface_t::recv_user_info, this,
+    connect(
+        &(*m_auth_model),
+        &auth_iface_t::recv_user_info,
+        this,
         [this](const user_info_t &info) {
             qDebug() << "Login successfully";
 
             m_user_info = info;
             if (m_user_info.is_valid()) {
                 emit user_logged_in();
-                emit screen_switched(static_cast<int>(screens_t::pStartRoute));
-            } else {
+                m_state.setCurrentScreen(screens_t::pStartRoute);
+                emit screenSwitched();
+            }
+            else {
                 // do something more smart then that
             }
-        });
-    
-    connect(&(*m_auth_model), &auth_iface_t::auth_error, this,
+        }
+    );
+
+    connect(
+        &(*m_auth_model),
+        &auth_iface_t::auth_error,
+        this,
         [this](const QString &err) {
             qWarning() << err;
             // do something more smart then that
-        });
+        }
+    );
 
     m_profile_model->load();
 }
@@ -43,18 +54,22 @@ void backend_t::login(const QString &email, const QString &password) {
 void backend_t::logout() {
     m_auth_model->logout();
 
-    connect(&(*m_auth_model), &auth_iface_t::success_logout, this,
-        [this] {
-            qDebug() << "Logout successfully";
-            emit user_logged_out();
-            emit screen_switched(static_cast<int>(screens_t::pLogin));
-        });
-    
-    connect(&(*m_auth_model), &auth_iface_t::auth_error, this,
+    connect(&(*m_auth_model), &auth_iface_t::success_logout, this, [this] {
+        qDebug() << "Logout successfully";
+        emit user_logged_out();
+        m_state.setCurrentScreen(screens_t::pLogin);
+        emit screenSwitched();
+    });
+
+    connect(
+        &(*m_auth_model),
+        &auth_iface_t::auth_error,
+        this,
         [this](const QString &err) {
             qWarning() << err;
             // do something more smart then that
-        });
+        }
+    );
 }
 
 void backend_t::set_user_email(const QString &email) {
