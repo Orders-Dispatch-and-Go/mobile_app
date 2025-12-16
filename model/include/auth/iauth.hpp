@@ -21,10 +21,16 @@ public:
     /**
      * Login with email and password.
      */
-    virtual user_info_t                                          // NOLINT
+    virtual void                                          // NOLINT
     login(const QString &email, const QString &password) = 0;    // NOLINT
     /**
      * Logout.
      */
-    virtual user_info_t logout() = 0;    // NOLINT
+    virtual void logout() = 0;    // NOLINT
+
+signals:
+    void recv_user_info(const user_info_t&);
+    void success_logout();
+    void auth_error(const QString&);
+    void recv_user_dto(const user_dto_t&);
 };

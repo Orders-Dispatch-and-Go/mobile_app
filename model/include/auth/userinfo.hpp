@@ -1,15 +1,17 @@
-#ifndef USERINFO_HPP
-#define USERINFO_HPP
+#pragma once
 
 #include <QObject>
 
 #include <qobject.h>
+#include "dto/user_dto.hpp"
 
 /**
  * @brief Объект, хранящий информацию о авторизованном пользователе
  */
 class user_info_t {
 public:
+    static user_info_t from_user_dto(const user_dto_t &dto);
+
     explicit user_info_t() = default;
 
     void set_email(const QString &email);
@@ -33,5 +35,3 @@ private:
     QString m_patronymic = "";
     QString m_auth_token = "";
 };
-
-#endif

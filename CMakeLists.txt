@@ -4,7 +4,7 @@ project(untitled VERSION 0.1 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-
+set(CMAKE_AUTOMOC ON)
 
 find_package(Qt6 REQUIRED COMPONENTS Quick Qml Gui Widgets Location Positioning)
 find_package(Qt6Keychain REQUIRED)
@@ -18,6 +18,7 @@ qt_add_executable(appuntitled
     model/include/dto/station_dto.hpp
     model/include/dto/order_dto.hpp
     model/include/dto/route_dto.hpp
+    model/include/dto/user_dto.hpp
 
     model/include/backend.hpp
     model/include/theme_provider.hpp
@@ -26,9 +27,9 @@ qt_add_executable(appuntitled
     model/include/auth/userinfo.hpp
     model/include/auth/iauth.hpp
     model/include/auth/auth.hpp
-    model/include/auth/moc_auth.hpp
 
     model/include/utils/http_client.hpp
+    model/include/utils/reply.hpp
 
     model/include/profile/iprofile.hpp
     model/include/profile/moc_profile.hpp

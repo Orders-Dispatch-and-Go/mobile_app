@@ -1,29 +1,60 @@
+#include <QThread>
 #include <QDebug>
+#include <QObject>
+#include <qlogging.h>
+#include <qobject.h>
 
 #include "backend.hpp"
 #include "screens.hpp"
 
-#include "auth/moc_auth.hpp"
+#include "auth/auth.hpp"
 #include "profile/moc_profile.hpp"
 
 backend_t::backend_t(QObject *parent) : QObject(parent) {
-    m_auth_model    = std::make_unique<moc_auth_t>();
+    m_auth_model    = std::make_unique<auth_t>();
     m_profile_model = std::make_unique<moc_profile_t>();
 }
 
 void backend_t::login(const QString &email, const QString &password) {
-    m_user_info = m_auth_model->login(email, password);
+    m_auth_model->login(email, password);
+
+    connect(&(*m_auth_model), &auth_iface_t::recv_user_info, this,
+        [this](const user_info_t &info) {
+            qDebug() << "Login successfully";
+
+            m_user_info = info;
+            if (m_user_info.is_valid()) {
+                emit user_logged_in();
+                emit screen_switched(static_cast<int>(screens_t::pStartRoute));
+            } else {
+                // do something more smart then that
+            }
+        });
+    
+    connect(&(*m_auth_model), &auth_iface_t::auth_error, this,
+        [this](const QString &err) {
+            qWarning() << err;
+            // do something more smart then that
+        });
+
     m_profile_model->load();
-    if (m_user_info.is_valid()) {
-        emit user_logged_in();
-        emit screen_switched(static_cast<int>(screens_t::pStartRoute));
-    }
 }
 
 void backend_t::logout() {
-    m_user_info = m_auth_model->logout();
-    emit user_logged_out();
-    emit screen_switched(static_cast<int>(screens_t::pLogin));
+    m_auth_model->logout();
+
+    connect(&(*m_auth_model), &auth_iface_t::success_logout, this,
+        [this] {
+            qDebug() << "Logout successfully";
+            emit user_logged_out();
+            emit screen_switched(static_cast<int>(screens_t::pLogin));
+        });
+    
+    connect(&(*m_auth_model), &auth_iface_t::auth_error, this,
+        [this](const QString &err) {
+            qWarning() << err;
+            // do something more smart then that
+        });
 }
 
 void backend_t::set_user_email(const QString &email) {
