@@ -1,10 +1,7 @@
 #pragma once
 
-#include <QObject>
-
-#include "dto/order_dto.hpp"
-
-struct route_t {
+class TRouteDto {
 public:
-    QList<order_dto_t> orders;
+    int id = 0;
+    
 };
