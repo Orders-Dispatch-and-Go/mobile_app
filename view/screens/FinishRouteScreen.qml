@@ -16,12 +16,19 @@ Kirigami.Page {
         Item {
             Layout.fillWidth: true
             Layout.fillHeight: true
+            Kirigami.Icon {
+                anchors.fill: parent
+                anchors.margins: Kirigami.Units.largeSpacing * 5
+                source: "task-complete"
+                width: Kirigami.Units.iconSizes.large
+                height: width
+            }
         }
         Button {
             text: qsTr("Start New Route")
             Layout.fillWidth: true
             onClicked: {
-                backend.switch_screen(screens.pStartRoute);
+                backend.switchScreen(screens.pStartRoute);
             }
         }
     }
