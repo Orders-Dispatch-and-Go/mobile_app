@@ -5,6 +5,7 @@
 
 
 bool state_t::isPossibleMove(int screenId) const {
+    return true;    // TODO: DEBUG ONLY
     qDebug() << static_cast<int>(m_currentScreen) << " -> " << screenId;
     if (m_currentScreen == screenId) {
         return true;
