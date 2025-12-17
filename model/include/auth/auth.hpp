@@ -36,7 +36,7 @@ private:
     void get_user_info();
 
     void on_token_ready(const QJsonObject&);
-    void on_user_ready(const QJsonObject&, const user_dto_t&);
+    void on_user_ready(const QString&, const user_dto_t&);
 
     http_client_t m_client;
 };

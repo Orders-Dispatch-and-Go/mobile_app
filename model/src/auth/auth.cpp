@@ -48,17 +48,20 @@ void auth_t::login(const QString &email, const QString &password) {
 }
 
 void auth_t::on_token_ready(const QJsonObject &token_object) {
+    auto token = token_object["accessToken"].toString();
+    m_client.setJwt(token);
+
     auto *reply = m_client.get<QJsonObject>(m_url_user_info);
 
     connect(
         reply,
         &reply_t::finished,
         this,
-        [token_object, reply, this](const QVariant &data) {
+        [token, reply, this](const QVariant &data) {
             auto userObject = data.value<QJsonObject>();
             auto dto        = user_dto_t::from_json(userObject);
 
-            on_user_ready(token_object, dto);
+            on_user_ready(token, dto);
             reply->deleteLater();
         }
     );
@@ -72,9 +75,8 @@ void auth_t::on_token_ready(const QJsonObject &token_object) {
 }
 
 void auth_t::on_user_ready(
-    const QJsonObject &token_object, const user_dto_t &dto
+    const QString &token, const user_dto_t &dto
 ) {
-    auto token     = token_object["accessToken"].toString();
     auto user_info = user_info_t::from_user_dto(dto);
     user_info.set_auth_token(token);
 

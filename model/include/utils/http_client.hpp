@@ -3,6 +3,7 @@
 #include <qcontainerfwd.h>
 #include <qjsonobject.h>
 #include <qnetworkaccessmanager.h>
+#include <qnetworkrequest.h>
 #include "dto/user_dto.hpp"
 #include "utils/reply.hpp"
 #include <QJsonDocument>
@@ -22,9 +23,13 @@ public:
 
     template<typename T>
     reply_t *post(const QString &url);
+
+    void setJwt(const QString &jwt);
     
 private:
     QNetworkAccessManager m_manager;
+    QString m_jwt;
 
     static std::optional<QJsonObject> json_from_byte_array(const QByteArray& data);
+    QNetworkRequest create_request(const QString &url);
 };
