@@ -30,12 +30,10 @@ void backend_t::login(const QString &email, const QString &password) {
             if (m_user_info.is_valid()) {
                 m_state.setCurrentScreen(screens_t::pStartRoute);
                 emit screenSwitched();
-                emit user_logged_in();
+                emit userLoggedIn();
+                return;
             }
-            else {
-                qDebug() << "error login";
-                // do something more smart then that
-            }
+            emit userLoginFailed();
         }
     );
 
@@ -57,7 +55,7 @@ void backend_t::logout() {
 
     connect(&(*m_auth_model), &auth_iface_t::success_logout, this, [this] {
         qDebug() << "Logout successfully";
-        emit user_logged_out();
+        emit userLoggedOut();
         m_state.setCurrentScreen(screens_t::pLogin);
         emit screenSwitched();
     });
@@ -75,37 +73,37 @@ void backend_t::logout() {
 
 void backend_t::set_user_email(const QString &email) {
     m_user_info.set_email(email);
-    emit user_updated();
+    emit userUpdated();
 }
 
 void backend_t::set_user_surname(const QString &surname) {
     m_user_info.set_surname(surname);
-    emit user_updated();
+    emit userUpdated();
 }
 
 void backend_t::set_user_name(const QString &name) {
     m_user_info.set_name(name);
-    emit user_updated();
+    emit userUpdated();
 }
 
 void backend_t::set_user_patronymic(const QString &patronymic) {
     m_user_info.set_patronymic(patronymic);
-    emit user_updated();
+    emit userUpdated();
 }
 
 void backend_t::set_user_seria(int s) {
     m_profile_model->set_seria(s);
-    emit user_updated();
+    emit userUpdated();
 }
 
 void backend_t::set_user_number(int n) {
     m_profile_model->set_number(n);
-    emit user_updated();
+    emit userUpdated();
 }
 
 void backend_t::set_user_address(const QString &address) {
     m_profile_model->set_address(address);
-    emit user_updated();
+    emit userUpdated();
 }
 
 

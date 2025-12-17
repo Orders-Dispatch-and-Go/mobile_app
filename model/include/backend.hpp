@@ -25,25 +25,24 @@ class backend_t : public QObject {
     Q_PROPERTY(QString userEmail READ user_email)
     Q_PROPERTY(
         QString userSurname READ user_surname WRITE set_user_surname NOTIFY
-            user_updated
+            userUpdated
     )
     Q_PROPERTY(
-        QString userName READ user_name WRITE set_user_name NOTIFY user_updated
+        QString userName READ user_name WRITE set_user_name NOTIFY userUpdated
     )
     Q_PROPERTY(
         QString userPatronymic READ user_patronymic WRITE set_user_patronymic
-            NOTIFY user_updated
+            NOTIFY userUpdated
     )
     Q_PROPERTY(
-        int userSeria READ user_seria WRITE set_user_seria NOTIFY user_updated
+        int userSeria READ user_seria WRITE set_user_seria NOTIFY userUpdated
     )
     Q_PROPERTY(
-        int userNumber READ user_number WRITE set_user_number NOTIFY
-            user_updated
+        int userNumber READ user_number WRITE set_user_number NOTIFY userUpdated
     )
     Q_PROPERTY(
         QString userAddress READ user_address WRITE set_user_address NOTIFY
-            user_updated
+            userUpdated
     )
     Q_PROPERTY(int screenId READ screenId)
 
@@ -92,9 +91,11 @@ public:
 signals:
     /// сигнал о том что надо переключиться на какой то экран
     void screenSwitched();
-    void user_updated();
-    void user_logged_in();
-    void user_logged_out();
+    /// сигналы о пользователе
+    void userUpdated();
+    void userLoggedIn();
+    void userLoggedOut();
+    void userLoginFailed();
 };
 
 #endif
