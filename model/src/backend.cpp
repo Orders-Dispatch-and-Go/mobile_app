@@ -27,9 +27,6 @@ void backend_t::login(const QString &email, const QString &password) {
             qDebug() << "Login successfully";
 
             m_user_info = info;
-            qDebug() << m_user_info.email();
-            qDebug() << m_user_info.name();
-            qDebug() << m_user_info.auth_token();
             if (m_user_info.is_valid()) {
                 m_state.setCurrentScreen(screens_t::pStartRoute);
                 emit screenSwitched();
