@@ -20,7 +20,7 @@ Item {
 
     RowLayout {
         id: row
-        spacing: 6
+        spacing: Kirigami.Units.smallSpacing
         width: parent.width
 
         TextField {

@@ -6,12 +6,15 @@ import org.kde.kirigami as Kirigami
 
 Kirigami.Page {
     id: root
+
+    property bool loginClicked: false
+
     ColumnLayout {
         anchors.fill: parent
-        anchors.margins: 10
-        anchors.topMargin: 20
+        anchors.margins: Kirigami.Units.smallSpacing
+        anchors.topMargin: Kirigami.Units.largeSpacing
         Layout.fillHeight: true
-        spacing: 30
+        spacing: Kirigami.Units.largeSpacing
         EmailField {
             id: emailField
             text: "test@gruzowiki.ru"
@@ -25,14 +28,44 @@ Kirigami.Page {
             color: "transparent"
             Layout.fillHeight: true
         }
+        BusyIndicator {
+            visible: root.loginClicked
+            Layout.fillWidth: true
+        }
         Button {
             text: "Login"
+            visible: !root.loginClicked
             Layout.fillWidth: true
             onClicked: {
                 if (emailField.ok && passwordField.text.length > 0) {
+                    root.loginClicked = true;
                     backend.login(emailField.text, passwordField.text);
                 }
             }
+        }
+    }
+
+    Kirigami.PromptDialog {
+        id: errorDialog
+
+        width: parent.width * 0.8
+        height: parent.height * 0.8
+
+        title: qsTr("Error")
+        subtitle: qsTr("Invalid login")
+        standardButtons: Dialog.Ok
+    }
+
+    Connections {
+        target: backend
+
+        function onUserLoggedId() {
+            root.loginClicked = false;
+        }
+
+        function onUserLoginFailed() {
+            root.loginClicked = false;
+            errorDialog.open();
         }
     }
 }
