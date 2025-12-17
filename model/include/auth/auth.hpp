@@ -10,19 +10,19 @@
 #include "userinfo.hpp"
 
 #include "auth/iauth.hpp"
-#include "utils/http_client.hpp"
 #include "dto/user_dto.hpp"
+#include "utils/http_client.hpp"
 
 
-class auth_t final : public auth_iface_t {
+class TAuth final : public IAuth {
 public:
-    explicit auth_t(QObject *parent = nullptr)
-        : auth_iface_t(parent), m_client(this) { }
-    auth_t(const auth_t &)            = delete;
-    auth_t(auth_t &&)                 = delete;
-    auth_t &operator=(const auth_t &) = delete;
-    auth_t &operator=(auth_t &&)      = delete;
-    ~auth_t() override                = default;
+    explicit TAuth(QObject *parent = nullptr)
+        : IAuth(parent), m_client(this) { }
+    TAuth(const TAuth &)            = delete;
+    TAuth(TAuth &&)                 = delete;
+    TAuth &operator=(const TAuth &) = delete;
+    TAuth &operator=(TAuth &&)      = delete;
+    ~TAuth() override               = default;
 
     void login(const QString &email, const QString &password) override;
     void logout() override;
@@ -35,8 +35,7 @@ private:
 
     void get_user_info();
 
-    void on_token_ready(const QJsonObject&);
-    void on_user_ready(const QString&, const user_dto_t&);
+    void on_token_ready(const QJsonObject &);
 
     http_client_t m_client;
 };

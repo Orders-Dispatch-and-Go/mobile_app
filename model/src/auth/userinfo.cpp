@@ -1,56 +1,62 @@
 #include "auth/userinfo.hpp"
 
 
-user_info_t user_info_t::from_user_dto(const user_dto_t &dto) {
-    user_info_t user_info;
-    user_info.set_name(dto.first_name);
-    user_info.set_surname(dto.second_name);
-    user_info.set_patronymic(dto.third_name);
-    user_info.set_email(dto.email);
+TUserInfo::TUserInfo(const user_dto_t &dto, QString token, QObject *parent)
+    : QObject(parent),
+      m_id(dto.id),
+      m_email(dto.email),
+      m_surname(dto.second_name),
+      m_name(dto.first_name),
+      m_patronymic(dto.third_name),
+      m_authToken(std::move(token)) { }
 
-    return user_info;
+void TUserInfo::setId(int id) {
+    m_id = id;
 }
 
-void user_info_t::set_email(const QString &email) {
+void TUserInfo::setEmail(const QString &email) {
     m_email = email;
 }
 
-void user_info_t::set_surname(const QString &surname) {
+void TUserInfo::setSurname(const QString &surname) {
     m_surname = surname;
 }
 
-void user_info_t::set_name(const QString &name) {
+void TUserInfo::setName(const QString &name) {
     m_name = name;
 }
 
-void user_info_t::set_patronymic(const QString &patronymic) {
+void TUserInfo::setPatronymic(const QString &patronymic) {
     m_patronymic = patronymic;
 }
 
-void user_info_t::set_auth_token(const QString &auth_token) {
-    m_auth_token = auth_token;
+void TUserInfo::setAuthToken(const QString &auth_token) {
+    m_authToken = auth_token;
 }
 
-QString user_info_t::email() const {
+int TUserInfo::getId() const {
+    return m_id;
+}
+QString TUserInfo::getEmail() const {
     return m_email;
 }
 
-QString user_info_t::surname() const {
+QString TUserInfo::getSurname() const {
     return m_surname;
 }
 
-QString user_info_t::name() const {
+QString TUserInfo::getName() const {
     return m_name;
 }
 
-QString user_info_t::patronymic() const {
+QString TUserInfo::getPatronymic() const {
     return m_patronymic;
 }
 
-QString user_info_t::auth_token() const {
-    return m_auth_token;
+QString TUserInfo::getAuthToken() const {
+    return m_authToken;
 }
 
-bool user_info_t::is_valid() const {
-    return !m_auth_token.isEmpty();
+bool TUserInfo::isValid() const {
+    return !m_authToken.isEmpty();
 }

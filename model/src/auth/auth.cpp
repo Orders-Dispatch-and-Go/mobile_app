@@ -12,11 +12,11 @@
 #include "dto/user_dto.hpp"
 #include "utils/reply.hpp"
 
-const QString auth_t::m_url_check_email =
+const QString TAuth::m_url_check_email =
     "http://51.250.34.151:8074/check/email";
-const QString auth_t::m_url_sign_in = "http://51.250.34.151:8074/auth/sign_in";
-const QString auth_t::m_url_log_out = "http://51.250.34.151:8074/auth/logout";
-const QString auth_t::m_url_user_info = "http://51.250.34.151:8074/users";
+const QString TAuth::m_url_sign_in   = "http://51.250.34.151:8074/auth/sign_in";
+const QString TAuth::m_url_log_out   = "http://51.250.34.151:8074/auth/logout";
+const QString TAuth::m_url_user_info = "http://51.250.34.151:8074/users";
 
 /*
  * +----------------+
@@ -24,13 +24,13 @@ const QString auth_t::m_url_user_info = "http://51.250.34.151:8074/users";
  * +----------------+
  */
 
-void auth_t::login(const QString &email, const QString &password) {
-    QJsonObject sign_in_obj;
-    sign_in_obj["login"]    = email;
-    sign_in_obj["password"] = password;
+void TAuth::login(const QString &email, const QString &password) {
+    QJsonObject signInObj;
+    signInObj["login"]    = email;
+    signInObj["password"] = password;
 
     auto *reply =
-        m_client.post<QJsonObject, QJsonObject>(m_url_sign_in, sign_in_obj);
+        m_client.post<QJsonObject, QJsonObject>(m_url_sign_in, signInObj);
 
     connect(
         reply, &reply_t::finished, this, [reply, this](const QVariant &data) {
@@ -41,13 +41,13 @@ void auth_t::login(const QString &email, const QString &password) {
 
     connect(
         reply, &reply_t::reply_error, this, [reply, this](const QString &err) {
-            emit auth_error(err);
+            emit authError(err);
             reply->deleteLater();
         }
     );
 }
 
-void auth_t::on_token_ready(const QJsonObject &token_object) {
+void TAuth::on_token_ready(const QJsonObject &token_object) {
     auto token = token_object["accessToken"].toString();
     m_client.setJwt(token);
 
@@ -61,26 +61,17 @@ void auth_t::on_token_ready(const QJsonObject &token_object) {
             auto userObject = data.value<QJsonObject>();
             auto dto        = user_dto_t::from_json(userObject);
 
-            on_user_ready(token, dto);
+            createUserInfo(token, dto);
             reply->deleteLater();
         }
     );
 
     connect(
         reply, &reply_t::reply_error, this, [reply, this](const QString &err) {
-            emit auth_error(err);
+            emit authError(err);
             reply->deleteLater();
         }
     );
-}
-
-void auth_t::on_user_ready(
-    const QString &token, const user_dto_t &dto
-) {
-    auto user_info = user_info_t::from_user_dto(dto);
-    user_info.set_auth_token(token);
-
-    emit recv_user_info(user_info);
 }
 
 /*
@@ -89,17 +80,17 @@ void auth_t::on_user_ready(
  * +-----------------+
  */
 
-void auth_t::logout() {
+void TAuth::logout() {
     auto *reply = m_client.post<void>(m_url_log_out);
 
     connect(reply, &reply_t::finished, this, [reply, this] {
-        emit success_logout();
+        emit successLogout();
         reply->deleteLater();
     });
 
     connect(
         reply, &reply_t::reply_error, this, [reply, this](const QString &err) {
-            emit auth_error(err);
+            emit authError(err);
             reply->deleteLater();
         }
     );
@@ -111,7 +102,7 @@ void auth_t::logout() {
  * +---------+
  */
 
-void auth_t::get_user_info() {
+void TAuth::get_user_info() {
     auto *reply = m_client.get<QJsonObject>(m_url_user_info);
 
     connect(
@@ -119,14 +110,14 @@ void auth_t::get_user_info() {
             auto user_object = data.value<QJsonObject>();
             user_dto_t dto   = user_dto_t::from_json(user_object);
 
-            emit recv_user_dto(dto);
+            emit userDtoRecv(dto);
             reply->deleteLater();
         }
     );
 
     connect(
         reply, &reply_t::reply_error, this, [reply, this](const QString &err) {
-            emit auth_error(err);
+            emit authError(err);
             reply->deleteLater();
         }
     );

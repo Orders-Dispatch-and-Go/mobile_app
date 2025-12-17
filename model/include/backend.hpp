@@ -77,14 +77,14 @@ public:
         return m_state.isPossibleMove(screenId);
     }
 
-    Q_INVOKABLE int screenId() const;
+    Q_INVOKABLE [[nodiscard]] int screenId() const;
 
 private:
     Q_DISABLE_COPY_MOVE(backend_t)
-    user_info_t m_user_info;
+    TUserInfo *m_userInfoPtr = nullptr;    // владелец - Auth
     state_t m_state {};
 
-    std::unique_ptr<auth_iface_t> m_auth_model;
+    std::unique_ptr<IAuth> m_auth_model;
     std::unique_ptr<profile_iface_t> m_profile_model;
 
 public:

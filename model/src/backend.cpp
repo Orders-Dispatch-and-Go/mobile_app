@@ -9,39 +9,31 @@
 #include "screens.hpp"
 
 #include "auth/auth.hpp"
+#include "auth/userinfo.hpp"
 #include "profile/moc_profile.hpp"
 
 backend_t::backend_t(QObject *parent) : QObject(parent) {
-    m_auth_model    = std::make_unique<auth_t>();
+    m_userInfoPtr   = new TUserInfo(this);    // NOLINT qt
+    m_auth_model    = std::make_unique<TAuth>();
     m_profile_model = std::make_unique<moc_profile_t>();
 }
 
 void backend_t::login(const QString &email, const QString &password) {
     m_auth_model->login(email, password);
 
-    connect(
-        m_auth_model.get(),
-        &auth_iface_t::recv_user_info,
-        this,
-        [this](const user_info_t &info) {
-            qDebug() << "Login successfully";
-
-            m_user_info = info;
-            if (m_user_info.is_valid()) {
-                m_state.setCurrentScreen(screens_t::pStartRoute);
-                emit screenSwitched();
-                emit userLoggedIn();
-                return;
-            }
-            emit userLoginFailed();
+    connect(m_auth_model.get(), &IAuth::userInfoRecv, this, [this]() {
+        m_userInfoPtr = m_auth_model->userInfo();
+        if (m_userInfoPtr) {
+            m_state.setCurrentScreen(screens_t::pStartRoute);
+            emit screenSwitched();
+            emit userLoggedIn();
+            return;
         }
-    );
+        emit userLoginFailed();
+    });
 
     connect(
-        &(*m_auth_model),
-        &auth_iface_t::auth_error,
-        this,
-        [this](const QString &err) {
+        &(*m_auth_model), &IAuth::authError, this, [this](const QString &err) {
             qWarning() << err;
             // do something more smart then that
         }
@@ -53,7 +45,7 @@ void backend_t::login(const QString &email, const QString &password) {
 void backend_t::logout() {
     m_auth_model->logout();
 
-    connect(&(*m_auth_model), &auth_iface_t::success_logout, this, [this] {
+    connect(&(*m_auth_model), &IAuth::successLogout, this, [this] {
         qDebug() << "Logout successfully";
         emit userLoggedOut();
         m_state.setCurrentScreen(screens_t::pLogin);
@@ -61,10 +53,7 @@ void backend_t::logout() {
     });
 
     connect(
-        &(*m_auth_model),
-        &auth_iface_t::auth_error,
-        this,
-        [this](const QString &err) {
+        &(*m_auth_model), &IAuth::authError, this, [this](const QString &err) {
             qWarning() << err;
             // do something more smart then that
         }
@@ -72,22 +61,22 @@ void backend_t::logout() {
 }
 
 void backend_t::set_user_email(const QString &email) {
-    m_user_info.set_email(email);
+    m_userInfoPtr->setEmail(email);
     emit userUpdated();
 }
 
 void backend_t::set_user_surname(const QString &surname) {
-    m_user_info.set_surname(surname);
+    m_userInfoPtr->setSurname(surname);
     emit userUpdated();
 }
 
 void backend_t::set_user_name(const QString &name) {
-    m_user_info.set_name(name);
+    m_userInfoPtr->setName(name);
     emit userUpdated();
 }
 
 void backend_t::set_user_patronymic(const QString &patronymic) {
-    m_user_info.set_patronymic(patronymic);
+    m_userInfoPtr->setPatronymic(patronymic);
     emit userUpdated();
 }
 
@@ -108,19 +97,19 @@ void backend_t::set_user_address(const QString &address) {
 
 
 QString backend_t::user_email() const {
-    return m_user_info.email();
+    return m_userInfoPtr->getEmail();
 }
 
 QString backend_t::user_surname() const {
-    return m_user_info.surname();
+    return m_userInfoPtr->getSurname();
 }
 
 QString backend_t::user_name() const {
-    return m_user_info.name();
+    return m_userInfoPtr->getName();
 }
 
 QString backend_t::user_patronymic() const {
-    return m_user_info.patronymic();
+    return m_userInfoPtr->getPatronymic();
 }
 
 int backend_t::user_seria() const {
