@@ -30,7 +30,7 @@ void TAuth::login(const QString &email, const QString &password) {
     signInObj["password"] = password;
 
     auto *reply =
-        m_client.post<QJsonObject, QJsonObject>(m_url_sign_in, signInObj);
+        m_client->post<QJsonObject, QJsonObject>(m_url_sign_in, signInObj);
 
     connect(
         reply, &reply_t::finished, this, [reply, this](const QVariant &data) {
@@ -49,9 +49,9 @@ void TAuth::login(const QString &email, const QString &password) {
 
 void TAuth::on_token_ready(const QJsonObject &token_object) {
     auto token = token_object["accessToken"].toString();
-    m_client.setJwt(token);
+    m_client->setJwt(token);
 
-    auto *reply = m_client.get<QJsonObject>(m_url_user_info);
+    auto *reply = m_client->get<QJsonObject>(m_url_user_info);
 
     connect(
         reply,
@@ -81,7 +81,7 @@ void TAuth::on_token_ready(const QJsonObject &token_object) {
  */
 
 void TAuth::logout() {
-    auto *reply = m_client.post<void>(m_url_log_out);
+    auto *reply = m_client->post<void>(m_url_log_out);
 
     connect(reply, &reply_t::finished, this, [reply, this] {
         emit successLogout();
@@ -103,14 +103,11 @@ void TAuth::logout() {
  */
 
 void TAuth::get_user_info() {
-    auto *reply = m_client.get<QJsonObject>(m_url_user_info);
+    auto *reply = m_client->get<QJsonObject>(m_url_user_info);
 
     connect(
         reply, &reply_t::finished, this, [reply, this](const QVariant &data) {
-            auto user_object = data.value<QJsonObject>();
-            user_dto_t dto   = user_dto_t::from_json(user_object);
-
-            emit userDtoRecv(dto);
+            emit userDtoRecv(user_dto_t::from_json(data.value<QJsonObject>()));
             reply->deleteLater();
         }
     );

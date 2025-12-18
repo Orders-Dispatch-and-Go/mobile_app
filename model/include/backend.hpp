@@ -13,6 +13,7 @@
 #include "auth/userinfo.hpp"
 #include "profile/iprofile.hpp"
 #include "trip/icurrent_trip.hpp"
+#include "utils/http_client.hpp"
 
 
 /**
@@ -82,11 +83,12 @@ public:
 
 private:
     Q_DISABLE_COPY_MOVE(backend_t)
+    THttpClient *m_httpClient      = nullptr;
     TUserInfo *m_userInfoPtr       = nullptr;    // владелец - Auth
     ICurrentTrip *m_currentTripPtr = nullptr;
     state_t m_state {};
 
-    std::unique_ptr<IAuth> m_auth_model;
+    IAuth *m_auth_model;
     std::unique_ptr<profile_iface_t> m_profile_model;
 
 public:

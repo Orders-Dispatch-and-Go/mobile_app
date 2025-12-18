@@ -20,7 +20,7 @@ Kirigami.Dialog {
     contentItem: Map {
         id: map
 
-        property var focusCoord: positionSource.position.coordinate
+        property var focusCoord: QtPositioning.coordinate(55.751230, 37.618423) // positionSource.position.coordinate
         property alias marker1: marker1
         property alias marker2: marker2
         property bool panEnabled: false

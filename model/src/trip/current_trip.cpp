@@ -11,7 +11,7 @@ void TCurrentTrip::createTrip(const TCreateTripDto &tripDto) {
     auto createObject = tripDto.toJsonObject();
 
     auto *reply =
-        m_client.post<QJsonObject, QJsonObject>(m_trip_create, createObject);
+        m_client->post<QJsonObject, QJsonObject>(m_trip_create, createObject);
 
     connect(
         reply, &reply_t::finished, this, [reply, this](const QVariant &data) {

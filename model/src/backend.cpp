@@ -14,16 +14,17 @@
 #include "trip/current_trip.hpp"
 
 backend_t::backend_t(QObject *parent) : QObject(parent) {
-    m_userInfoPtr    = new TUserInfo(this);       // NOLINT qt
-    m_currentTripPtr = new TCurrentTrip(this);    // NOLINT qt
-    m_auth_model     = std::make_unique<TAuth>();
+    m_httpClient     = new THttpClient(this);                   // NOLINT
+    m_userInfoPtr    = new TUserInfo(this);                     // NOLINT qt
+    m_currentTripPtr = new TCurrentTrip(m_httpClient, this);    // NOLINT qt
+    m_auth_model     = new TAuth(m_httpClient, this);           // NOLINT
     m_profile_model  = std::make_unique<moc_profile_t>();
 }
 
 void backend_t::login(const QString &email, const QString &password) {
     m_auth_model->login(email, password);
 
-    connect(m_auth_model.get(), &IAuth::userInfoRecv, this, [this]() {
+    connect(m_auth_model, &IAuth::userInfoRecv, this, [this]() {
         m_userInfoPtr = m_auth_model->userInfo();
         if (m_userInfoPtr->isValid()) {
             m_state.setCurrentScreen(screens_t::pStartRoute);
@@ -47,19 +48,17 @@ void backend_t::login(const QString &email, const QString &password) {
 void backend_t::logout() {
     m_auth_model->logout();
 
-    connect(&(*m_auth_model), &IAuth::successLogout, this, [this] {
+    connect(m_auth_model, &IAuth::successLogout, this, [this] {
         qDebug() << "Logout successfully";
         emit userLoggedOut();
         m_state.setCurrentScreen(screens_t::pLogin);
         emit screenSwitched();
     });
 
-    connect(
-        &(*m_auth_model), &IAuth::authError, this, [this](const QString &err) {
-            qWarning() << err;
-            // do something more smart then that
-        }
-    );
+    connect(m_auth_model, &IAuth::authError, this, [this](const QString &err) {
+        qWarning() << err;
+        // do something more smart then that
+    });
 }
 
 void backend_t::set_user_email(const QString &email) {

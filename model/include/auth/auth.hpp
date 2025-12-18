@@ -16,8 +16,8 @@
 
 class TAuth final : public IAuth {
 public:
-    explicit TAuth(QObject *parent = nullptr)
-        : IAuth(parent), m_client(this) { }
+    explicit TAuth(THttpClient *client, QObject *parent = nullptr)
+        : IAuth(parent), m_client(client) { }
     TAuth(const TAuth &)            = delete;
     TAuth(TAuth &&)                 = delete;
     TAuth &operator=(const TAuth &) = delete;
@@ -37,5 +37,5 @@ private:
 
     void on_token_ready(const QJsonObject &);
 
-    http_client_t m_client;
+    THttpClient *m_client;
 };

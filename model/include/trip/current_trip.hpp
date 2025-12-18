@@ -15,8 +15,8 @@
 class TCurrentTrip final : public ICurrentTrip {
     Q_OBJECT
 public:
-    TCurrentTrip(QObject *parent = nullptr)
-        : ICurrentTrip(parent), m_client(this) { }
+    TCurrentTrip(THttpClient *client, QObject *parent = nullptr)
+        : ICurrentTrip(parent), m_client(client) { }
 
     TCurrentTrip(const TCurrentTrip &)            = delete;
     TCurrentTrip(TCurrentTrip &&)                 = delete;
@@ -36,5 +36,5 @@ private:
     static const QString m_trip_create;
     static const QString m_get_route;
 
-    http_client_t m_client;
+    THttpClient *m_client;
 };
