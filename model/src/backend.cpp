@@ -19,6 +19,15 @@ backend_t::backend_t(QObject *parent) : QObject(parent) {
     m_currentTripPtr = new TCurrentTrip(m_httpClient, this);    // NOLINT qt
     m_auth_model     = new TAuth(m_httpClient, this);           // NOLINT
     m_profile_model  = std::make_unique<moc_profile_t>();
+    connect(
+        m_currentTripPtr,
+        &TCurrentTrip::tripCreated,
+        this,
+        [this](const QString &tripId) {
+            m_state.setCurrentScreen(screens_t::pGetOrders);
+            emit screenSwitched();
+        }
+    );
 }
 
 void backend_t::login(const QString &email, const QString &password) {
@@ -27,6 +36,9 @@ void backend_t::login(const QString &email, const QString &password) {
     connect(m_auth_model, &IAuth::userInfoRecv, this, [this]() {
         m_userInfoPtr = m_auth_model->userInfo();
         if (m_userInfoPtr->isValid()) {
+            qDebug() << m_userInfoPtr->getId();
+            qDebug() << m_userInfoPtr->getAuthToken();
+            m_currentTripPtr->setUserId(m_userInfoPtr->getId());
             m_state.setCurrentScreen(screens_t::pStartRoute);
             emit screenSwitched();
             emit userLoggedIn();
@@ -136,18 +148,13 @@ void backend_t::switchScreen(int screen_id) {
 void backend_t::setupFilter(
     int width, int height, int depth, int price, const QString &date
 ) {
-    // m_filter_model->set_width(width);
-    // m_filter_model->set_height(height);
-    // m_filter_model->set_depth(depth);
-    // m_filter_model->set_price(price);
-    // m_filter_model->set_date(date);
+    m_currentTripPtr->setFilter(width, height, depth, price, date);
 }
 
 void backend_t::startTrip(
     qreal beginLat, qreal beginLon, qreal endLat, qreal endLon
 ) {
-    qDebug() << "startTrip " << beginLat << " " << beginLon << "; " << endLat
-             << " " << endLon;
+    m_currentTripPtr->startTrip(beginLat, beginLon, endLat, endLon);
 }
 
 int backend_t::screenId() const {

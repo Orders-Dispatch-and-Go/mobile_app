@@ -1,13 +1,17 @@
+#include <QDebug>
 #include <cstddef>
 
 #include <qjsonobject.h>
+#include <qlogging.h>
+#include <qurl.h>
 
 #include "dto/create_trip_dto.hpp"
 #include "dto/id_dto.hpp"
+#include "dto/station_dto.hpp"
 #include "trip/current_trip.hpp"
 
-const QString TCurrentTrip::m_trip_create = "http://51.250.34.151:8074/trip";
-const QString TCurrentTrip::m_get_route   = "http://51.250.34.151:8074/trip";
+const QString TCurrentTrip::m_trip_create = "http://51.250.34.151/trip";
+const QString TCurrentTrip::m_get_route   = "http://51.250.34.151/trip";
 
 void TCurrentTrip::createTrip(const TCreateTripDto &tripDto) {
     auto createObject = tripDto.toJsonObject();
@@ -18,6 +22,8 @@ void TCurrentTrip::createTrip(const TCreateTripDto &tripDto) {
     connect(
         reply, &reply_t::finished, this, [reply, this](const QVariant &data) {
             auto idDto = TIdDto(data.value<QJsonObject>());
+            qDebug() << data;
+            qDebug() << "id = " << idDto.id;
             emit tripCreated(idDto.id);
             reply->deleteLater();
         }
@@ -69,4 +75,24 @@ void TCurrentTrip::setFilter(
 
 void TCurrentTrip::startTrip(
     qreal beginLat, qreal beginLon, qreal endLat, qreal endLon
-) { }
+) {
+    auto dto      = TCreateTripDto();
+    auto startDto = TStationDto();
+    startDto.address =
+        QString::number(beginLat) + ";" + QString::number(beginLon);
+    startDto.latitude  = beginLat;
+    startDto.longitude = beginLon;
+    auto finishDto     = TStationDto();
+    finishDto.address = QString::number(endLat) + ";" + QString::number(endLon);
+    finishDto.latitude  = endLat;
+    finishDto.longitude = endLon;
+    dto.from            = startDto;
+    dto.to              = finishDto;
+    dto.carrierId       = m_userId;
+    qDebug() << dto.toJsonObject();
+    createTrip(dto);
+}
+
+void TCurrentTrip::setUserId(int id) {
+    m_userId = id;
+}

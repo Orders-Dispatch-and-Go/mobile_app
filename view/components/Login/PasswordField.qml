@@ -12,9 +12,9 @@ Item {
     property alias text: passwordField.text
 
     property bool ok: validLength && validDigit && validLetter
-    property bool validLength: false
-    property bool validDigit: false
-    property bool validLetter: false
+    property bool validLength: true
+    property bool validDigit: true
+    property bool validLetter: true
 
     property int minLength: 8
 
@@ -28,6 +28,8 @@ Item {
             Layout.fillWidth: true
             placeholderText: "Пароль"
             echoMode: isVisible ? TextInput.Normal : TextInput.Password
+
+            text: "password1"
 
             property bool isVisible: false
 

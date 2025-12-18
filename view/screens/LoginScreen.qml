@@ -17,7 +17,7 @@ Kirigami.Page {
         spacing: Kirigami.Units.largeSpacing
         EmailField {
             id: emailField
-            text: "test@gruzowiki.ru"
+            text: "gosling@gruzowiki.ru"
             Layout.fillWidth: true
         }
         PasswordField {

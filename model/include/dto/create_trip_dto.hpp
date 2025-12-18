@@ -18,11 +18,10 @@ public:
 
     [[nodiscard]] QJsonObject toJsonObject() const override {
         QJsonObject createObject;
-        createObject["carrier"]     = carrierId;
         createObject["fromStation"] = from.toJsonObject();
         createObject["toStation"]   = to.toJsonObject();
         createObject["startedAt"] =
-            QDateTime::currentDateTime().toString(Qt::ISODate);
+            QDateTime::currentDateTimeUtc().toString(Qt::ISODate);
         return createObject;
     }
 

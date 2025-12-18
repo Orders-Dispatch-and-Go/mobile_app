@@ -37,6 +37,7 @@ public:
     virtual void
     startTrip(qreal beginLat, qreal beginLon, qreal endLat, qreal endLon) = 0;
 
+    virtual void setUserId(int id) = 0;
 
 signals:
     void tripCreated(const QString &id);
