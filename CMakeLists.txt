@@ -15,6 +15,7 @@ qt_standard_project_setup(REQUIRES 6.8)
 qt_add_executable(appuntitled
     main.cpp
 
+    model/include/dto/abstract_dto.hpp
     model/include/dto/station_dto.hpp
     model/include/dto/order_dto.hpp
     model/include/dto/route_dto.hpp
@@ -36,6 +37,9 @@ qt_add_executable(appuntitled
 
     model/include/state.hpp
 
+    model/include/trip/icurrent_trip.hpp
+    model/include/trip/current_trip.hpp
+
     model/src/backend.cpp
     model/src/theme_provider.cpp
 
@@ -45,6 +49,9 @@ qt_add_executable(appuntitled
     model/src/utils/http_client.cpp
 
     model/src/state.cpp
+
+    model/src/trip/icurrent_trip.cpp
+    model/src/trip/current_trip.cpp
 )
 
 target_include_directories(appuntitled PRIVATE

@@ -83,7 +83,7 @@ private:
     /// Описание заказа
     QString m_description;
     /// Начальная остановка
-    station_dto_t m_start;
+    TStationDto m_start;
     /// Конечная остановка
-    station_dto_t m_finish;
+    TStationDto m_finish;
 };

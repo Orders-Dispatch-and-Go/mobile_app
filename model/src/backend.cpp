@@ -11,11 +11,13 @@
 #include "auth/auth.hpp"
 #include "auth/userinfo.hpp"
 #include "profile/moc_profile.hpp"
+#include "trip/current_trip.hpp"
 
 backend_t::backend_t(QObject *parent) : QObject(parent) {
-    m_userInfoPtr   = new TUserInfo(this);    // NOLINT qt
-    m_auth_model    = std::make_unique<TAuth>();
-    m_profile_model = std::make_unique<moc_profile_t>();
+    m_userInfoPtr    = new TUserInfo(this);       // NOLINT qt
+    m_currentTripPtr = new TCurrentTrip(this);    // NOLINT qt
+    m_auth_model     = std::make_unique<TAuth>();
+    m_profile_model  = std::make_unique<moc_profile_t>();
 }
 
 void backend_t::login(const QString &email, const QString &password) {
@@ -23,7 +25,7 @@ void backend_t::login(const QString &email, const QString &password) {
 
     connect(m_auth_model.get(), &IAuth::userInfoRecv, this, [this]() {
         m_userInfoPtr = m_auth_model->userInfo();
-        if (m_userInfoPtr) {
+        if (m_userInfoPtr->isValid()) {
             m_state.setCurrentScreen(screens_t::pStartRoute);
             emit screenSwitched();
             emit userLoggedIn();
