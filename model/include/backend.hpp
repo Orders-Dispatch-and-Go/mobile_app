@@ -73,7 +73,12 @@ public:
     Q_INVOKABLE [[nodiscard]] QString user_address() const;
 
     Q_INVOKABLE void switchScreen(int screen_id);
-    Q_INVOKABLE void startTrip();
+
+    Q_INVOKABLE void setupFilter(
+        int width, int height, int depth, int price, const QString &date
+    );
+    Q_INVOKABLE void
+    startTrip(qreal beginLat, qreal beginLon, qreal endLat, qreal endLon);
 
     Q_INVOKABLE [[nodiscard]] bool isPossibleMove(int screenId) const {
         return m_state.isPossibleMove(screenId);

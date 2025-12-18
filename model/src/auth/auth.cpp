@@ -23,7 +23,6 @@ const QString TAuth::m_url_user_info = "http://51.250.34.151:8074/users";
  * | Login pipeline |
  * +----------------+
  */
-
 void TAuth::login(const QString &email, const QString &password) {
     QJsonObject signInObj;
     signInObj["login"]    = email;

@@ -133,8 +133,21 @@ void backend_t::switchScreen(int screen_id) {
     emit screenSwitched();
 }
 
-void backend_t::startTrip() {
-    qDebug() << "startTrip";
+void backend_t::setupFilter(
+    int width, int height, int depth, int price, const QString &date
+) {
+    // m_filter_model->set_width(width);
+    // m_filter_model->set_height(height);
+    // m_filter_model->set_depth(depth);
+    // m_filter_model->set_price(price);
+    // m_filter_model->set_date(date);
+}
+
+void backend_t::startTrip(
+    qreal beginLat, qreal beginLon, qreal endLat, qreal endLon
+) {
+    qDebug() << "startTrip " << beginLat << " " << beginLon << "; " << endLat
+             << " " << endLon;
 }
 
 int backend_t::screenId() const {

@@ -18,6 +18,8 @@ Button {
     property real endLat: 0
     property real endLon: 0
 
+    property bool coordsAccepted: false
+
     onClicked: dialog.open()
 
     background: Rectangle {
@@ -47,6 +49,7 @@ Button {
             root.beginLon = dialog.startCoord.longitude;
             root.endLat = dialog.finishCoord.latitude;
             root.endLon = dialog.finishCoord.longitude;
+            root.coordsAccepted = true;
         }
         onRejected: {
             root.ready = false;

@@ -1,3 +1,5 @@
+#include <cstddef>
+
 #include <qjsonobject.h>
 
 #include "dto/create_trip_dto.hpp"
@@ -41,3 +43,30 @@ QList<order_dto_t> TCurrentTrip::orders() const {
 float TCurrentTrip::totalPrice() const {
     return 0.0;
 }
+
+void TCurrentTrip::setFilter(
+    int width, int height, int depth, int price, const QString &date
+) {
+    if (width > 0 && height > 0 && depth > 0) {
+        m_dimensions = { width, height, depth };
+    }
+    else {
+        m_dimensions = std::nullopt;
+    }
+    if (price > 0) {
+        m_price = price;
+    }
+    else {
+        m_price = std::nullopt;
+    }
+    if (!date.isEmpty()) {
+        m_date = date;
+    }
+    else {
+        m_date = std::nullopt;
+    }
+}
+
+void TCurrentTrip::startTrip(
+    qreal beginLat, qreal beginLon, qreal endLat, qreal endLon
+) { }

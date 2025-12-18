@@ -30,6 +30,14 @@ public:
 
     [[nodiscard]] virtual float totalPrice() const = 0;
 
+    virtual void setFilter(
+        int width, int height, int depth, int price, const QString &date
+    ) = 0;
+
+    virtual void
+    startTrip(qreal beginLat, qreal beginLon, qreal endLat, qreal endLon) = 0;
+
+
 signals:
     void tripCreated(const QString &id);
     void recvRouteForTrip(const TRouteInfo &);

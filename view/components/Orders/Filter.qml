@@ -16,6 +16,13 @@ ColumnLayout {
     property alias useRouteDate: routeDate.used
     property alias routeDate: routeDate.value
 
+    property alias beginLat: wayButton.beginLat
+    property alias beginLon: wayButton.beginLon
+    property alias endLat: wayButton.endLat
+    property alias endLon: wayButton.endLon
+
+    property alias coordsAccepted: wayButton.coordsAccepted
+
     AddressButton {
         id: wayButton
         dialogWidth: root.parent.width
