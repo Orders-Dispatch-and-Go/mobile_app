@@ -5,6 +5,7 @@
 
 #include <qdatetime.h>
 #include <qjsonobject.h>
+#include <qtmetamacros.h>
 
 class TAbstractDto {
 public:

@@ -1,5 +1,6 @@
+#include "trip/current_trip.hpp"
+//
 #include <QDebug>
-#include <cstddef>
 
 #include <qjsonobject.h>
 #include <qlogging.h>
@@ -10,16 +11,30 @@
 #include "dto/create_trip_dto.hpp"
 #include "dto/id_dto.hpp"
 #include "dto/station_dto.hpp"
-#include "trip/current_trip.hpp"
 
-const QString TCurrentTrip::m_trip_create = BackendConfig::Address + "/trip";
-const QString TCurrentTrip::m_get_route   = BackendConfig::Address + "/trip";
+const QString kTripCreate = BackendConfig::Address + "/trip";
+const QString kGetRoute   = BackendConfig::Address + "/trip";
 
-void TCurrentTrip::createTrip(const TCreateTripDto &tripDto) {
-    auto createObject = tripDto.toJsonObject();
 
+void TCurrentTrip::startTrip(
+    qreal beginLat, qreal beginLon, qreal endLat, qreal endLon
+) {
+    auto dto      = TCreateTripDto();
+    auto startDto = TStationDto();
+    startDto.address =
+        QString::number(beginLat) + ";" + QString::number(beginLon);
+    startDto.latitude  = beginLat;
+    startDto.longitude = beginLon;
+    auto finishDto     = TStationDto();
+    finishDto.address = QString::number(endLat) + ";" + QString::number(endLon);
+    finishDto.latitude  = endLat;
+    finishDto.longitude = endLon;
+    dto.from            = startDto;
+    dto.to              = finishDto;
+    qDebug() << dto.toJsonObject();
+    auto createObject = dto.toJsonObject();
     auto *reply =
-        m_client->post<QJsonObject, QJsonObject>(m_trip_create, createObject);
+        m_client->post<QJsonObject, QJsonObject>(kTripCreate, createObject);
 
     connect(
         reply, &reply_t::finished, this, [reply, this](const QVariant &data) {
@@ -39,57 +54,8 @@ void TCurrentTrip::createTrip(const TCreateTripDto &tripDto) {
     );
 }
 
-void TCurrentTrip::getRoute(int id) { }
 
-
-void TCurrentTrip::addOrder(const order_dto_t &order) { }
-
-QList<order_dto_t> TCurrentTrip::orders() const {
-    return {};
-}
-
-float TCurrentTrip::totalPrice() const {
-    return 0.0;
-}
-
-void TCurrentTrip::setFilter(
-    int width, int height, int depth, int price, const QString &date
-) {
-    if (width > 0 && height > 0 && depth > 0) {
-        m_dimensions = { width, height, depth };
-    }
-    else {
-        m_dimensions = std::nullopt;
-    }
-    if (price > 0) {
-        m_price = price;
-    }
-    else {
-        m_price = std::nullopt;
-    }
-    if (!date.isEmpty()) {
-        m_date = date;
-    }
-    else {
-        m_date = std::nullopt;
-    }
-}
-
-void TCurrentTrip::startTrip(
-    qreal beginLat, qreal beginLon, qreal endLat, qreal endLon
-) {
-    auto dto      = TCreateTripDto();
-    auto startDto = TStationDto();
-    startDto.address =
-        QString::number(beginLat) + ";" + QString::number(beginLon);
-    startDto.latitude  = beginLat;
-    startDto.longitude = beginLon;
-    auto finishDto     = TStationDto();
-    finishDto.address = QString::number(endLat) + ";" + QString::number(endLon);
-    finishDto.latitude  = endLat;
-    finishDto.longitude = endLon;
-    dto.from            = startDto;
-    dto.to              = finishDto;
-    qDebug() << dto.toJsonObject();
-    createTrip(dto);
+void TCurrentTrip::commitChoosen() {
+    m_isStarted = true;
+    emit committed();
 }
