@@ -5,13 +5,15 @@
 #include <qlogging.h>
 #include <qurl.h>
 
+#include "backend_address.h"
+
 #include "dto/create_trip_dto.hpp"
 #include "dto/id_dto.hpp"
 #include "dto/station_dto.hpp"
 #include "trip/current_trip.hpp"
 
-const QString TCurrentTrip::m_trip_create = "http://51.250.34.151/trip";
-const QString TCurrentTrip::m_get_route   = "http://51.250.34.151/trip";
+const QString TCurrentTrip::m_trip_create = BackendConfig::Address + "/trip";
+const QString TCurrentTrip::m_get_route   = BackendConfig::Address + "/trip";
 
 void TCurrentTrip::createTrip(const TCreateTripDto &tripDto) {
     auto createObject = tripDto.toJsonObject();

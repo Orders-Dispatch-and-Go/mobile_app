@@ -12,6 +12,20 @@ find_package(KF6Kirigami2 REQUIRED)
 
 qt_standard_project_setup(REQUIRES 6.8)
 
+set(ADDRESS_FILE ${CMAKE_SOURCE_DIR}/address.txt)
+
+file(READ ${ADDRESS_FILE} BACKEND_ADDRESS)
+string(STRIP "${BACKEND_ADDRESS}" BACKEND_ADDRESS)
+
+set(GENERATED_DIR ${CMAKE_BINARY_DIR}/generated)
+file(MAKE_DIRECTORY ${GENERATED_DIR})
+
+configure_file(
+    ${CMAKE_SOURCE_DIR}/backend_address.h.in
+    ${GENERATED_DIR}/backend_address.h
+    @ONLY
+)
+
 qt_add_executable(appuntitled
     main.cpp
 
@@ -56,6 +70,7 @@ qt_add_executable(appuntitled
 
 target_include_directories(appuntitled PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/model/include
+    ${GENERATED_DIR}
 )
 
 qt_add_qml_module(appuntitled

@@ -1,0 +1,7 @@
+#pragma once
+
+#include <QString>
+
+namespace BackendConfig {
+    static QString Address = "@BACKEND_ADDRESS@";
+}

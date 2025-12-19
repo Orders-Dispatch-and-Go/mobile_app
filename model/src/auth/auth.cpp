@@ -7,16 +7,21 @@
 #include <qurl.h>
 #include <qvariant.h>
 
+#include "backend_address.h"
+
 #include "auth/auth.hpp"
 #include "auth/userinfo.hpp"
 #include "dto/user_dto.hpp"
 #include "utils/reply.hpp"
 
 const QString TAuth::m_url_check_email =
-    "http://51.250.34.151:8074/check/email";
-const QString TAuth::m_url_sign_in   = "http://51.250.34.151:8074/auth/sign_in";
-const QString TAuth::m_url_log_out   = "http://51.250.34.151:8074/auth/logout";
-const QString TAuth::m_url_user_info = "http://51.250.34.151:8074/users";
+    BackendConfig::Address + ":8074/check/email";
+
+const QString TAuth::m_url_sign_in =
+    BackendConfig::Address + ":8074/auth/sign_in";
+const QString TAuth::m_url_log_out =
+    BackendConfig::Address + ":8074/auth/logout";
+const QString TAuth::m_url_user_info = BackendConfig::Address + ":8074/users";
 
 /*
  * +----------------+
