@@ -8,8 +8,18 @@ ColumnLayout {
 
     property var dto
 
+    property int accuracy: 3
+
     RouteHighlight {
         Layout.fillWidth: true
+        pointA: {
+            "lat": dto.start.coords.lat.toFixed(accuracy),
+            "lon": dto.start.coords.lon.toFixed(accuracy)
+        }
+        pointB: {
+            "lat": dto.finish.coords.lat.toFixed(accuracy),
+            "lon": dto.finish.coords.lon.toFixed(accuracy)
+        }
     }
     RowLayout {
         Layout.fillWidth: true
@@ -38,9 +48,9 @@ ColumnLayout {
             Layout.fillHeight: true
         }
         ShowSizes {
-            boxWidth: dto.width || 20
-            boxHeight: dto.height || 30
-            boxDepth: dto.depth || 40
+            boxWidth: dto.width
+            boxHeight: dto.height
+            boxDepth: dto.length
             strokeColor: Kirigami.Theme.textColor
             fillColor: Kirigami.Theme.backgroundColor
             textColor: Kirigami.Theme.textColor

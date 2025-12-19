@@ -9,7 +9,13 @@ Kirigami.Page {
     id: root
     title: qsTr("Choose orders for trip")
 
-    property var orders: backend.getRelevantOrders()
+    property var orders: backend.relevantOrders
+    property var gotOrders: backend.userOrders
+
+    Component.onCompleted: {
+        console.log(orders);
+        console.log(gotOrders);
+    }
 
     ColumnLayout {
         anchors.fill: parent
@@ -34,12 +40,26 @@ Kirigami.Page {
                     spacing: Kirigami.Units.largeSpacing
 
                     Repeater {
+                        model: root.gotOrders
+                        delegate: Kirigami.Card {
+                            header: Kirigami.Heading {
+                                text: "#" + ("" + modelData.uuid).split("-")[1]
+                            }
+                        }
+                    }
+
+                    Repeater {
                         model: root.orders
                         delegate: OrderCard {
                             dto: modelData
                             Layout.fillWidth: true
-                            onAccepted: {
-                                backend.acceptRelevant(index);
+                            onAccepted: () => {
+                                console.log(modelData.index);
+                                backend.acceptRelevant(modelData.index);
+                            }
+                            onRejected: () => {
+                                console.log(modelData.index);
+                                backend.rejectRelevant(modelData.index);
                             }
                         }
                     }
@@ -48,7 +68,7 @@ Kirigami.Page {
                 ColumnLayout {
                     anchors.centerIn: parent
                     anchors.fill: parent
-                    visible: root.orders.length === 0
+                    visible: root.orders.length === 0 && root.gotOrders.length === 0
                     Text {
                         text: qsTr("No orders found")
                     }
@@ -65,7 +85,7 @@ Kirigami.Page {
         Button {
             text: qsTr("Start")
             Layout.fillWidth: true
-            enabled: root.orders.length > 0
+            enabled: root.gotOrders.length > 0
             onClicked: {}
         }
     }

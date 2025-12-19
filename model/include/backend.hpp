@@ -48,6 +48,10 @@ class backend_t : public QObject {
         QString userAddress READ user_address WRITE set_user_address NOTIFY
             userUpdated
     )
+    Q_PROPERTY(QVariantList userOrders READ getOrders NOTIFY ordersUpdated)
+    Q_PROPERTY(
+        QVariantList relevantOrders READ getRelevantOrders NOTIFY ordersUpdated
+    )
     Q_PROPERTY(int screenId READ screenId)
 
 public:
@@ -85,7 +89,9 @@ public:
     startTrip(qreal beginLat, qreal beginLon, qreal endLat, qreal endLon);
 
     Q_INVOKABLE [[nodiscard]] QVariantList getRelevantOrders() const;
+    Q_INVOKABLE [[nodiscard]] QVariantList getOrders() const;
     Q_INVOKABLE void acceptRelevant(int index);
+    Q_INVOKABLE void rejectRelevant(int index);
 
     Q_INVOKABLE [[nodiscard]] bool isPossibleMove(int screenId) const {
         return m_state.isPossibleMove(screenId);
@@ -112,6 +118,9 @@ signals:
     void userLoggedIn();
     void userLoggedOut();
     void userLoginFailed();
+
+    void ordersUpdated();
 };
+
 
 #endif

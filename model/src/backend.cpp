@@ -157,10 +157,19 @@ void backend_t::startTrip(
     m_currentTripPtr->startTrip(beginLat, beginLon, endLat, endLon);
 }
 
+
+[[nodiscard]] QVariantList backend_t::getOrders() const {
+    QVariantList list;
+    const auto orders = m_currentTripPtr->orders();
+    for (const TOrderDto &o : orders) {
+        list.append(o.toJsonObject());
+    }
+    return list;
+}
+
 [[nodiscard]] QVariantList backend_t::getRelevantOrders() const {
     QVariantList list;
     const auto orders = m_currentTripPtr->relevantOrders();
-    qDebug() << "rel size = " << orders.size();
     for (const TOrderDto &o : orders) {
         list.append(o.toJsonObject());
     }
@@ -169,6 +178,12 @@ void backend_t::startTrip(
 
 void backend_t::acceptRelevant(int index) {
     m_currentTripPtr->chooseOrderFormRelative(index);
+    emit ordersUpdated();
+}
+
+void backend_t::rejectRelevant(int index) {
+    m_currentTripPtr->removeOrderFormRelative(index);
+    emit ordersUpdated();
 }
 
 int backend_t::screenId() const {

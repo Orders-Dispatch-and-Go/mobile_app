@@ -11,7 +11,8 @@ Kirigami.Card {
     // Отключаем стандартный контейнер actions
     actions: []
     property var dto: null
-    signal accepted
+    property var onAccepted: () => {}
+    property var onRejected: () => {}
 
     footer: RowLayout {
         Layout.fillWidth: true
@@ -22,21 +23,12 @@ Kirigami.Card {
             Button {
                 text: qsTr("reject")
                 icon.name: "dialog-cancel"
-                onClicked: {
-                    root.visible = false;
-                    root.width = 0;
-                    root.height = 0;
-                }
+                onClicked: root.onRejected()
             }
             Button {
                 text: qsTr("accept")
                 icon.name: "dialog-ok"
-                onClicked: {
-                    root.visible = false;
-                    root.width = 0;
-                    root.height = 0;
-                    root.accepted;
-                }
+                onClicked: root.onAccepted()
             }
         }
     }

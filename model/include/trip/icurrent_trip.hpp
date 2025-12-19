@@ -85,11 +85,16 @@ public:
         m_choosenOrderIds.push_back(orderId);
     }
 
+    Q_INVOKABLE void removeOrderFormRelative(int index) {
+        if (index >= 0 && index < m_relevantOrders.size()) {
+            m_relevantOrders.remove(index);
+        }
+    }
     Q_INVOKABLE void chooseOrderFormRelative(int index) {
         if (index >= 0 && index < m_relevantOrders.size()) {
             m_orders.push_back(m_relevantOrders[index]);
             m_choosenOrderIds.push_back(m_relevantOrders[index].uuid);
-            qDebug() << "accepted " << index;
+            m_relevantOrders.remove(index);
         }
     }
 
