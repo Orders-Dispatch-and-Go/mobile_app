@@ -56,6 +56,6 @@ void TCurrentTrip::startTrip(
 
 
 void TCurrentTrip::commitChoosen() {
-    m_isStarted = true;
+    setStarted(true);
     emit committed();
 }

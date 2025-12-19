@@ -9,10 +9,7 @@ Kirigami.Page {
     id: root
     title: qsTr("Choose orders for trip")
 
-    property var dto: {
-        id: 42;
-        description: "Sample order description";
-    }
+    property var orders: backend.getRelevantOrders()
 
     ColumnLayout {
         anchors.fill: parent
@@ -27,20 +24,40 @@ Kirigami.Page {
             ScrollBar.vertical.policy: ScrollBar.AlwaysOff
             ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
 
-            ColumnLayout {
+            Item {
                 width: scrollView.width
-                spacing: Kirigami.Units.largeSpacing
+                implicitHeight: contentColumn.implicitHeight
 
-                OrderCard {
-                    id: order1
-                    dto: root.dto
-                    Layout.fillWidth: true
+                ColumnLayout {
+                    id: contentColumn
+                    width: parent.width
+                    spacing: Kirigami.Units.largeSpacing
+
+                    Repeater {
+                        model: root.orders
+                        delegate: OrderCard {
+                            dto: modelData
+                            Layout.fillWidth: true
+                            onAccepted: {
+                                backend.acceptRelevant(index);
+                            }
+                        }
+                    }
                 }
 
-                OrderCard {
-                    id: order2
-                    dto: root.dto
-                    Layout.fillWidth: true
+                ColumnLayout {
+                    anchors.centerIn: parent
+                    anchors.fill: parent
+                    visible: root.orders.length === 0
+                    Text {
+                        text: qsTr("No orders found")
+                    }
+                    Button {
+                        text: qsTr("back")
+                        onClicked: {
+                            backend.switchScreen(screens.pStartRoute);
+                        }
+                    }
                 }
             }
         }
@@ -48,10 +65,8 @@ Kirigami.Page {
         Button {
             text: qsTr("Start")
             Layout.fillWidth: true
-
-            onClicked: {
-                backend.startTrip();
-            }
+            enabled: root.orders.length > 0
+            onClicked: {}
         }
     }
 }

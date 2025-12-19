@@ -22,11 +22,11 @@ public:
     TCurrentTrip &operator=(TCurrentTrip &&)      = delete;
     ~TCurrentTrip() override                      = default;
 
-    void startTrip(
+    Q_INVOKABLE void startTrip(
         qreal beginLat, qreal beginLon, qreal endLat, qreal endLon
     ) override;
 
-    void commitChoosen() override;
+    Q_INVOKABLE void commitChoosen() override;
 
 private:
     static const QString m_trip_create;

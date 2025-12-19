@@ -8,7 +8,6 @@
 
 #include "dto/create_trip_dto.hpp"
 #include "dto/order_dto.hpp"
-#include "dto/trip_dto.hpp"
 #include "trip/icurrent_trip.hpp"
 #include "utils/http_client.hpp"
 
@@ -28,15 +27,10 @@ public:
 
     void startTrip(
         qreal beginLat, qreal beginLon, qreal endLat, qreal endLon
-    ) override {
-        Q_UNUSED(beginLat);
-        Q_UNUSED(beginLon);
-        Q_UNUSED(endLat);
-        Q_UNUSED(endLon);
-        emit tripCreated("6a014c84-c217-4f52-80c8-3fc0d12d8163");
-    }
+    ) override;
 
     void commitChoosen() override {
+        setStarted(true);
         emit committed();
     }
 

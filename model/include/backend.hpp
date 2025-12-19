@@ -1,6 +1,7 @@
 #ifndef BACKEND_HPP
 #define BACKEND_HPP
 
+#include <QList>
 #include <QObject>
 
 #include <memory.h>
@@ -11,6 +12,7 @@
 
 #include "auth/iauth.hpp"
 #include "auth/userinfo.hpp"
+#include "dto/order_dto.hpp"
 #include "profile/iprofile.hpp"
 #include "trip/icurrent_trip.hpp"
 #include "utils/http_client.hpp"
@@ -74,11 +76,16 @@ public:
 
     Q_INVOKABLE void switchScreen(int screen_id);
 
+
     Q_INVOKABLE void setupFilter(
         int width, int height, int depth, int price, const QString &date
     );
+
     Q_INVOKABLE void
     startTrip(qreal beginLat, qreal beginLon, qreal endLat, qreal endLon);
+
+    Q_INVOKABLE [[nodiscard]] QVariantList getRelevantOrders() const;
+    Q_INVOKABLE void acceptRelevant(int index);
 
     Q_INVOKABLE [[nodiscard]] bool isPossibleMove(int screenId) const {
         return m_state.isPossibleMove(screenId);

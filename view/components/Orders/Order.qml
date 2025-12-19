@@ -47,7 +47,7 @@ ColumnLayout {
         }
     }
     Item {
-        height: 40
+        height: 30
         Layout.fillWidth: true
     }
 }

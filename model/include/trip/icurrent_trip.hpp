@@ -5,6 +5,7 @@
 #include <numeric>
 
 #include <qcontainerfwd.h>
+#include <qlogging.h>
 #include <qtmetamacros.h>
 
 #include "dto/create_trip_dto.hpp"
@@ -26,16 +27,16 @@ public:
     /**
      * начала поездrи
      */
-    virtual void
+    Q_INVOKABLE virtual void
     startTrip(qreal beginLat, qreal beginLon, qreal endLat, qreal endLon) = 0;
 
     /**
      * надо сделать запрос на наполнение маршрута заявками, поставить isStarted
      * после чего кинуть commited()
      */
-    virtual void commitChoosen() = 0;
+    Q_INVOKABLE virtual void commitChoosen() = 0;
 
-    [[nodiscard]] float totalPrice() const {
+    Q_INVOKABLE [[nodiscard]] float totalPrice() const {
         return std::accumulate(
             m_relevantOrders.begin(),
             m_relevantOrders.end(),
@@ -44,17 +45,13 @@ public:
         );
     }
 
-    [[nodiscard]] QList<TOrderDto> orders() const {
-        return m_relevantOrders;
-    }
-
-    void resetFilter() {
+    Q_INVOKABLE void resetFilter() {
         m_dimensions = std::nullopt;
         m_price      = std::nullopt;
         m_date       = std::nullopt;
     }
 
-    void setFilter(
+    Q_INVOKABLE void setFilter(
         int width, int height, int depth, int price, const QString &date
     ) {
         if (width > 0 && height > 0 && depth > 0) {
@@ -77,24 +74,68 @@ public:
         }
     }
 
-    void setLoadedOrders(const QList<TOrderDto> &orders) {
+    Q_INVOKABLE void setLoadedOrders(const QList<TOrderDto> &orders) {
         m_relevantOrders = orders;
     }
 
     /**
      * Добавить выбранный id выбранного заказа к поездке
      */
-    void addOrderId(const QString &orderId) {
+    Q_INVOKABLE void addOrderId(const QString &orderId) {
         m_choosenOrderIds.push_back(orderId);
     }
 
-    void chooseOrderFormRelative(int index) {
+    Q_INVOKABLE void chooseOrderFormRelative(int index) {
         if (index >= 0 && index < m_relevantOrders.size()) {
             m_orders.push_back(m_relevantOrders[index]);
             m_choosenOrderIds.push_back(m_relevantOrders[index].uuid);
+            qDebug() << "accepted " << index;
         }
     }
 
+    void setStarted(bool started) {
+        m_isStarted = started;
+    }
+
+    void setOrders(const QList<TOrderDto> &orders) {
+        m_orders = orders;
+    }
+
+    void setRelevantOrders(const QList<TOrderDto> &orders) {
+        m_relevantOrders = orders;
+    }
+
+    QString currentTripId() {
+        return m_currentTripId;
+    }
+
+    [[nodiscard]] QList<QString> choosenOrderIds() const {
+        return m_choosenOrderIds;
+    }
+
+    [[nodiscard]] QList<TOrderDto> relevantOrders() const {
+        return m_relevantOrders;
+    }
+
+    [[nodiscard]] QList<TOrderDto> orders() const {
+        return m_orders;
+    }
+
+    [[nodiscard]] bool isStarted() const {
+        return m_isStarted;
+    }
+
+    [[nodiscard]] std::optional<std::tuple<int, int, int>> dimensions() const {
+        return m_dimensions;
+    }
+
+    [[nodiscard]] std::optional<int> price() const {
+        return m_price;
+    }
+
+    [[nodiscard]] std::optional<QString> date() const {
+        return m_date;
+    }
 
 signals:
     void committed();
@@ -102,7 +143,7 @@ signals:
     void recvRouteForTrip(const TRouteInfo &);
     void tripError(const QString &);
 
-protected:
+private:
     // ID поездки
     QString m_currentTripId;    // NOLINT
     // ID заказов, которые будут добавлен

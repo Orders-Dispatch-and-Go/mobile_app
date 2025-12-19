@@ -55,6 +55,7 @@ qt_add_executable(appuntitled
 
     model/include/trip/icurrent_trip.hpp
     model/include/trip/current_trip.hpp
+    model/include/trip/moc_current_trip.hpp
 
     model/src/backend.cpp
     model/src/theme_provider.cpp
@@ -68,6 +69,7 @@ qt_add_executable(appuntitled
 
     model/src/trip/icurrent_trip.cpp
     model/src/trip/current_trip.cpp
+    model/src/trip/moc_current_trip.cpp
 )
 
 target_include_directories(appuntitled PRIVATE

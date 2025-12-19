@@ -12,12 +12,13 @@
 #include "auth/userinfo.hpp"
 #include "profile/moc_profile.hpp"
 #include "trip/current_trip.hpp"
+#include "trip/moc_current_trip.hpp"
 
 backend_t::backend_t(QObject *parent) : QObject(parent) {
-    m_httpClient     = new THttpClient(this);                   // NOLINT
-    m_userInfoPtr    = new TUserInfo(this);                     // NOLINT qt
-    m_currentTripPtr = new TCurrentTrip(m_httpClient, this);    // NOLINT qt
-    m_auth_model     = new TAuth(m_httpClient, this);           // NOLINT
+    m_httpClient     = new THttpClient(this);                      // NOLINT
+    m_currentTripPtr = new TCurrentTripMoc(m_httpClient, this);    // NOLINT qt
+    m_userInfoPtr    = new TUserInfo(this);                        // NOLINT qt
+    m_auth_model     = new TAuth(m_httpClient, this);              // NOLINT
     m_profile_model  = std::make_unique<moc_profile_t>();
     connect(
         m_currentTripPtr,
@@ -154,6 +155,20 @@ void backend_t::startTrip(
     qreal beginLat, qreal beginLon, qreal endLat, qreal endLon
 ) {
     m_currentTripPtr->startTrip(beginLat, beginLon, endLat, endLon);
+}
+
+[[nodiscard]] QVariantList backend_t::getRelevantOrders() const {
+    QVariantList list;
+    const auto orders = m_currentTripPtr->relevantOrders();
+    qDebug() << "rel size = " << orders.size();
+    for (const TOrderDto &o : orders) {
+        list.append(o.toJsonObject());
+    }
+    return list;
+}
+
+void backend_t::acceptRelevant(int index) {
+    m_currentTripPtr->chooseOrderFormRelative(index);
 }
 
 int backend_t::screenId() const {

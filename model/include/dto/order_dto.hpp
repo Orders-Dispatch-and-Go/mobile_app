@@ -31,7 +31,16 @@ public:
     [[nodiscard]] QJsonObject toJsonObject() const override {
         QJsonObject obj;
 
-        obj["price"] = price;
+        obj["uuid"]        = uuid;
+        obj["price"]       = price;
+        obj["cost"]        = cost;
+        obj["length"]      = length;
+        obj["height"]      = height;
+        obj["width"]       = width;
+        obj["weight"]      = weight;
+        obj["description"] = description;
+        obj["start"]       = start.toJsonObject();
+        obj["finish"]      = finish.toJsonObject();
         return obj;
     }
 
