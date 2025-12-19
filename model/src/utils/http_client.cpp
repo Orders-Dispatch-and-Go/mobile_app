@@ -146,8 +146,8 @@ THttpClient::post<bool, QString>(const QString &url, const QString &data) {
     auto request = create_request(url);
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
 
-    QByteArray send_data = data.toUtf8();
-    QNetworkReply *reply = m_manager.post(request, send_data);
+    QByteArray sendData  = data.toUtf8();
+    QNetworkReply *reply = m_manager.post(request, sendData);
 
     QPointer<reply_t> typed_reply = new reply_t(this);
     connect(

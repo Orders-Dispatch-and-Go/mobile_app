@@ -38,7 +38,6 @@ void backend_t::login(const QString &email, const QString &password) {
         if (m_userInfoPtr->isValid()) {
             qDebug() << m_userInfoPtr->getId();
             qDebug() << m_userInfoPtr->getAuthToken();
-            m_currentTripPtr->setUserId(m_userInfoPtr->getId());
             m_state.setCurrentScreen(screens_t::pStartRoute);
             emit screenSwitched();
             emit userLoggedIn();

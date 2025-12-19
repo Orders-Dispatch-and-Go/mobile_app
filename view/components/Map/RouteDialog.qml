@@ -14,13 +14,13 @@ Kirigami.Dialog {
 
     standardButtons: Kirigami.Dialog.Ok | Kirigami.Dialog.Cancel
 
-    property var startCoord: QtPositioning.coordinate(55.751230, 37.618423) // Москва
-    property var finishCoord: QtPositioning.coordinate(55.751250, 37.618423) // Москва
+    property var startCoord: QtPositioning.coordinate(54.847297, 83.092242)
+    property var finishCoord: QtPositioning.coordinate(54.848820, 83.092405) // Москва
 
     contentItem: Map {
         id: map
 
-        property var focusCoord: QtPositioning.coordinate(55.751230, 37.618423) // positionSource.position.coordinate
+        property var focusCoord: QtPositioning.coordinate(54.847297, 83.092242) // positionSource.position.coordinate
         property alias marker1: marker1
         property alias marker2: marker2
         property bool panEnabled: false

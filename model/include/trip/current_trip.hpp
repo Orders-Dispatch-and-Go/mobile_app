@@ -40,8 +40,6 @@ public:
         qreal beginLat, qreal beginLon, qreal endLat, qreal endLon
     ) override;
 
-    void setUserId(int id) override;
-
 private:
     static const QString m_trip_create;
     static const QString m_get_route;
@@ -60,8 +58,6 @@ private:
      * @brief Ограничения по дате
      */
     std::optional<QString> m_date;
-
-    int m_userId = -1;
 
     THttpClient *m_client;
 };

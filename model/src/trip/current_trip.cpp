@@ -88,11 +88,6 @@ void TCurrentTrip::startTrip(
     finishDto.longitude = endLon;
     dto.from            = startDto;
     dto.to              = finishDto;
-    dto.carrierId       = m_userId;
     qDebug() << dto.toJsonObject();
     createTrip(dto);
-}
-
-void TCurrentTrip::setUserId(int id) {
-    m_userId = id;
 }

@@ -11,7 +11,6 @@
 
 class TCreateTripDto : public TAbstractDto {
 public:
-    int carrierId = 0;
     TStationDto from;
     TStationDto to;
     QString startedAt;
