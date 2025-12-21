@@ -8,6 +8,9 @@ MapQuickItem {
     id: root
     visible: true
 
+    property alias color: rect.color
+    property alias borderColor: rect.borderColor
+
     property int markerSize: 28
     property Map map
 
@@ -22,12 +25,14 @@ MapQuickItem {
     anchorPoint.y: height
 
     sourceItem: Rectangle {
+        id: rect
         width: root.markerSize
         height: root.markerSize
         radius: root.markerSize / 2
         color: Kirigami.Theme.backgroundColor
         border.color: Kirigami.Theme.textColor
         border.width: 2
+        property alias borderColor: rect.border.color
         Text {
             anchors.fill: parent
             anchors.margins: 3

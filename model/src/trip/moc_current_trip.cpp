@@ -90,8 +90,7 @@ void TCurrentTripMoc::commitChoosen() {
     order.tripId           = "QQQQQQ-CCCC-DDDD-EEEE-FFFFFFFFFF";
     order.price            = 32;
     order.status           = "NO STATUS";
-    TOrderListItemDto orderList;
-    dto.orders = { orderList };
+    dto.orders             = { order };
     setOrdersListDto(
         dto, { QPointF(54.848820, 83.092405), QPointF(54.847297, 83.092242) }
     );

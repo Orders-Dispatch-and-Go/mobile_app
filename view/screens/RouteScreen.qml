@@ -12,27 +12,32 @@ Kirigami.Page {
     title: qsTr("Route")
 
     /* Пример списка точек */
-    property var waypoints: [
-        {
-            point: QtPositioning.coordinate(55.751244, 37.618423)
-        },
-        {
-            point: QtPositioning.coordinate(55.760000, 37.620000)
-        },
-        {
-            point: QtPositioning.coordinate(55.755500, 37.630000)
+    property var waypoints: backend.waypoints
+    property var routePath: waypoints.map(p => QtPositioning.coordinate(p.x, p.y))
+    property var stops: backend.stops
+
+    Component.onCompleted: {
+        if (routePath.length > 0) {
+            map.center = routePath[0];
         }
-    ]
+    }
 
     Map {
         id: map
         anchors.fill: parent
         anchors.margins: Kirigami.Units.largeSpacing
 
-        property var focusCoord: QtPositioning.coordinate(55.751244, 37.618423)
+        property var focusCoord: QtPositioning.coordinate(waypoints[0].x, waypoints[0].y)
         property bool panEnabled: false
         zoomLevel: 14
         center: map.focusCoord
+
+        MapPolyline {
+            line.width: 5
+            line.color: Kirigami.Theme.highlightColor
+            path: root.routePath
+            smooth: true
+        }
 
         plugin: Plugin {
             name: "osm"
@@ -73,13 +78,22 @@ Kirigami.Page {
 
         /* Repeater для WayPoint */
         Repeater {
-            model: root.waypoints
+            model: root.stops
             delegate: WayPoint {
                 index: model.index
-                coordinate: modelData.point
+                coordinate: QtPositioning.coordinate(modelData.fromStation.coords.lat, modelData.fromStation.coords.lon)
+                borderColor: "black"
+            }
+        }
+        Repeater {
+            model: root.stops
+            delegate: WayPoint {
+                index: model.index
+                color: Kirigami.Theme.positiveTextColor
+                borderColor: "black"
+                coordinate: QtPositioning.coordinate(modelData.toStation.coords.lat, modelData.toStation.coords.lon)
                 onClicked: index => {
                     orderDialog.open(); // TODO: передать dto
-                    console.log("clicked = ", index);
                 }
             }
         }

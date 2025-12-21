@@ -55,6 +55,7 @@ class backend_t : public QObject {
     Q_PROPERTY(int screenId READ screenId)
 
     Q_PROPERTY(QList<QPointF> waypoints READ getWaypoints NOTIFY routeUpdated)
+    Q_PROPERTY(QVariantList stops READ getStops NOTIFY routeUpdated)
 
 public:
     explicit backend_t(QObject *parent = nullptr);

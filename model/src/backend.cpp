@@ -12,6 +12,7 @@
 #include "auth/userinfo.hpp"
 #include "profile/moc_profile.hpp"
 #include "trip/current_trip.hpp"
+#include "trip/icurrent_trip.hpp"
 #include "trip/moc_current_trip.hpp"
 
 backend_t::backend_t(QObject *parent) : QObject(parent) {
@@ -22,15 +23,16 @@ backend_t::backend_t(QObject *parent) : QObject(parent) {
     m_profile_model  = std::make_unique<moc_profile_t>();
     connect(
         m_currentTripPtr,
-        &TCurrentTrip::tripCreated,
+        &ICurrentTrip::tripCreated,
         this,
         [this](const QString &tripId) {
             m_state.setCurrentScreen(screens_t::pGetOrders);
             emit screenSwitched();
         }
     );
-    connect(m_currentTripPtr, &TCurrentTrip::committed, this, [this]() {
+    connect(m_currentTripPtr, &ICurrentTrip::committed, this, [this]() {
         m_state.setCurrentScreen(screens_t::pCurrentRoute);
+        emit routeUpdated();
         emit screenSwitched();
     });
 }
@@ -190,6 +192,7 @@ void backend_t::rejectRelevant(int index) {
 
 void backend_t::commitTrip() {
     m_currentTripPtr->commitChoosen();
+    emit routeUpdated();
 }
 
 int backend_t::screenId() const {
