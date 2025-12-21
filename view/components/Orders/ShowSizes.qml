@@ -1,8 +1,9 @@
 import QtQuick 2.15
+import org.kde.kirigami as Kirigami
 
 Item {
     id: root
-    width: 160
+    width: 180
     height: 160
 
     // свойства коробки (передавайте нужные числа)
@@ -101,14 +102,52 @@ Item {
 
             // подписываем размеры: width (понизу, по центру), height (слева по центру), depth (рядом со смещением)
             ctx.fillStyle = root.textColor;
-            var fontSize = Math.max(10, Math.min(18, 12 * scale)); // адаптивный размер шрифта
+            var fontSize = Math.max(10, Math.min(18, 12 * scale));
             ctx.font = fontSize + "px sans-serif";
             ctx.textBaseline = "middle";
             ctx.textAlign = "center";
 
-            // width label (цифра и линия измерения)
+            function drawLabel(text, x, y, angle = 0) {
+                ctx.save();
+                ctx.translate(x, y);
+                ctx.rotate(angle);
+
+                const paddingX = 6;
+                const paddingY = 4;
+                const radius = 4;
+
+                const metrics = ctx.measureText(text);
+                const textWidth = metrics.width;
+                const textHeight = fontSize;
+
+                const w = textWidth + paddingX * 2;
+                const h = textHeight + paddingY * 2;
+                const rx = -w / 2;
+                const ry = -h / 2;
+
+                ctx.fillStyle = Kirigami.Theme.disabledTextColor;
+                ctx.beginPath();
+                ctx.moveTo(rx + radius, ry);
+                ctx.lineTo(rx + w - radius, ry);
+                ctx.quadraticCurveTo(rx + w, ry, rx + w, ry + radius);
+                ctx.lineTo(rx + w, ry + h - radius);
+                ctx.quadraticCurveTo(rx + w, ry + h, rx + w - radius, ry + h);
+                ctx.lineTo(rx + radius, ry + h);
+                ctx.quadraticCurveTo(rx, ry + h, rx, ry + h - radius);
+                ctx.lineTo(rx, ry + radius);
+                ctx.quadraticCurveTo(rx, ry, rx + radius, ry);
+                ctx.closePath();
+                ctx.fill();
+
+                ctx.fillStyle = root.textColor;
+                ctx.fillText(text, 0, 0);
+
+                ctx.restore();
+            }
+
+            // width label
             var midBottomX = (fx + fx2) / 2;
-            var bottomY = fy2 + 18;
+            var bottomY = fy2 + 22;
             // dimension line
             ctx.beginPath();
             ctx.moveTo(fx, fy2 + 6);
@@ -118,28 +157,18 @@ Item {
             ctx.moveTo(fx, fy2 + 9);
             ctx.lineTo(fx2, fy2 + 9);
             ctx.stroke();
-            ctx.fillText(String(root.boxWidth) + " cm", midBottomX, bottomY);
+
+            drawLabel(String(root.boxWidth) + " cm", midBottomX, bottomY);
 
             // height label (слева, вертикально)
-            ctx.save();
-            ctx.translate(fx - 14, (fy + fy2) / 2);
-            ctx.rotate(-Math.PI / 2);
-            ctx.textAlign = "center";
-            ctx.fillText(String(root.boxHeight) + " cm", 0, 0);
-            ctx.restore();
+            drawLabel(String(root.boxHeight) + " cm", fx - 14, (fy + fy2) / 2, -Math.PI / 2);
 
-            // depth label (на диагонали/вверху между передней и задней гранью)
-            // вычислим середину диагонали от верх-right передней до верх-right задней
+            // depth label (по диагонали)
             var diagMidX = (fx2 + bx2) / 2;
             var diagMidY = (fy + by) / 2 - 8;
-            ctx.save();
-            // повернём текст вдоль диагонали
-            var angle = Math.atan2(by - fy, bx - fx); // угол смещения
-            ctx.translate(diagMidX, diagMidY);
-            ctx.rotate(angle);
-            ctx.textAlign = "center";
-            ctx.fillText(String(root.boxDepth) + " cm", 0, 0);
-            ctx.restore();
+            var angle = Math.atan2(by - fy, bx - fx);
+
+            drawLabel(String(root.boxDepth) + " cm", diagMidX, diagMidY, angle);
 
             ctx.restore();
         }

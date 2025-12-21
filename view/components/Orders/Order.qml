@@ -10,20 +10,31 @@ ColumnLayout {
 
     property int accuracy: 3
 
-    RouteHighlight {
+    ColumnLayout {
         Layout.fillWidth: true
-        pointA: {
-            "lat": dto.start.coords.lat.toFixed(accuracy),
-            "lon": dto.start.coords.lon.toFixed(accuracy)
+        RouteHighlight {
+            Layout.fillWidth: true
+            point: {
+                "address": dto.start.address,
+                "lat": dto.start.coords.lat.toFixed(accuracy),
+                "lon": dto.start.coords.lon.toFixed(accuracy)
+            }
         }
-        pointB: {
-            "lat": dto.finish.coords.lat.toFixed(accuracy),
-            "lon": dto.finish.coords.lon.toFixed(accuracy)
+        RouteHighlight {
+            point: {
+                "address": dto.finish.address,
+                "lat": dto.finish.coords.lat.toFixed(accuracy),
+                "lon": dto.finish.coords.lon.toFixed(accuracy)
+            }
         }
     }
     RowLayout {
         Layout.fillWidth: true
         ColumnLayout {
+            Layout.fillHeight: true
+            Item {
+                Layout.fillHeight: true
+            }
             Kirigami.Heading {
                 text: qsTr("price") + ": " + (dto.price || 0) + " ₽"
                 level: 1

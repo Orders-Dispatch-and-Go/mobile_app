@@ -28,7 +28,8 @@ void TCurrentTripMoc::startTrip(
     order1Start.latitude   = 54.848820;
     order1Start.longitude  = 83.092405;
     auto order1Finish      = TStationDto();
-    order1Start.address    = "DDDDDDD";
+    order1Start.address    = "Строителей 11";
+    order1Finish.address   = "Строителей 14";
     order1Finish.latitude  = 54.847297;
     order1Finish.longitude = 83.092242;
     order1.start           = order1Start;
@@ -47,7 +48,8 @@ void TCurrentTripMoc::startTrip(
     order2Start.latitude   = 54.848;
     order2Start.longitude  = 83.092;
     auto order2Finish      = TStationDto();
-    order2Start.address    = "ZZZZZZZ";
+    order2Start.address    = "Пирогова 14";
+    order2Finish.address   = "Пирогова 11";
     order2Finish.latitude  = 54.847;
     order2Finish.longitude = 83.092;
     order2.start           = order2Start;
@@ -75,11 +77,11 @@ void TCurrentTripMoc::commitChoosen() {
     order.consignerId      = 1;
     order.recipientId      = 1;
     auto order1Start       = TStationDto();
-    order1Start.address    = "ABACABA";
+    order1Start.address    = "Пирогова 1";
     order1Start.latitude   = 54.848820;
     order1Start.longitude  = 83.092405;
     auto order1Finish      = TStationDto();
-    order1Start.address    = "DDDDDDD";
+    order1Start.address    = "Пирогова 14";
     order1Finish.latitude  = 54.847297;
     order1Finish.longitude = 83.092242;
     order.fromStation      = order1Start;
