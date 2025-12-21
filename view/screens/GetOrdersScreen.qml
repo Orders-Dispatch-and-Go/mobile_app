@@ -86,7 +86,9 @@ Kirigami.Page {
             text: qsTr("Start")
             Layout.fillWidth: true
             enabled: root.gotOrders.length > 0
-            onClicked: {}
+            onClicked: {
+                backend.commitTrip();
+            }
         }
     }
 }

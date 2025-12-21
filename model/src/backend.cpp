@@ -29,6 +29,10 @@ backend_t::backend_t(QObject *parent) : QObject(parent) {
             emit screenSwitched();
         }
     );
+    connect(m_currentTripPtr, &TCurrentTrip::committed, this, [this]() {
+        m_state.setCurrentScreen(screens_t::pCurrentRoute);
+        emit screenSwitched();
+    });
 }
 
 void backend_t::login(const QString &email, const QString &password) {
@@ -145,10 +149,8 @@ void backend_t::switchScreen(int screen_id) {
     emit screenSwitched();
 }
 
-void backend_t::setupFilter(
-    int width, int height, int depth, int price, const QString &date
-) {
-    m_currentTripPtr->setFilter(width, height, depth, price, date);
+void backend_t::setupFilter(int width, int height, int depth, int price) {
+    m_currentTripPtr->setFilter(width, height, depth, price);
 }
 
 void backend_t::startTrip(
@@ -186,6 +188,18 @@ void backend_t::rejectRelevant(int index) {
     emit ordersUpdated();
 }
 
+void backend_t::commitTrip() {
+    m_currentTripPtr->commitChoosen();
+}
+
 int backend_t::screenId() const {
     return m_state.currentScreen();
+}
+
+QList<QPointF> backend_t::getWaypoints() const {
+    return m_currentTripPtr->waypoints();
+}
+
+QVariantList backend_t::getStops() const {
+    return m_currentTripPtr->ordersListDto();
 }

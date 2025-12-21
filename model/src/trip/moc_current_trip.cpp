@@ -10,6 +10,7 @@
 #include "dto/create_trip_dto.hpp"
 #include "dto/id_dto.hpp"
 #include "dto/order_dto.hpp"
+#include "dto/orders_list_dto.hpp"
 #include "dto/station_dto.hpp"
 #include "trip/moc_current_trip.hpp"
 
@@ -63,4 +64,35 @@ void TCurrentTripMoc::startTrip(
     setRelevantOrders({ order1, order2 });
 
     emit tripCreated("6a014c84-c217-4f52-80c8-3fc0d12d8163");
+}
+
+
+void TCurrentTripMoc::commitChoosen() {
+    TOrdersListDto dto;
+    TOrderListItemDto order;
+    order.uuid             = "AAAAAA-AAAA-AAAA-AAAA-AAAAAAAAAAAA";
+    order.code             = "12345678";
+    order.consignerId      = 1;
+    order.recipientId      = 1;
+    auto order1Start       = TStationDto();
+    order1Start.address    = "ABACABA";
+    order1Start.latitude   = 54.848820;
+    order1Start.longitude  = 83.092405;
+    auto order1Finish      = TStationDto();
+    order1Start.address    = "DDDDDDD";
+    order1Finish.latitude  = 54.847297;
+    order1Finish.longitude = 83.092242;
+    order.fromStation      = order1Start;
+    order.toStation        = order1Finish;
+    order.routeId          = "BBBBBB-CCCC-DDDD-EEEE-FFFFFFFFFF";
+    order.tripId           = "QQQQQQ-CCCC-DDDD-EEEE-FFFFFFFFFF";
+    order.price            = 32;
+    order.status           = "NO STATUS";
+    TOrderListItemDto orderList;
+    dto.orders = { orderList };
+    setOrdersListDto(
+        dto, { QPointF(54.848820, 83.092405), QPointF(54.847297, 83.092242) }
+    );
+    setStarted(true);
+    emit committed();
 }

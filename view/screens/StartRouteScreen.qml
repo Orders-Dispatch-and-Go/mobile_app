@@ -31,11 +31,7 @@ Kirigami.ScrollablePage {
 
                 const price = order.usePrice ? Number(order.price) : -1;
 
-                const date = order.useRouteDate ? order.routeDate : "";
-                console.log(w, h, d);
-                console.log(price, date);
-
-                backend.setupFilter(w, h, d, price, date);
+                backend.setupFilter(w, h, d, price);
                 backend.startTrip(order.beginLat, order.beginLon, order.endLat, order.endLon);
             }
         }

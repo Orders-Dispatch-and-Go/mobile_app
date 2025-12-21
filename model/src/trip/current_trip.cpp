@@ -48,6 +48,7 @@ void TCurrentTrip::startTrip(
 
     connect(
         reply, &reply_t::reply_error, this, [reply, this](const QString &err) {
+            qDebug() << "error: " << err;
             emit tripError(err);
             reply->deleteLater();
         }

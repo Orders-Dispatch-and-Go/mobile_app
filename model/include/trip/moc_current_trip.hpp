@@ -29,10 +29,7 @@ public:
         qreal beginLat, qreal beginLon, qreal endLat, qreal endLon
     ) override;
 
-    void commitChoosen() override {
-        setStarted(true);
-        emit committed();
-    }
+    void commitChoosen() override;
 
 private:
 };

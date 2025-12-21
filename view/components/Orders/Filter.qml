@@ -13,9 +13,6 @@ ColumnLayout {
     property alias usePrice: minPrice.used
     property alias price: minPrice.value
 
-    property alias useRouteDate: routeDate.used
-    property alias routeDate: routeDate.value
-
     property alias beginLat: wayButton.beginLat
     property alias beginLon: wayButton.beginLon
     property alias endLat: wayButton.endLat
@@ -35,10 +32,6 @@ ColumnLayout {
     }
     MinPrice {
         id: minPrice
-        Layout.fillWidth: true
-    }
-    RouteDate {
-        id: routeDate
         Layout.fillWidth: true
     }
 }

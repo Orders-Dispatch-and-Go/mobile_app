@@ -34,6 +34,7 @@ qt_add_executable(appuntitled
     model/include/dto/create_trip_dto.hpp
     model/include/dto/id_dto.hpp
     model/include/dto/order_dto.hpp
+    model/include/dto/orders_list_dto.hpp
     model/include/dto/station_dto.hpp
     model/include/dto/user_dto.hpp
 

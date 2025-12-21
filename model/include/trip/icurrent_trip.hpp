@@ -5,11 +5,14 @@
 #include <numeric>
 
 #include <qcontainerfwd.h>
+#include <qjsonobject.h>
 #include <qlogging.h>
 #include <qtmetamacros.h>
+#include <qvariant.h>
 
 #include "dto/create_trip_dto.hpp"
 #include "dto/order_dto.hpp"
+#include "dto/orders_list_dto.hpp"
 #include "trip/routeinfo.hpp"
 
 
@@ -48,12 +51,9 @@ public:
     Q_INVOKABLE void resetFilter() {
         m_dimensions = std::nullopt;
         m_price      = std::nullopt;
-        m_date       = std::nullopt;
     }
 
-    Q_INVOKABLE void setFilter(
-        int width, int height, int depth, int price, const QString &date
-    ) {
+    Q_INVOKABLE void setFilter(int width, int height, int depth, int price) {
         if (width > 0 && height > 0 && depth > 0) {
             m_dimensions = { width, height, depth };
         }
@@ -65,12 +65,6 @@ public:
         }
         else {
             m_price = std::nullopt;
-        }
-        if (!date.isEmpty()) {
-            m_date = date;
-        }
-        else {
-            m_date = std::nullopt;
         }
     }
 
@@ -96,6 +90,33 @@ public:
             m_choosenOrderIds.push_back(m_relevantOrders[index].uuid);
             m_relevantOrders.remove(index);
         }
+    }
+
+    void setOrdersListDto(
+        const TOrdersListDto &dto, const QList<QPointF> &waypoints
+    ) {
+        m_ordersListDto = dto;
+        m_waypoints     = waypoints;
+    }
+
+    void clearOrdersList() {
+        m_ordersListDto = std::nullopt;
+        m_waypoints.clear();
+    }
+
+    [[nodiscard]] QList<QPointF> waypoints() const {
+        return m_waypoints;
+    }
+    [[nodiscard]] QVariantList ordersListDto() const {
+        if (m_ordersListDto.has_value()) {
+            QVariantList list;
+            const auto &objects = m_ordersListDto.value().ordersJson();
+            for (const auto &object : objects) {
+                list.append(QVariant::fromValue(object));
+            }
+            return list;
+        }
+        return {};
     }
 
     void setStarted(bool started) {
@@ -138,10 +159,6 @@ public:
         return m_price;
     }
 
-    [[nodiscard]] std::optional<QString> date() const {
-        return m_date;
-    }
-
 signals:
     void committed();
     void tripCreated(const QString &id);
@@ -171,8 +188,6 @@ private:
      */
     std::optional<int> m_price;    // NOLINT
 
-    /**
-     * @brief Ограничения по дате
-     */
-    std::optional<QString> m_date;    // NOLINT
+    std::optional<TOrdersListDto> m_ordersListDto = std::nullopt;
+    QList<QPointF> m_waypoints;
 };

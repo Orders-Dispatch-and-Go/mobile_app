@@ -54,6 +54,8 @@ class backend_t : public QObject {
     )
     Q_PROPERTY(int screenId READ screenId)
 
+    Q_PROPERTY(QList<QPointF> waypoints READ getWaypoints NOTIFY routeUpdated)
+
 public:
     explicit backend_t(QObject *parent = nullptr);
 
@@ -81,9 +83,7 @@ public:
     Q_INVOKABLE void switchScreen(int screen_id);
 
 
-    Q_INVOKABLE void setupFilter(
-        int width, int height, int depth, int price, const QString &date
-    );
+    Q_INVOKABLE void setupFilter(int width, int height, int depth, int price);
 
     Q_INVOKABLE void
     startTrip(qreal beginLat, qreal beginLon, qreal endLat, qreal endLon);
@@ -93,11 +93,18 @@ public:
     Q_INVOKABLE void acceptRelevant(int index);
     Q_INVOKABLE void rejectRelevant(int index);
 
+    Q_INVOKABLE void commitTrip();
+
     Q_INVOKABLE [[nodiscard]] bool isPossibleMove(int screenId) const {
         return m_state.isPossibleMove(screenId);
     }
 
     Q_INVOKABLE [[nodiscard]] int screenId() const;
+
+    /// маршрут
+    [[nodiscard]] QList<QPointF> getWaypoints() const;
+    /// список dto остановок
+    [[nodiscard]] QVariantList getStops() const;
 
 private:
     Q_DISABLE_COPY_MOVE(backend_t)
@@ -119,7 +126,10 @@ signals:
     void userLoggedOut();
     void userLoginFailed();
 
+    /// сигнал об изменении списка заказов
     void ordersUpdated();
+    /// сигнал об изменении состояния маршрута
+    void routeUpdated();
 };
 
 

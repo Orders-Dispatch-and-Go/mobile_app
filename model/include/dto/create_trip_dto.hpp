@@ -5,6 +5,8 @@
 
 #include <qdatetime.h>
 #include <qjsonobject.h>
+#include <qlogging.h>
+#include <qqmlprivate.h>
 
 #include "dto/abstract_dto.hpp"
 #include "dto/station_dto.hpp"
@@ -21,6 +23,7 @@ public:
         createObject["toStation"]   = to.toJsonObject();
         createObject["startedAt"] =
             QDateTime::currentDateTimeUtc().toString(Qt::ISODate);
+        qDebug() << createObject;
         return createObject;
     }
 
