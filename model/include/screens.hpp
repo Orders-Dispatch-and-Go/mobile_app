@@ -4,7 +4,7 @@
 
 #include <qtmetamacros.h>
 
-class screens_t : public QObject {
+class TScreens : public QObject {
     Q_OBJECT
 
     Q_PROPERTY(int login READ login)
@@ -17,7 +17,7 @@ class screens_t : public QObject {
     Q_PROPERTY(int currentRoute READ currentroute)
 
 public:
-    enum screens_e {
+    enum EScreens {
         pInvalid      = 0,
         pLogin        = 1,
         pStartRoute   = 2,
@@ -27,9 +27,9 @@ public:
         pCurrentRoute = 6,
         pProfile      = 7
     };
-    Q_ENUM(screens_e)    // Делаем enum доступным в QML
+    Q_ENUM(EScreens)    // Делаем enum доступным в QML
 
-    explicit screens_t(QObject *parent = nullptr) : QObject(parent) { }
+    explicit TScreens(QObject *parent = nullptr) : QObject(parent) { }
 
     static int login() {
         return pLogin;

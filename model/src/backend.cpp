@@ -15,7 +15,7 @@
 #include "trip/icurrent_trip.hpp"
 #include "trip/moc_current_trip.hpp"
 
-backend_t::backend_t(QObject *parent) : QObject(parent) {
+TBackend::TBackend(QObject *parent) : QObject(parent) {
     m_httpClient     = new THttpClient(this);                      // NOLINT
     m_currentTripPtr = new TCurrentTripMoc(m_httpClient, this);    // NOLINT qt
     m_userInfoPtr    = new TUserInfo(this);                        // NOLINT qt
@@ -26,18 +26,18 @@ backend_t::backend_t(QObject *parent) : QObject(parent) {
         &ICurrentTrip::tripCreated,
         this,
         [this](const QString &tripId) {
-            m_state.setCurrentScreen(screens_t::pGetOrders);
+            m_state.setCurrentScreen(TScreens::pGetOrders);
             emit screenSwitched();
         }
     );
     connect(m_currentTripPtr, &ICurrentTrip::committed, this, [this]() {
-        m_state.setCurrentScreen(screens_t::pCurrentRoute);
+        m_state.setCurrentScreen(TScreens::pCurrentRoute);
         emit routeUpdated();
         emit screenSwitched();
     });
 }
 
-void backend_t::login(const QString &email, const QString &password) {
+void TBackend::login(const QString &email, const QString &password) {
     m_auth_model->login(email, password);
 
     connect(m_auth_model, &IAuth::userInfoRecv, this, [this]() {
@@ -45,7 +45,7 @@ void backend_t::login(const QString &email, const QString &password) {
         if (m_userInfoPtr->isValid()) {
             qDebug() << m_userInfoPtr->getId();
             qDebug() << m_userInfoPtr->getAuthToken();
-            m_state.setCurrentScreen(screens_t::pStartRoute);
+            m_state.setCurrentScreen(TScreens::pStartRoute);
             emit screenSwitched();
             emit userLoggedIn();
             return;
@@ -63,13 +63,13 @@ void backend_t::login(const QString &email, const QString &password) {
     m_profile_model->load();
 }
 
-void backend_t::logout() {
+void TBackend::logout() {
     m_auth_model->logout();
 
     connect(m_auth_model, &IAuth::successLogout, this, [this] {
         qDebug() << "Logout successfully";
         emit userLoggedOut();
-        m_state.setCurrentScreen(screens_t::pLogin);
+        m_state.setCurrentScreen(TScreens::pLogin);
         emit screenSwitched();
     });
 
@@ -79,71 +79,71 @@ void backend_t::logout() {
     });
 }
 
-void backend_t::set_user_email(const QString &email) {
+void TBackend::set_user_email(const QString &email) {
     m_userInfoPtr->setEmail(email);
     emit userUpdated();
 }
 
-void backend_t::set_user_surname(const QString &surname) {
+void TBackend::set_user_surname(const QString &surname) {
     m_userInfoPtr->setSurname(surname);
     emit userUpdated();
 }
 
-void backend_t::set_user_name(const QString &name) {
+void TBackend::set_user_name(const QString &name) {
     m_userInfoPtr->setName(name);
     emit userUpdated();
 }
 
-void backend_t::set_user_patronymic(const QString &patronymic) {
+void TBackend::set_user_patronymic(const QString &patronymic) {
     m_userInfoPtr->setPatronymic(patronymic);
     emit userUpdated();
 }
 
-void backend_t::set_user_seria(int s) {
+void TBackend::set_user_seria(int s) {
     m_profile_model->set_seria(s);
     emit userUpdated();
 }
 
-void backend_t::set_user_number(int n) {
+void TBackend::set_user_number(int n) {
     m_profile_model->set_number(n);
     emit userUpdated();
 }
 
-void backend_t::set_user_address(const QString &address) {
+void TBackend::set_user_address(const QString &address) {
     m_profile_model->set_address(address);
     emit userUpdated();
 }
 
 
-QString backend_t::user_email() const {
+QString TBackend::user_email() const {
     return m_userInfoPtr->getEmail();
 }
 
-QString backend_t::user_surname() const {
+QString TBackend::user_surname() const {
     return m_userInfoPtr->getSurname();
 }
 
-QString backend_t::user_name() const {
+QString TBackend::user_name() const {
     return m_userInfoPtr->getName();
 }
 
-QString backend_t::user_patronymic() const {
+QString TBackend::user_patronymic() const {
     return m_userInfoPtr->getPatronymic();
 }
 
-int backend_t::user_seria() const {
+int TBackend::user_seria() const {
     return m_profile_model->seria();
 }
 
-int backend_t::user_number() const {
+int TBackend::user_number() const {
     return m_profile_model->number();
 }
 
-QString backend_t::user_address() const {
+QString TBackend::user_address() const {
     return m_profile_model->address();
 }
 
-void backend_t::switchScreen(int screen_id) {
+void TBackend::switchScreen(int screen_id) {
     if (!m_state.isPossibleMove(screen_id)) {
         return;
     };
@@ -151,18 +151,18 @@ void backend_t::switchScreen(int screen_id) {
     emit screenSwitched();
 }
 
-void backend_t::setupFilter(int width, int height, int depth, int price) {
+void TBackend::setupFilter(int width, int height, int depth, int price) {
     m_currentTripPtr->setFilter(width, height, depth, price);
 }
 
-void backend_t::startTrip(
+void TBackend::startTrip(
     qreal beginLat, qreal beginLon, qreal endLat, qreal endLon
 ) {
     m_currentTripPtr->startTrip(beginLat, beginLon, endLat, endLon);
 }
 
 
-[[nodiscard]] QVariantList backend_t::getOrders() const {
+[[nodiscard]] QVariantList TBackend::getOrders() const {
     QVariantList list;
     const auto orders = m_currentTripPtr->orders();
     for (const TOrderDto &o : orders) {
@@ -171,7 +171,7 @@ void backend_t::startTrip(
     return list;
 }
 
-[[nodiscard]] QVariantList backend_t::getRelevantOrders() const {
+[[nodiscard]] QVariantList TBackend::getRelevantOrders() const {
     QVariantList list;
     const auto orders = m_currentTripPtr->relevantOrders();
     for (const TOrderDto &o : orders) {
@@ -180,29 +180,29 @@ void backend_t::startTrip(
     return list;
 }
 
-void backend_t::acceptRelevant(int index) {
+void TBackend::acceptRelevant(int index) {
     m_currentTripPtr->chooseOrderFormRelative(index);
     emit ordersUpdated();
 }
 
-void backend_t::rejectRelevant(int index) {
+void TBackend::rejectRelevant(int index) {
     m_currentTripPtr->removeOrderFormRelative(index);
     emit ordersUpdated();
 }
 
-void backend_t::commitTrip() {
+void TBackend::commitTrip() {
     m_currentTripPtr->commitChoosen();
     emit routeUpdated();
 }
 
-int backend_t::screenId() const {
+int TBackend::screenId() const {
     return m_state.currentScreen();
 }
 
-QList<QPointF> backend_t::getWaypoints() const {
+QList<QPointF> TBackend::getWaypoints() const {
     return m_currentTripPtr->waypoints();
 }
 
-QVariantList backend_t::getStops() const {
+QVariantList TBackend::getStops() const {
     return m_currentTripPtr->ordersListDto();
 }

@@ -22,7 +22,7 @@
  * @brief Backend class for the application.
  * Available from any QML component as "backend" property.
  */
-class backend_t : public QObject {
+class TBackend : public QObject {
     Q_OBJECT
     QML_ELEMENT
 
@@ -58,9 +58,9 @@ class backend_t : public QObject {
     Q_PROPERTY(QVariantList stops READ getStops NOTIFY routeUpdated)
 
 public:
-    explicit backend_t(QObject *parent = nullptr);
+    explicit TBackend(QObject *parent = nullptr);
 
-    ~backend_t() override = default;
+    ~TBackend() override = default;
 
     Q_INVOKABLE void login(const QString &email, const QString &password);
     Q_INVOKABLE void logout();
@@ -108,7 +108,7 @@ public:
     [[nodiscard]] QVariantList getStops() const;
 
 private:
-    Q_DISABLE_COPY_MOVE(backend_t)
+    Q_DISABLE_COPY_MOVE(TBackend)
     THttpClient *m_httpClient      = nullptr;
     TUserInfo *m_userInfoPtr       = nullptr;    // владелец - Auth
     ICurrentTrip *m_currentTripPtr = nullptr;

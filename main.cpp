@@ -21,9 +21,9 @@ int main(int argc, char *argv[]) {
         Qt::QueuedConnection
     );
 
-    auto *backend = new backend_t(&app);           // NOLINT
+    auto *backend = new TBackend(&app);            // NOLINT
     auto *theme   = new theme_provider_t(&app);    // NOLINT
-    auto *screens = new screens_t(&app);           // NOLINT
+    auto *screens = new TScreens(&app);            // NOLINT
     theme->set_light_theme(false);
 
     engine.rootContext()->setContextProperty("theme", theme);

@@ -15,8 +15,8 @@ class state_t : public QObject {
     Q_PROPERTY(int currentScreen READ currentScreen)
 
 private:
-    screens_t::screens_e m_currentScreen = screens_t::pLogin;
-    bool m_isLoginned                    = false;
+    TScreens::EScreens m_currentScreen = TScreens::pLogin;
+    bool m_isLoginned                  = false;
     QList<QString> m_currentOrders;
 
 public:
@@ -32,7 +32,7 @@ public:
         m_currentOrders.removeOne(orderId);
     }
     Q_INVOKABLE void setCurrentScreen(int screenId) {
-        m_currentScreen = static_cast<screens_t::screens_e>(screenId);
+        m_currentScreen = static_cast<TScreens::EScreens>(screenId);
     }
 
     [[nodiscard]] int currentScreen() const {

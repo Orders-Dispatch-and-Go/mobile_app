@@ -11,27 +11,27 @@ bool state_t::isPossibleMove(int screenId) const {
         return true;
     }
     switch (screenId) {
-    case screens_t::pInvalid:
-    case screens_t::pLogin:
+    case TScreens::pInvalid:
+    case TScreens::pLogin:
         return true;
-    case screens_t::pStartRoute:
-        return m_isLoginned && (m_currentScreen == screens_t::pLogin)
-               || (m_currentScreen == screens_t::pLogin)
-               || (m_currentScreen == screens_t::pFinishRoute);
-    case screens_t::pProfile:
-    case screens_t::pGetOrders:
+    case TScreens::pStartRoute:
+        return m_isLoginned && (m_currentScreen == TScreens::pLogin)
+               || (m_currentScreen == TScreens::pLogin)
+               || (m_currentScreen == TScreens::pFinishRoute);
+    case TScreens::pProfile:
+    case TScreens::pGetOrders:
         // этот экран доступен только зарегестрированным
-        return m_isLoginned && (m_currentScreen == screens_t::pStartRoute);
-    case screens_t::pFinishOrder:
+        return m_isLoginned && (m_currentScreen == TScreens::pStartRoute);
+    case TScreens::pFinishOrder:
         // этот экран доступен только зарегестрированным и если есть заказы
-        return m_isLoginned && (m_currentScreen == screens_t::pCurrentRoute)
+        return m_isLoginned && (m_currentScreen == TScreens::pCurrentRoute)
                && !m_currentOrders.empty();
-    case screens_t::pFinishRoute:
+    case TScreens::pFinishRoute:
         return m_isLoginned && m_currentOrders.empty();
-    case screens_t::pCurrentRoute:
+    case TScreens::pCurrentRoute:
         return m_isLoginned && !m_currentOrders.empty()
-               && (m_currentScreen == screens_t::pGetOrders
-                   || m_currentScreen == screens_t::pFinishOrder);
+               && (m_currentScreen == TScreens::pGetOrders
+                   || m_currentScreen == TScreens::pFinishOrder);
     default:
         return false;
     }
