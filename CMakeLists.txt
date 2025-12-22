@@ -88,7 +88,6 @@ qt_add_qml_module(appuntitled
         view/screens/StartRouteScreen.qml
         view/screens/GetOrdersScreen.qml
         view/screens/FinishRouteScreen.qml
-        view/screens/FinishOrderScreen.qml
         view/screens/RouteScreen.qml
 
         view/components/Map/RouteDialog.qml
@@ -112,6 +111,7 @@ qt_add_qml_module(appuntitled
         view/components/Orders/Filter.qml
         view/components/Orders/RouteDate.qml
         view/components/Orders/RouteHighlight.qml
+        view/components/Orders/FinishOrderDialog.qml
 
     RESOURCES
         res.qrc

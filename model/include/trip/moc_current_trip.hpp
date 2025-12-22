@@ -4,6 +4,7 @@
 #include <QObject>
 
 #include <qcontainerfwd.h>
+#include <qlogging.h>
 #include <qtmetamacros.h>
 
 #include "dto/create_trip_dto.hpp"
@@ -28,6 +29,16 @@ public:
     void startTrip(
         qreal beginLat, qreal beginLon, qreal endLat, qreal endLon
     ) override;
+
+    bool enterCode(int index, const QString &code) override;
+
+    void completeOrder(int index) override {
+        finishOneOrder(index);
+    }
+
+    void cancelOrder(int index) override {
+        finishOneOrder(index);
+    }
 
     void commitChoosen() override;
 

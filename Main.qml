@@ -13,26 +13,6 @@ Kirigami.ApplicationWindow {
         title: "GruzoWiki"
         actions: [
             Kirigami.Action {
-                text: qsTr("TEST Start new route")
-                onTriggered: backend.switchScreen(screens.startRoute)
-            },
-            Kirigami.Action {
-                text: qsTr("TEST get order")
-                onTriggered: backend.switchScreen(screens.getOrders)
-            },
-            Kirigami.Action {
-                text: qsTr("TEST current route")
-                onTriggered: backend.switchScreen(screens.currentRoute)
-            },
-            Kirigami.Action {
-                text: qsTr("TEST finishOrder")
-                onTriggered: backend.switchScreen(screens.finishOrder)
-            },
-            Kirigami.Action {
-                text: qsTr("TEST finish route screen")
-                onTriggered: backend.switchScreen(screens.finishRoute)
-            },
-            Kirigami.Action {
                 text: "Profile"
                 onTriggered: backend.switchScreen(screens.profile)
             },
@@ -69,10 +49,6 @@ Kirigami.ApplicationWindow {
         FinishRouteScreen {}
     }
     Component {
-        id: finishOrderScreen
-        FinishOrderScreen {}
-    }
-    Component {
         id: currentRouteScreen
         RouteScreen {}
     }
@@ -99,10 +75,6 @@ Kirigami.ApplicationWindow {
         case Number(screens.startRoute):
             pageStack.clear();
             pageStack.push(startRouteScreen);
-            break;
-        case Number(screens.finishOrder):
-            pageStack.clear();
-            pageStack.push(finishOrderScreen);
             break;
         case Number(screens.finishRoute):
             pageStack.clear();

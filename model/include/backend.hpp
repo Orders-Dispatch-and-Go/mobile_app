@@ -56,6 +56,8 @@ class TBackend : public QObject {
 
     Q_PROPERTY(QList<QPointF> waypoints READ getWaypoints NOTIFY routeUpdated)
     Q_PROPERTY(QVariantList stops READ getStops NOTIFY routeUpdated)
+    Q_PROPERTY(QList<bool> finished READ finishedOrders NOTIFY routeUpdated)
+    Q_PROPERTY(bool hasOrders READ hasOrders NOTIFY routeUpdated)
 
 public:
     explicit TBackend(QObject *parent = nullptr);
@@ -106,6 +108,14 @@ public:
     [[nodiscard]] QList<QPointF> getWaypoints() const;
     /// список dto остановок
     [[nodiscard]] QVariantList getStops() const;
+    [[nodiscard]] QList<bool> finishedOrders() const;
+    Q_INVOKABLE void completeOrder(int index);
+    Q_INVOKABLE void cancelOrder(int index);
+    [[nodiscard]] bool hasOrders() const;
+
+    Q_INVOKABLE void enterCode(int index, const QString &code);
+
+    void onRouteUpdated();
 
 private:
     Q_DISABLE_COPY_MOVE(TBackend)

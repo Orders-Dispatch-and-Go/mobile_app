@@ -35,6 +35,7 @@ TBackend::TBackend(QObject *parent) : QObject(parent) {
         emit routeUpdated();
         emit screenSwitched();
     });
+    connect(this, &TBackend::routeUpdated, this, &TBackend::onRouteUpdated);
 }
 
 void TBackend::login(const QString &email, const QString &password) {
@@ -205,4 +206,46 @@ QList<QPointF> TBackend::getWaypoints() const {
 
 QVariantList TBackend::getStops() const {
     return m_currentTripPtr->ordersListDto();
+}
+
+QList<bool> TBackend::finishedOrders() const {
+    return m_currentTripPtr->finishedOrders();
+}
+
+Q_INVOKABLE void TBackend::completeOrder(int index) {
+    qDebug() << "completeOrder " << index;
+    m_currentTripPtr->completeOrder(index);
+    emit routeUpdated();
+}
+
+Q_INVOKABLE void TBackend::cancelOrder(int index) {
+    m_currentTripPtr->cancelOrder(index);
+    emit routeUpdated();
+}
+
+bool TBackend::hasOrders() const {
+    const auto finished = m_currentTripPtr->finishedOrders();
+    qDebug() << finished;
+    for (int i = 0; i < finished.size(); ++i) {
+        if (!finished[i])
+            return true;
+    }
+    return false;
+}
+
+
+void TBackend::enterCode(int index, const QString &code) {
+    m_currentTripPtr->enterCode(index, code);
+    qDebug() << "enterCode " << code;
+    m_currentTripPtr->completeOrder(index);
+    emit routeUpdated();
+}
+
+void TBackend::onRouteUpdated() {
+    qDebug() << "onRouteUpdated";
+    if (!hasOrders()) {
+        qDebug() << "No orders";
+        m_state.setCurrentScreen(TScreens::pFinishRoute);
+        emit screenSwitched();
+    }
 }

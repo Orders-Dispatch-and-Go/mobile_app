@@ -97,3 +97,17 @@ void TCurrentTripMoc::commitChoosen() {
     setStarted(true);
     emit committed();
 }
+
+bool TCurrentTripMoc::enterCode(int index, const QString &code) {
+    const auto dto = ordersListDtoObject();
+    if (!dto.has_value()) {
+        qDebug() << "no dto";
+        return false;
+    }
+    if (index < 0 || index >= dto.value().orders.size()) {
+        qDebug() << "invalid index";
+        return false;
+    }
+    const auto &order = dto.value().orders[index];
+    return order.code == code;
+}

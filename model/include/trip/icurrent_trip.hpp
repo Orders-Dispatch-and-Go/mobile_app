@@ -92,15 +92,36 @@ public:
         }
     }
 
+    void finishOneOrder(int index) {
+        if (index >= 0 && index < m_orders.size()) {
+            m_finished[index] = true;
+        }
+    }
+
+    virtual bool enterCode(int index, const QString &code) = 0;
+    virtual void completeOrder(int index)                  = 0;
+    virtual void cancelOrder(int index)                    = 0;
+
+    [[nodiscard]] QList<bool> finishedOrders() const {
+        return m_finished;
+    }
+
+    [[nodiscard]] std::optional<TOrdersListDto> ordersListDtoObject() const {
+        return m_ordersListDto;
+    }
+
     void setOrdersListDto(
         const TOrdersListDto &dto, const QList<QPointF> &waypoints
     ) {
         m_ordersListDto = dto;
         m_waypoints     = waypoints;
+        m_finished.resize(dto.orders.size());
+        m_finished.fill(false);
     }
 
     void clearOrdersList() {
         m_ordersListDto = std::nullopt;
+        m_finished.clear();
         m_waypoints.clear();
     }
 
@@ -189,5 +210,6 @@ private:
     std::optional<int> m_price;    // NOLINT
 
     std::optional<TOrdersListDto> m_ordersListDto = std::nullopt;
+    QList<bool> m_finished;
     QList<QPointF> m_waypoints;
 };

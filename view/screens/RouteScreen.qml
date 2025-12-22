@@ -78,7 +78,6 @@ Kirigami.Page {
             }
         }
 
-        /* Repeater для WayPoint */
         Repeater {
             model: root.stops
             delegate: WayPoint {
@@ -91,7 +90,7 @@ Kirigami.Page {
             model: root.stops
             delegate: WayPoint {
                 index: model.index
-                color: Kirigami.Theme.positiveTextColor
+                color: backend.finished ? Kirigami.Theme.positiveTextColor : Kirigami.Theme.negativeTextColor
                 borderColor: "black"
                 coordinate: QtPositioning.coordinate(modelData.toStation.coords.lat, modelData.toStation.coords.lon)
                 onClicked: index => {
@@ -122,10 +121,27 @@ Kirigami.Page {
         id: orderDialog
         visible: false
         width: parent.width
-        height: parent.height
+        height: 400
+
+        x: root.x
+        y: root.y + root.height - height
         dto: root.selectedStop >= 0 ? root.stops[root.selectedStop] : null
-        onAccepted: {
-            console.log("Accepted");
+        onComplete: {
+            console.log("onComplete");
+            finishOrderDialog.open();
         }
+        onCancel: {
+            console.log("onCanceled");
+            backend.cancelOrder(root.selectedStop);
+        }
+    }
+    FinishOrderDialog {
+        id: finishOrderDialog
+        visible: false
+        width: parent.width
+        height: parent.height
+
+        dto: root.selectedStop >= 0 ? root.stops[root.selectedStop] : null
+        index: root.selectedStop
     }
 }

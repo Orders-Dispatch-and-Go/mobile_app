@@ -15,14 +15,30 @@ Kirigami.Dialog {
     property int index: -1
     property var dto
 
-    signal commit(int i)
+    signal complete(int i)
     signal cancel(int i)
 
-    contentItem: Order {
+    contentItem: ColumnLayout {
         anchors.fill: parent
         anchors.margins: Kirigami.Units.largeSpacing * 3
         anchors.topMargin: Kirigami.Units.largeSpacing * 5
-        dto: root.dto
+        spacing: Kirigami.Units.largeSpacing
+        Kirigami.Heading {
+            text: "#" + ("" + dto.id).split("-")[1]
+        }
+        Order {
+            dto: root.dto ? {
+                "price": root.dto.price,
+                "start": {
+                    "address": root.dto.fromStation.address,
+                    "coords": root.dto.fromStation.coords
+                },
+                "finish": {
+                    "address": root.dto.toStation.address,
+                    "coords": root.dto.toStation.coords
+                }
+            } : null
+        }
     }
 
     customFooterActions: [
@@ -37,7 +53,7 @@ Kirigami.Dialog {
             text: "Закончить"
             onTriggered: {
                 root.close();
-                root.commit(root.index);
+                root.complete(root.index);
             }
         }
     ]

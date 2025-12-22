@@ -55,6 +55,21 @@ void TCurrentTrip::startTrip(
     );
 }
 
+bool TCurrentTrip::enterCode(int index, const QString &code) {
+    // TODO
+    return true;
+}
+
+
+void TCurrentTrip::completeOrder(int index) {
+    // TODO: make request
+    finishOneOrder(index);
+}
+
+void TCurrentTrip::cancelOrder(int index) {
+    // TODO: make request
+    finishOneOrder(index);
+}
 
 void TCurrentTrip::commitChoosen() {
     setStarted(true);

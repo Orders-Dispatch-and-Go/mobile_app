@@ -3,9 +3,11 @@ import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15
 import org.kde.kirigami 2.20 as Kirigami
 
-Kirigami.Page {
+Kirigami.Dialog {
     id: root
-    title: qsTr("Finish order #") + backend.orderToFinish
+    property var dto
+    property int index
+    title: qsTr("Finish order #") + dto.id
 
     property int pinLength: 8
     property string pin: ""
@@ -99,7 +101,7 @@ Kirigami.Page {
             width: parent.width
             height: 60
             radius: 10
-            border.width: 1
+            color: Kirigami.Theme.backgroundColor
 
             Text {
                 anchors.centerIn: parent
@@ -152,7 +154,8 @@ Kirigami.Page {
     Connections {
         target: root
         onPinAccepted: {
-            console.log("PIN accepted:", value);
+            backend.enterCode(index, pin);
+            root.close();
         }
     }
 }
