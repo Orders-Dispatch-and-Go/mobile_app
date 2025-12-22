@@ -10,15 +10,35 @@ import untitled
 Kirigami.Dialog {
     id: root
     modal: true
-    title: "Выбор точки"
+    title: "Завершить заказ"
 
-    standardButtons: Kirigami.Dialog.Ok
-
+    property int index: -1
     property var dto
+
+    signal commit(int i)
+    signal cancel(int i)
 
     contentItem: Order {
         anchors.fill: parent
-        anchors.margins: Kirigami.Units.largeSpacing
+        anchors.margins: Kirigami.Units.largeSpacing * 3
+        anchors.topMargin: Kirigami.Units.largeSpacing * 5
         dto: root.dto
     }
+
+    customFooterActions: [
+        Kirigami.Action {
+            text: "Отменить"
+            onTriggered: {
+                root.close();
+                root.cancel(root.index);
+            }
+        },
+        Kirigami.Action {
+            text: "Закончить"
+            onTriggered: {
+                root.close();
+                root.commit(root.index);
+            }
+        }
+    ]
 }

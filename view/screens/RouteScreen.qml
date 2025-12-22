@@ -16,6 +16,8 @@ Kirigami.Page {
     property var routePath: waypoints.map(p => QtPositioning.coordinate(p.x, p.y))
     property var stops: backend.stops
 
+    property int selectedStop: -1
+
     Component.onCompleted: {
         if (routePath.length > 0) {
             map.center = routePath[0];
@@ -93,6 +95,7 @@ Kirigami.Page {
                 borderColor: "black"
                 coordinate: QtPositioning.coordinate(modelData.toStation.coords.lat, modelData.toStation.coords.lon)
                 onClicked: index => {
+                    root.selectedStop = index;
                     orderDialog.open(); // TODO: передать dto
                 }
             }
@@ -120,10 +123,7 @@ Kirigami.Page {
         visible: false
         width: parent.width
         height: parent.height
-        dto: {
-            id: 42;
-            description: "Sample order description";
-        }
+        dto: root.selectedStop >= 0 ? root.stops[root.selectedStop] : null
         onAccepted: {
             console.log("Accepted");
         }
