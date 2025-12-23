@@ -7,7 +7,7 @@ import untitled
 
 Kirigami.Page {
     id: root
-    title: qsTr("Choose orders for trip")
+    title: qsTr("Выбор заказов")
 
     property var orders: backend.relevantOrders
     property var gotOrders: backend.userOrders
@@ -70,12 +70,14 @@ Kirigami.Page {
                     anchors.fill: parent
                     visible: root.orders.length === 0 && root.gotOrders.length === 0
                     Text {
-                        text: qsTr("No orders found")
+                        Layout.fillWidth: true
+                        text: qsTr("Не найдено заказов")
                     }
                     Button {
-                        text: qsTr("back")
+                        Layout.fillWidth: true
+                        text: qsTr("Назад")
                         onClicked: {
-                            backend.switchScreen(screens.pStartRoute);
+                            backend.startNewTrip();
                         }
                     }
                 }
@@ -83,7 +85,7 @@ Kirigami.Page {
         }
 
         Button {
-            text: qsTr("Start")
+            text: qsTr("Начать")
             Layout.fillWidth: true
             enabled: root.gotOrders.length > 0
             onClicked: {

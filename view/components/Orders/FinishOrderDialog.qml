@@ -7,7 +7,7 @@ Kirigami.Dialog {
     id: root
     property var dto
     property int index
-    title: qsTr("Finish order #") + ("" + dto.id).split("-")[1]
+    title: qsTr("Заказ #") + ("" + dto.id).split("-")[1]
 
     property int pinLength: 8
     property string pin: ""
@@ -160,7 +160,7 @@ Kirigami.Dialog {
             }
 
             Button {
-                text: qsTr("OK")
+                text: qsTr("Ввести")
                 implicitWidth: 90
                 implicitHeight: 70
                 onClicked: {

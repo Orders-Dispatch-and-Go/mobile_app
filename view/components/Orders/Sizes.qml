@@ -17,7 +17,7 @@ ColumnLayout {
 
     CheckBox {
         id: checkBox
-        text: qsTr("Use Dimensions")
+        text: qsTr("Допустимые размеры")
         checked: true
         Layout.fillWidth: true
     }
@@ -27,17 +27,17 @@ ColumnLayout {
         Dimension {
             id: widthDim
             Layout.fillWidth: true
-            title: qsTr("Width")
+            title: qsTr("Ширина")
         }
         Dimension {
             id: heightDim
             Layout.fillWidth: true
-            title: qsTr("Height")
+            title: qsTr("Высота")
         }
         Dimension {
             id: depthDim
             Layout.fillWidth: true
-            title: qsTr("Depth")
+            title: qsTr("Глубина")
         }
     }
 }

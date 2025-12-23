@@ -15,7 +15,7 @@ ColumnLayout {
 
     CheckBox {
         id: checkBox
-        text: qsTr("Set minimum price")
+        text: qsTr("Установить минимальную цену")
         checked: true
         Layout.fillWidth: true
     }
@@ -24,7 +24,7 @@ ColumnLayout {
         Layout.fillWidth: true
         RowLayout {
             Label {
-                text: qsTr("price: ")
+                text: qsTr("Цена: ")
             }
             Item {
                 Layout.fillWidth: true

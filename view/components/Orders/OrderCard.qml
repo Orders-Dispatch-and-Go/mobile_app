@@ -21,12 +21,12 @@ Kirigami.Card {
         }
         RowLayout {
             Button {
-                text: qsTr("reject")
+                text: qsTr("Отклонить")
                 icon.name: "dialog-cancel"
                 onClicked: root.onRejected()
             }
             Button {
-                text: qsTr("accept")
+                text: qsTr("Принять")
                 icon.name: "dialog-ok"
                 onClicked: root.onAccepted()
             }

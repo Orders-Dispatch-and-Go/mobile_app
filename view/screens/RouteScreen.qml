@@ -9,7 +9,7 @@ import untitled
 
 Kirigami.Page {
     id: root
-    title: qsTr("Route")
+    title: qsTr("Поездка")
 
     /* Пример списка точек */
     property var waypoints: backend.waypoints

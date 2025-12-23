@@ -7,7 +7,7 @@ import untitled
 
 Button {
     id: root
-    readonly property string title: qsTr("Tap to choose start and finish points")
+    readonly property string title: qsTr("Нажмите, чтобы выбрать начальную и конечную точки")
 
     property int dialogWidth: root.parent.width
     property int dialogHeight: root.parent.height

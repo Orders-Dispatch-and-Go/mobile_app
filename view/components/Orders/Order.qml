@@ -36,21 +36,21 @@ ColumnLayout {
                 Layout.fillHeight: true
             }
             Kirigami.Heading {
-                text: qsTr("price") + ": " + (dto.price || 0) + " ₽"
+                text: qsTr("Вознаграждение") + ": " + (dto.price || 0) + " ₽"
                 level: 1
                 wrapMode: Text.WordWrap
             }
             Kirigami.Heading {
                 visible: dto.cost !== undefined
                 enabled: dto.cost !== undefined
-                text: qsTr("worth") + ": " + (dto.cost || 0) + " ₽"
+                text: qsTr("Стоимость") + ": " + (dto.cost || 0) + " ₽"
                 level: 3
                 wrapMode: Text.WordWrap
             }
             Kirigami.Heading {
                 visible: dto.weight !== undefined
                 enabled: dto.weight !== undefined
-                text: qsTr("weight") + ": " + (dto.weight || 0) + " kg"
+                text: qsTr("Вес") + ": " + (dto.weight || 0) + " kg"
                 level: 3
                 wrapMode: Text.WordWrap
             }

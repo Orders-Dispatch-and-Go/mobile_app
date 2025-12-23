@@ -13,11 +13,11 @@ Kirigami.ApplicationWindow {
         title: "GruzoWiki"
         actions: [
             Kirigami.Action {
-                text: "Profile"
+                text: "Профиль"
                 onTriggered: backend.switchScreen(screens.profile)
             },
             Kirigami.Action {
-                text: "Logout"
+                text: "Выйти"
                 onTriggered: backend.logout()
             }
         ]
@@ -61,7 +61,6 @@ Kirigami.ApplicationWindow {
     }
     function switchScreen() {
         const screenId = backend.screenId;
-        console.log("screen id = ", screenId);
         const id = Number(screenId);
         switch (id) {
         case Number(screens.login):

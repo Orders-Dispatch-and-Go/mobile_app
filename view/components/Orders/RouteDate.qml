@@ -13,7 +13,7 @@ ColumnLayout {
 
     CheckBox {
         id: checkBox
-        text: qsTr("Use date")
+        text: qsTr("Ограничить дату")
     }
 
     RowLayout {

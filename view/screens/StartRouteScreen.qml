@@ -7,7 +7,7 @@ import untitled
 
 Kirigami.ScrollablePage {
     id: root
-    title: qsTr("Start new route")
+    title: qsTr("Начать поездку")
     ColumnLayout {
         height: parent.height
         Filter {
@@ -20,7 +20,7 @@ Kirigami.ScrollablePage {
         }
         Button {
             Layout.fillWidth: true
-            text: "find orders"
+            text: qsTr("Найти заявки")
             onClicked: {
                 if (!order.coordsAccepted) {
                     return;

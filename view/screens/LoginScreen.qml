@@ -51,8 +51,8 @@ Kirigami.Page {
         width: parent.width * 0.8
         height: parent.height * 0.8
 
-        title: qsTr("Error")
-        subtitle: qsTr("Invalid login")
+        title: qsTr("Ошибка")
+        subtitle: qsTr("Неверный логин")
         standardButtons: Dialog.Ok
     }
 

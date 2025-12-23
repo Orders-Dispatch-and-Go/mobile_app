@@ -266,7 +266,7 @@ Kirigami.ScrollablePage {
             }
 
             Controls.Button {
-                text: qsTr("OK")
+                text: qsTr("Применить")
                 Layout.fillWidth: true
                 onClicked: page.saveChanges()
             }

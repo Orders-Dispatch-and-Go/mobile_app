@@ -13,7 +13,7 @@ RowLayout {
 
     Label {
         id: titleLabel
-        text: qsTr("width")
+        text: qsTr("ширина")
     }
     Item {
         Layout.fillWidth: true
