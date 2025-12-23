@@ -1,6 +1,7 @@
 #include "trip/current_trip.hpp"
 //
 #include <QDebug>
+#include <cstddef>
 #include <tuple>
 
 #include <qdebug.h>
@@ -14,6 +15,7 @@
 
 #include "dto/create_trip_dto.hpp"
 #include "dto/id_dto.hpp"
+#include "dto/orders_list_dto.hpp"
 #include "dto/station_dto.hpp"
 
 const QString kTripCreate = BackendConfig::Address + "/trip";
@@ -49,6 +51,7 @@ void TCurrentTrip::startTrip(
             qDebug() << idDto.toJsonObject();
             qDebug() << "=== CREATED TRIP ===";
             emit tripCreated(idDto.id);
+            setCurrentTripId(idDto.id);
             QString url      = kOrderFind + "/" + idDto.id + "?";
             auto priceFilter = price();
             if (priceFilter.has_value()) {
@@ -157,13 +160,49 @@ void TCurrentTrip::commitChoosen() {
     for (const auto &id : list) {
         uuids.append(id);
     }
-    createObject["cargoRequest"] = uuids;
+    createObject["cargoRequests"] = uuids;
+    qDebug() << "request: " << createObject;
+    qDebug() << "url: " << patchUrl;
     auto *reply =
         m_client->patch<QJsonObject, QJsonObject>(patchUrl, createObject);
 
     connect(
         reply, &reply_t::finished, this, [reply, this](const QVariant &data) {
-            emit tripStarted();
+            qDebug() << "commitChoosen finished";
+            qDebug() << "response: " << data;
+            const auto url = BackendConfig::Address + "/routes/trip/"
+                             + currentTripId() + "?withPoints=true";
+            auto *replyWay = m_client->get<QJsonObject>(url);
+
+            connect(
+                replyWay,
+                &reply_t::finished,
+                this,
+                [replyWay, this](const QVariant &data) {
+                    const auto jsonResponse = data.value<QJsonObject>();
+                    QList<QPointF> waypoints;
+                    const auto points = jsonResponse["points"].toArray();
+                    for (long i = 0; i < points.size() / 2; ++i) {
+                        const auto lat = points.at(i * 2).toDouble();
+                        const auto lon = points.at((i * 2) + 1).toDouble();
+                        waypoints.append(QPointF(lat, lon));
+                    }
+                    setOrdersListDto(TOrdersListDto(jsonResponse), waypoints);
+                    emit committed();
+                    replyWay->deleteLater();
+                }
+            );
+
+            connect(
+                replyWay,
+                &reply_t::reply_error,
+                this,
+                [replyWay, this](const QString &err) {
+                    qDebug() << "error:" << err;
+                    emit tripError(err);
+                    replyWay->deleteLater();
+                }
+            );
             reply->deleteLater();
         }
     );
@@ -175,5 +214,4 @@ void TCurrentTrip::commitChoosen() {
         }
     );
     setStarted(true);
-    emit committed();
 }

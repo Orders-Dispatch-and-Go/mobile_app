@@ -155,6 +155,10 @@ public:
         return m_currentTripId;
     }
 
+    void setCurrentTripId(const QString &id) {
+        m_currentTripId = id;
+    }
+
     [[nodiscard]] QList<QString> choosenOrderIds() const {
         return m_choosenOrderIds;
     }

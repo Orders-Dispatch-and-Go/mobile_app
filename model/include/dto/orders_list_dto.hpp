@@ -18,7 +18,7 @@ public:
     }
 
     void fromJsonObject(const QJsonObject &json) override {
-        QJsonArray array = json["cargoRequests"].toArray();
+        QJsonArray array = json["stations"].toArray();
         for (const auto &item : array) {
             orders.emplace_back(item.toObject());
         }
@@ -30,7 +30,7 @@ public:
         for (const auto &order : orders) {
             array.append(order.toJsonObject());
         }
-        json["cargoRequests"] = array;
+        json["stations"] = array;
         return json;
     }
 
