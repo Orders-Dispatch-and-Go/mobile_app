@@ -1,10 +1,13 @@
 #include "trip/current_trip.hpp"
 //
 #include <QDebug>
+#include <tuple>
 
+#include <qdebug.h>
 #include <qjsonarray.h>
 #include <qjsonobject.h>
 #include <qlogging.h>
+#include <qmargins.h>
 #include <qurl.h>
 
 #include "backend_address.h"
@@ -17,6 +20,7 @@ const QString kTripCreate = BackendConfig::Address + "/trip";
 const QString kTripFinish = BackendConfig::Address + "/cargo_request/";
 const QString kTripPatch  = BackendConfig::Address + "/trip";
 const QString kGetRoute   = BackendConfig::Address + "/trip";
+const QString kOrderFind  = BackendConfig::Address + "/cargo_request/trip";
 
 
 void TCurrentTrip::startTrip(
@@ -34,18 +38,76 @@ void TCurrentTrip::startTrip(
     finishDto.longitude = endLon;
     dto.from            = startDto;
     dto.to              = finishDto;
-    qDebug() << dto.toJsonObject();
-    auto createObject = dto.toJsonObject();
+    auto createObject   = dto.toJsonObject();
     auto *reply =
         m_client->post<QJsonObject, QJsonObject>(kTripCreate, createObject);
 
     connect(
         reply, &reply_t::finished, this, [reply, this](const QVariant &data) {
+            qDebug() << "=== CREATED TRIP ===";
             auto idDto = TIdDto(data.value<QJsonObject>());
-            qDebug() << data;
-            qDebug() << "id = " << idDto.id;
+            qDebug() << idDto.toJsonObject();
+            qDebug() << "=== CREATED TRIP ===";
             emit tripCreated(idDto.id);
-            reply->deleteLater();
+            QString url      = kOrderFind + "/" + idDto.id + "?";
+            auto priceFilter = price();
+            if (priceFilter.has_value()) {
+                url += "minPrice=" + QString::number(priceFilter.value());
+            }
+            auto dimensionsFiltrer = dimensions();
+            if (dimensionsFiltrer.has_value()) {
+                const auto dim    = dimensionsFiltrer.value();
+                const auto width  = std::get<0>(dim);
+                const auto height = std::get<1>(dim);
+                const auto length = std::get<2>(dim);
+                url += "&";
+                url += "cargoWidthMax=" + QString::number(width) + "&";
+                url += "cargoHeightMax=" + QString::number(height) + "&";
+                url += "cargoLengthMax=" + QString::number(length);
+            }
+            qDebug() << "url = " << url;
+            auto *replyFind = m_client->get<QJsonObject>(url);
+
+            connect(
+                replyFind,
+                &reply_t::finished,
+                this,
+                [replyFind, this](const QVariant &data) {
+                    const auto jsonResponse = data.value<QJsonObject>();
+                    QJsonArray jsonArray =
+                        jsonResponse["cargoRequests"].toArray();
+                    QList<TOrderDto> orders;
+                    orders.reserve(jsonArray.size());
+
+                    for (const auto &value : jsonArray) {
+                        qDebug() << "===";
+                        qDebug() << value.toObject();
+                        qDebug() << "===";
+                        orders.emplace_back(value.toObject());
+                    }
+
+                    qDebug() << "=== FOUND ===";
+                    qDebug() << jsonArray;
+                    qDebug() << orders.size();
+                    qDebug() << "=== FOUND ===";
+
+                    setRelevantOrders(orders);
+
+                    emit tripStarted();
+                    replyFind->deleteLater();    // ✅ ТОЛЬКО ЗДЕСЬ
+                }
+            );
+
+            connect(
+                replyFind,
+                &reply_t::reply_error,
+                this,
+                [replyFind, this](const QString &err) {
+                    qDebug() << "error:" << err;
+                    emit tripError(err);
+                    replyFind->deleteLater();    // ✅ ИЛИ ЗДЕСЬ
+                }
+            );
         }
     );
 
@@ -87,6 +149,7 @@ void TCurrentTrip::cancelOrder(int index) {
 }
 
 void TCurrentTrip::commitChoosen() {
+    // TODO: добавить запрос на получение текущего
     const auto patchUrl = kTripPatch + "/" + currentTripId() + "/start";
     QJsonObject createObject;
     QJsonArray uuids;

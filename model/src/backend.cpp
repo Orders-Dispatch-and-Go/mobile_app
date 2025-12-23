@@ -16,20 +16,15 @@
 #include "trip/moc_current_trip.hpp"
 
 TBackend::TBackend(QObject *parent) : QObject(parent) {
-    m_httpClient     = new THttpClient(this);                   // NOLINT
-    m_currentTripPtr = new TCurrentTrip(m_httpClient, this);    // NOLINT qt
-    m_userInfoPtr    = new TUserInfo(this);                     // NOLINT qt
-    m_auth_model     = new TAuth(m_httpClient, this);           // NOLINT
+    m_httpClient     = new THttpClient(this);                      // NOLINT
+    m_currentTripPtr = new TCurrentTripMoc(m_httpClient, this);    // NOLINT qt
+    m_userInfoPtr    = new TUserInfo(this);                        // NOLINT qt
+    m_auth_model     = new TAuth(m_httpClient, this);              // NOLINT
     m_profile_model  = std::make_unique<moc_profile_t>();
-    connect(
-        m_currentTripPtr,
-        &ICurrentTrip::tripCreated,
-        this,
-        [this](const QString &tripId) {
-            m_state.setCurrentScreen(TScreens::pGetOrders);
-            emit screenSwitched();
-        }
-    );
+    connect(m_currentTripPtr, &ICurrentTrip::tripStarted, this, [this]() {
+        m_state.setCurrentScreen(TScreens::pGetOrders);
+        emit screenSwitched();
+    });
     connect(m_currentTripPtr, &ICurrentTrip::committed, this, [this]() {
         m_state.setCurrentScreen(TScreens::pCurrentRoute);
         emit routeUpdated();
@@ -42,6 +37,10 @@ TBackend::TBackend(QObject *parent) : QObject(parent) {
         this,
         &TBackend::enterCodeSuccess
     );
+    connect(m_currentTripPtr, &ICurrentTrip::tripCreated, this, [this]() {
+        m_state.setCurrentScreen(TScreens::pGetOrders);
+        emit screenSwitched();
+    });
 }
 
 void TBackend::login(const QString &email, const QString &password) {

@@ -43,6 +43,6 @@ Kirigami.Card {
     }
 
     function getHeader() {
-        return "#" + ("" + dto.uuid).split("-")[1];
+        return "#" + ("" + dto.id).split("-")[1];
     }
 }

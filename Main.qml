@@ -5,7 +5,7 @@ import org.kde.kirigami 2.19 as Kirigami
 
 Kirigami.ApplicationWindow {
     id: root
-    width: 400
+    width: 420
     height: 600
     minimumHeight: 400
     title: "GruzoWiki"

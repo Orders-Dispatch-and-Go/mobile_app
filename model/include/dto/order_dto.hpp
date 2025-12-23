@@ -26,37 +26,45 @@ public:
     }
 
 
-    void fromJsonObject(const QJsonObject &json) override { }
+    void fromJsonObject(const QJsonObject &json) override {
+        id = json["id"].toString();
+        fromStation.fromJsonObject(json["fromStation"].toObject());
+        toStation.fromJsonObject(json["toStation"].toObject());
+        status = json["status"].toString();
+        code   = json["receiveCode"].toString();
+        worth  = static_cast<float>(json["worth"].toDouble());
+        weight = json["weight"].toInt();
+        width  = json["width"].toInt();
+        height = json["height"].toInt();
+        length = json["length"].toInt();
+        price  = std::stof(json["price"].toString().toStdString());
+    }
 
     [[nodiscard]] QJsonObject toJsonObject() const override {
         QJsonObject obj;
-
-        obj["uuid"]        = uuid;
-        obj["price"]       = price;
-        obj["cost"]        = cost;
+        obj["id"]          = id;
+        obj["price"]       = QString::number(price);
+        obj["worth"]       = worth;
         obj["length"]      = length;
         obj["height"]      = height;
         obj["width"]       = width;
         obj["weight"]      = weight;
-        obj["description"] = description;
-        obj["start"]       = start.toJsonObject();
-        obj["finish"]      = finish.toJsonObject();
+        obj["fromStation"] = fromStation.toJsonObject();
+        obj["toStation"]   = toStation.toJsonObject();
+        obj["status"]      = status;
+        obj["code"]        = code;
         return obj;
     }
 
-    QString uuid;
-    /// Вознаграждение за заказ
+    QString id;
+    int length {};
+    int height {};
+    int width {};
+    int weight {};
+    TStationDto fromStation;
+    TStationDto toStation;
     float price {};
-    /// Стоимость заказа
-    float cost {};
-    float length {};
-    float height {};
-    float width {};
-    float weight {};
-    /// Описание заказа
-    QString description;
-    /// Начальная остановка
-    TStationDto start;
-    /// Конечная остановка
-    TStationDto finish;
+    float worth {};
+    QString status;
+    QString code;
 };

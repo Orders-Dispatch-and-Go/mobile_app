@@ -43,7 +43,7 @@ Kirigami.Page {
                         model: root.gotOrders
                         delegate: Kirigami.Card {
                             header: Kirigami.Heading {
-                                text: "#" + ("" + modelData.uuid).split("-")[1]
+                                text: "#" + ("" + modelData.id).split("-")[1]
                             }
                         }
                     }

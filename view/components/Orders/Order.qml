@@ -14,17 +14,20 @@ ColumnLayout {
         Layout.fillWidth: true
         RouteHighlight {
             Layout.fillWidth: true
+            height: 100
             point: {
-                "address": dto.start.address,
-                "lat": dto.start.coords.lat.toFixed(accuracy),
-                "lon": dto.start.coords.lon.toFixed(accuracy)
+                "address": dto.fromStation.address,
+                "lat": dto.fromStation.coords.lat.toFixed(accuracy),
+                "lon": dto.fromStation.coords.lon.toFixed(accuracy)
             }
         }
         RouteHighlight {
+            Layout.fillWidth: true
+            height: 100
             point: {
-                "address": dto.finish.address,
-                "lat": dto.finish.coords.lat.toFixed(accuracy),
-                "lon": dto.finish.coords.lon.toFixed(accuracy)
+                "address": dto.toStation.address,
+                "lat": dto.toStation.coords.lat.toFixed(accuracy),
+                "lon": dto.toStation.coords.lon.toFixed(accuracy)
             }
         }
     }
@@ -37,21 +40,21 @@ ColumnLayout {
             }
             Kirigami.Heading {
                 text: qsTr("Вознаграждение") + ": " + (dto.price || 0) + " ₽"
-                level: 1
+                level: 3
                 wrapMode: Text.WordWrap
             }
             Kirigami.Heading {
-                visible: dto.cost !== undefined
-                enabled: dto.cost !== undefined
+                visible: dto.worth !== undefined
+                enabled: dto.worth !== undefined
                 text: qsTr("Стоимость") + ": " + (dto.cost || 0) + " ₽"
-                level: 3
+                level: 4
                 wrapMode: Text.WordWrap
             }
             Kirigami.Heading {
                 visible: dto.weight !== undefined
                 enabled: dto.weight !== undefined
                 text: qsTr("Вес") + ": " + (dto.weight || 0) + " kg"
-                level: 3
+                level: 4
                 wrapMode: Text.WordWrap
             }
             Item {

@@ -33,7 +33,7 @@ Kirigami.Page {
             Layout.fillWidth: true
         }
         Button {
-            text: "Login"
+            text: qsTr("Войти")
             visible: !root.loginClicked
             Layout.fillWidth: true
             onClicked: {

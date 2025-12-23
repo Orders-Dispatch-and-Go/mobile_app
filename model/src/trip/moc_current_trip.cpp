@@ -32,16 +32,15 @@ void TCurrentTripMoc::startTrip(
     order1Finish.address   = "Строителей 14";
     order1Finish.latitude  = 54.847297;
     order1Finish.longitude = 83.092242;
-    order1.start           = order1Start;
-    order1.finish          = order1Finish;
-    order1.uuid            = "AAAAAAAA-AAAA-AAAA-AAAA-AAAAAAAAAAAA";
-    order1.cost            = 42;
+    order1.fromStation     = order1Start;
+    order1.toStation       = order1Finish;
+    order1.id              = "AAAAAAAA-AAAA-AAAA-AAAA-AAAAAAAAAAAA";
+    order1.worth           = 42;
     order1.price           = 1000;
     order1.weight          = 10;
     order1.width           = 100;
     order1.height          = 100;
     order1.length          = 100;
-    order1.description     = "Description";
     auto order2            = TOrderDto();
     auto order2Start       = TStationDto();
     order2Start.address    = "EEEEEEE";
@@ -52,30 +51,28 @@ void TCurrentTripMoc::startTrip(
     order2Finish.address   = "Пирогова 11";
     order2Finish.latitude  = 54.847;
     order2Finish.longitude = 83.092;
-    order2.start           = order2Start;
-    order2.finish          = order2Finish;
-    order2.uuid            = "BBBBBBBB-BBBB-AAAA-AAAA-AAAAAAAAAAAA";
-    order2.cost            = 42;
+    order2.fromStation     = order2Start;
+    order2.toStation       = order2Finish;
+    order2.id              = "BBBBBBBB-BBBB-AAAA-AAAA-AAAAAAAAAAAA";
+    order2.worth           = 42;
     order2.price           = 999;
     order2.weight          = 19;
     order2.width           = 10;
     order1.height          = 20;
     order1.length          = 40;
-    order1.description     = "Description 2";
     qDebug() << "set relevant orders";
     setRelevantOrders({ order1, order2 });
 
     emit tripCreated("6a014c84-c217-4f52-80c8-3fc0d12d8163");
+    emit tripStarted();
 }
 
 
 void TCurrentTripMoc::commitChoosen() {
     TOrdersListDto dto;
-    TOrderListItemDto order;
-    order.uuid             = "AAAAAA-AAAA-AAAA-AAAA-AAAAAAAAAAAA";
+    TOrderDto order;
+    order.id               = "AAAAAA-AAAA-AAAA-AAAA-AAAAAAAAAAAA";
     order.code             = "12345678";
-    order.consignerId      = 1;
-    order.recipientId      = 1;
     auto order1Start       = TStationDto();
     order1Start.address    = "Пирогова 1";
     order1Start.latitude   = 54.848820;
@@ -86,8 +83,6 @@ void TCurrentTripMoc::commitChoosen() {
     order1Finish.longitude = 83.092242;
     order.fromStation      = order1Start;
     order.toStation        = order1Finish;
-    order.routeId          = "BBBBBB-CCCC-DDDD-EEEE-FFFFFFFFFF";
-    order.tripId           = "QQQQQQ-CCCC-DDDD-EEEE-FFFFFFFFFF";
     order.price            = 32;
     order.status           = "NO STATUS";
     dto.orders             = { order };

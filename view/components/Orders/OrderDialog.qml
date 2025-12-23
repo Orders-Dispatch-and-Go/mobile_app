@@ -27,17 +27,7 @@ Kirigami.Dialog {
             text: "#" + ("" + dto.id).split("-")[1]
         }
         Order {
-            dto: root.dto ? {
-                "price": root.dto.price,
-                "start": {
-                    "address": root.dto.fromStation.address,
-                    "coords": root.dto.fromStation.coords
-                },
-                "finish": {
-                    "address": root.dto.toStation.address,
-                    "coords": root.dto.toStation.coords
-                }
-            } : null
+            dto: root.dto
         }
     }
 

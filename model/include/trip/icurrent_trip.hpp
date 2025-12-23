@@ -87,7 +87,7 @@ public:
     Q_INVOKABLE void chooseOrderFormRelative(int index) {
         if (index >= 0 && index < m_relevantOrders.size()) {
             m_orders.push_back(m_relevantOrders[index]);
-            m_choosenOrderIds.push_back(m_relevantOrders[index].uuid);
+            m_choosenOrderIds.push_back(m_relevantOrders[index].id);
             m_relevantOrders.remove(index);
         }
     }
