@@ -187,7 +187,7 @@ reply_t *THttpClient::post<void>(const QString &url) {
  * +--------------+
  */
 template <>
-reply_t *THttpClient::patch<QJsonObject, QJsonObject>(
+reply_t *THttpClient::patch<bool, QJsonObject>(
     const QString &url, const QJsonObject &data
 ) {
     auto request = create_request(url);
@@ -199,16 +199,11 @@ reply_t *THttpClient::patch<QJsonObject, QJsonObject>(
 
     QPointer<reply_t> typedReply = new reply_t(this);
     connect(reply, &QNetworkReply::finished, typedReply, [typedReply, reply]() {
-        if (auto jsonOpt = json_from_byte_array(reply->readAll())) {
-            const QJsonObject &obj = *jsonOpt;
-            emit typedReply->finished(obj);
-        }
-        else {
-            emit typedReply->reply_error(
-                "Can not cast received data to type QJsonObject!"
-            );
-        }
+        const int statusCode =
+            reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+        const bool ok = (statusCode == 200);
 
+        emit typedReply->finished(ok);
         reply->deleteLater();
     });
 

@@ -4,6 +4,7 @@
 #include <qjsonarray.h>
 #include <qjsonobject.h>
 #include <qjsonvalue.h>
+#include <qlogging.h>
 
 #include "dto/abstract_dto.hpp"
 #include "dto/order_dto.hpp"
@@ -19,8 +20,13 @@ public:
 
     void fromJsonObject(const QJsonObject &json) override {
         QJsonArray array = json["stations"].toArray();
+        qDebug() << array;
         for (const auto &item : array) {
-            orders.emplace_back(item.toObject());
+            qDebug() << "===";
+            const QJsonObject o = item.toObject();
+            qDebug() << o;
+            orders.emplace_back(o);
+            qDebug() << "===";
         }
     }
 

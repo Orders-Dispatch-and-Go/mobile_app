@@ -44,6 +44,8 @@ void TCurrentTrip::startTrip(
     auto *reply =
         m_client->post<QJsonObject, QJsonObject>(kTripCreate, createObject);
 
+    qDebug() << "=== create trip request ===\n" << createObject << "\n===";
+
     connect(
         reply, &reply_t::finished, this, [reply, this](const QVariant &data) {
             qDebug() << "=== CREATED TRIP ===";
@@ -125,14 +127,21 @@ void TCurrentTrip::startTrip(
 
 
 void TCurrentTrip::enterCode(int index, const QString &code) {
-    // TODO
     const auto url =
         kTripFinish + "/" + currentTripId() + "/finish/code/" + code;
     QJsonObject createObject;
     auto *reply = m_client->post<QJsonObject, QJsonObject>(url, createObject);
 
+    qDebug() << "url: " << url;
+    qDebug() << "enter code: " << code;
+
     connect(
-        reply, &reply_t::finished, this, [reply, this](const QVariant &data) {
+        reply,
+        &reply_t::finished,
+        this,
+        [reply, index, this](const QVariant &data) {
+            qDebug() << "success";
+            finishOneOrder(index);
             emit orderFinished(true);
             reply->deleteLater();
         }
@@ -140,6 +149,7 @@ void TCurrentTrip::enterCode(int index, const QString &code) {
 
     connect(
         reply, &reply_t::reply_error, this, [reply, this](const QString &err) {
+            qDebug() << "error";
             orderFinished(false);
             reply->deleteLater();
         }
@@ -163,49 +173,51 @@ void TCurrentTrip::commitChoosen() {
     createObject["cargoRequests"] = uuids;
     qDebug() << "request: " << createObject;
     qDebug() << "url: " << patchUrl;
-    auto *reply =
-        m_client->patch<QJsonObject, QJsonObject>(patchUrl, createObject);
+    auto *reply = m_client->patch<bool, QJsonObject>(patchUrl, createObject);
 
-    connect(
-        reply, &reply_t::finished, this, [reply, this](const QVariant &data) {
-            qDebug() << "commitChoosen finished";
-            qDebug() << "response: " << data;
-            const auto url = BackendConfig::Address + "/routes/trip/"
-                             + currentTripId() + "?withPoints=true";
-            auto *replyWay = m_client->get<QJsonObject>(url);
+    connect(reply, &reply_t::finished, this, [reply, this]() {
+        qDebug() << "commitChoosen finished";
+        const auto url = BackendConfig::Address + "/routes/trip/"
+                         + currentTripId() + "?withPoints=true";
+        auto *replyWay = m_client->get<QJsonObject>(url);
 
-            connect(
-                replyWay,
-                &reply_t::finished,
-                this,
-                [replyWay, this](const QVariant &data) {
-                    const auto jsonResponse = data.value<QJsonObject>();
-                    QList<QPointF> waypoints;
-                    const auto points = jsonResponse["points"].toArray();
-                    for (long i = 0; i < points.size() / 2; ++i) {
-                        const auto lat = points.at(i * 2).toDouble();
-                        const auto lon = points.at((i * 2) + 1).toDouble();
-                        waypoints.append(QPointF(lat, lon));
-                    }
-                    setOrdersListDto(TOrdersListDto(jsonResponse), waypoints);
-                    emit committed();
-                    replyWay->deleteLater();
+        connect(
+            replyWay,
+            &reply_t::finished,
+            this,
+            [replyWay, this](const QVariant &data) {
+                const auto jsonResponse = data.value<QJsonObject>();
+                qDebug() << "waypoints response = " << jsonResponse;
+                QList<QPointF> waypoints;
+                const auto points = jsonResponse["points"].toArray();
+                qDebug() << "points = " << points;
+                for (long i = 0; i < points.size() / 2; ++i) {
+                    const auto lat = points.at(i * 2).toDouble();
+                    const auto lon = points.at((i * 2) + 1).toDouble();
+                    waypoints.append(QPointF(lat, lon));
                 }
-            );
+                qDebug() << "waypoints = " << waypoints;
+                TOrdersListDto dto;
+                dto.orders = orders();
+                setOrdersListDto(dto, waypoints);
+                qDebug() << "here";
+                emit committed();
+                replyWay->deleteLater();
+            }
+        );
 
-            connect(
-                replyWay,
-                &reply_t::reply_error,
-                this,
-                [replyWay, this](const QString &err) {
-                    qDebug() << "error:" << err;
-                    emit tripError(err);
-                    replyWay->deleteLater();
-                }
-            );
-            reply->deleteLater();
-        }
-    );
+        connect(
+            replyWay,
+            &reply_t::reply_error,
+            this,
+            [replyWay, this](const QString &err) {
+                qDebug() << "error:" << err;
+                emit tripError(err);
+                replyWay->deleteLater();
+            }
+        );
+        reply->deleteLater();
+    });
 
     connect(
         reply, &reply_t::reply_error, this, [reply, this](const QString &err) {

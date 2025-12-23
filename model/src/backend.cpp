@@ -37,6 +37,16 @@ TBackend::TBackend(QObject *parent) : QObject(parent) {
         this,
         &TBackend::enterCodeSuccess
     );
+    connect(
+        m_currentTripPtr,
+        &ICurrentTrip::orderFinished,
+        this,
+        [this](bool success) {
+            if (success) {
+                emit routeUpdated();
+            }
+        }
+    );
     connect(m_currentTripPtr, &ICurrentTrip::tripCreated, this, [this]() {
         m_state.setCurrentScreen(TScreens::pGetOrders);
         emit screenSwitched();
