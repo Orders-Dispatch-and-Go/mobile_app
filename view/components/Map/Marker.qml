@@ -8,11 +8,13 @@ MapQuickItem {
     visible: true
 
     property color markerColor: "red"
-    property int markerSize: 28
+    property int markerSize: 42
     property Map map
 
     width: markerSize
     height: markerSize
+
+    property string text
 
     anchorPoint.x: width / 2
     anchorPoint.y: height
@@ -24,6 +26,12 @@ MapQuickItem {
         color: root.markerColor
         border.color: Kirigami.Theme.textColor
         border.width: 2
+        Text {
+            anchors.centerIn: parent
+            text: root.text
+            color: Kirigami.Theme.textColor
+            font.pointSize: 8
+        }
     }
 
     MouseArea {

@@ -89,13 +89,15 @@ Kirigami.Dialog {
 
         Marker {
             id: markerStart
+            text: "начало"
             coordinate: root.startCoord
-            markerColor: "green"
+            markerColor: Kirigami.Theme.backgroundColor
         }
         Marker {
             id: markerFinish
+            text: "конец"
             coordinate: root.finishCoord
-            markerColor: "red"
+            markerColor: Kirigami.Theme.positiveBackgroundColor
         }
 
         ZoomButton {

@@ -121,7 +121,7 @@ Kirigami.Page {
         id: orderDialog
         visible: false
         width: parent.width
-        height: 400
+        height: parent.height
 
         x: root.x
         y: root.y + root.height - height
