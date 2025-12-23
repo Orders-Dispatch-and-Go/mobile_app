@@ -89,11 +89,12 @@ Kirigami.Page {
         Repeater {
             model: root.stops
             delegate: WayPoint {
-                index: model.index
+                index: modelData.index
                 color: backend.finished ? Kirigami.Theme.positiveTextColor : Kirigami.Theme.negativeTextColor
                 borderColor: "black"
                 coordinate: QtPositioning.coordinate(modelData.toStation.coords.lat, modelData.toStation.coords.lon)
                 onClicked: index => {
+                    console.log("index = ", index);
                     root.selectedStop = index;
                     orderDialog.open(); // TODO: передать dto
                 }

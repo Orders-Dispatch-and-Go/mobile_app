@@ -43,13 +43,7 @@ ColumnLayout {
                 level: 3
                 wrapMode: Text.WordWrap
             }
-            Kirigami.Heading {
-                visible: dto.worth !== undefined
-                enabled: dto.worth !== undefined
-                text: qsTr("Стоимость") + ": " + (dto.cost || 0) + " ₽"
-                level: 4
-                wrapMode: Text.WordWrap
-            }
+
             Kirigami.Heading {
                 visible: dto.weight !== undefined
                 enabled: dto.weight !== undefined
