@@ -23,26 +23,24 @@ reply_t *THttpClient::get<QJsonObject>(const QString &url) {
     auto request         = create_request(url);
     QNetworkReply *reply = m_manager.get(request);
 
-    QPointer<reply_t> typed_reply = new reply_t(this);
-    connect(
-        reply, &QNetworkReply::finished, typed_reply, [typed_reply, reply]() {
-            if (auto json_opt = json_from_byte_array(reply->readAll())) {
-                const QJsonObject &obj = *json_opt;
-                emit typed_reply->finished(obj);
-            }
-            else {
-                emit typed_reply->reply_error(
-                    "Can not cast received data to type user_dto_t!"
-                );
-            }
-
-            reply->deleteLater();
+    QPointer<reply_t> typedReply = new reply_t(this);
+    connect(reply, &QNetworkReply::finished, typedReply, [typedReply, reply]() {
+        if (auto jsonOpt = json_from_byte_array(reply->readAll())) {
+            const QJsonObject &obj = *jsonOpt;
+            emit typedReply->finished(obj);
         }
-    );
+        else {
+            emit typedReply->reply_error(
+                "Can not cast received data to type user_dto_t!"
+            );
+        }
+
+        reply->deleteLater();
+    });
 
     // Add another errors parsing
 
-    return typed_reply;
+    return typedReply;
 }
 
 template <>
@@ -50,26 +48,24 @@ reply_t *THttpClient::get<bool>(const QString &url) {
     auto request         = create_request(url);
     QNetworkReply *reply = m_manager.get(request);
 
-    QPointer<reply_t> typed_reply = new reply_t(this);
-    connect(
-        reply, &QNetworkReply::finished, typed_reply, [typed_reply, reply]() {
-            bool ok;
-            bool response = reply->readAll().toInt(&ok);
+    QPointer<reply_t> typedReply = new reply_t(this);
+    connect(reply, &QNetworkReply::finished, typedReply, [typedReply, reply]() {
+        bool ok;
+        bool response = reply->readAll().toInt(&ok);
 
-            if (ok) {
-                emit typed_reply->finished(response);
-            }
-            else {
-                emit typed_reply->reply_error(
-                    "Can not cast received data to type bool!"
-                );
-            }
-
-            reply->deleteLater();
+        if (ok) {
+            emit typedReply->finished(response);
         }
-    );
+        else {
+            emit typedReply->reply_error(
+                "Can not cast received data to type bool!"
+            );
+        }
 
-    return typed_reply;
+        reply->deleteLater();
+    });
+
+    return typedReply;
 }
 
 /*
@@ -85,29 +81,27 @@ reply_t *THttpClient::post<bool, QJsonObject>(
     auto request = create_request(url);
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
 
-    QByteArray send_data = QJsonDocument(data).toJson();
-    QNetworkReply *reply = m_manager.post(request, send_data);
+    QByteArray sendData  = QJsonDocument(data).toJson();
+    QNetworkReply *reply = m_manager.post(request, sendData);
 
-    QPointer<reply_t> typed_reply = new reply_t(this);
-    connect(
-        reply, &QNetworkReply::finished, typed_reply, [typed_reply, reply]() {
-            bool ok;
-            bool response = reply->readAll().toInt(&ok);
+    QPointer<reply_t> typedReply = new reply_t(this);
+    connect(reply, &QNetworkReply::finished, typedReply, [typedReply, reply]() {
+        bool ok;
+        bool response = reply->readAll().toInt(&ok);
 
-            if (ok) {
-                emit typed_reply->finished(response);
-            }
-            else {
-                emit typed_reply->reply_error(
-                    "Can not cast received data to type bool!"
-                );
-            }
-
-            reply->deleteLater();
+        if (ok) {
+            emit typedReply->finished(response);
         }
-    );
+        else {
+            emit typedReply->reply_error(
+                "Can not cast received data to type bool!"
+            );
+        }
 
-    return typed_reply;
+        reply->deleteLater();
+    });
+
+    return typedReply;
 }
 
 template <>
@@ -117,27 +111,25 @@ reply_t *THttpClient::post<QJsonObject, QJsonObject>(
     auto request = create_request(url);
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
 
-    QByteArray send_data = QJsonDocument(data).toJson();
-    QNetworkReply *reply = m_manager.post(request, send_data);
+    QByteArray sendData  = QJsonDocument(data).toJson();
+    QNetworkReply *reply = m_manager.post(request, sendData);
 
-    QPointer<reply_t> typed_reply = new reply_t(this);
-    connect(
-        reply, &QNetworkReply::finished, typed_reply, [typed_reply, reply]() {
-            if (auto json_opt = json_from_byte_array(reply->readAll())) {
-                const QJsonObject &obj = *json_opt;
-                emit typed_reply->finished(obj);
-            }
-            else {
-                emit typed_reply->reply_error(
-                    "Can not cast received data to type QJsonObject!"
-                );
-            }
-
-            reply->deleteLater();
+    QPointer<reply_t> typedReply = new reply_t(this);
+    connect(reply, &QNetworkReply::finished, typedReply, [typedReply, reply]() {
+        if (auto jsonOpt = json_from_byte_array(reply->readAll())) {
+            const QJsonObject &obj = *jsonOpt;
+            emit typedReply->finished(obj);
         }
-    );
+        else {
+            emit typedReply->reply_error(
+                "Can not cast received data to type QJsonObject!"
+            );
+        }
 
-    return typed_reply;
+        reply->deleteLater();
+    });
+
+    return typedReply;
 }
 
 template <>
@@ -149,26 +141,24 @@ THttpClient::post<bool, QString>(const QString &url, const QString &data) {
     QByteArray sendData  = data.toUtf8();
     QNetworkReply *reply = m_manager.post(request, sendData);
 
-    QPointer<reply_t> typed_reply = new reply_t(this);
-    connect(
-        reply, &QNetworkReply::finished, typed_reply, [typed_reply, reply]() {
-            bool ok;
-            bool response = reply->readAll().toInt(&ok);
+    QPointer<reply_t> typedReply = new reply_t(this);
+    connect(reply, &QNetworkReply::finished, typedReply, [typedReply, reply]() {
+        bool ok;
+        bool response = reply->readAll().toInt(&ok);
 
-            if (ok) {
-                emit typed_reply->finished(response);
-            }
-            else {
-                emit typed_reply->reply_error(
-                    "Can not cast received data to type bool!"
-                );
-            }
-
-            reply->deleteLater();
+        if (ok) {
+            emit typedReply->finished(response);
         }
-    );
+        else {
+            emit typedReply->reply_error(
+                "Can not cast received data to type bool!"
+            );
+        }
 
-    return typed_reply;
+        reply->deleteLater();
+    });
+
+    return typedReply;
 }
 
 template <>
@@ -179,18 +169,52 @@ reply_t *THttpClient::post<void>(const QString &url) {
 
     QNetworkReply *reply = m_manager.post(request, nullptr);
 
-    QPointer<reply_t> typed_reply = new reply_t(this);
-    connect(
-        reply, &QNetworkReply::finished, typed_reply, [typed_reply, reply]() {
-            QVariant var;
-            emit typed_reply->finished(var);
+    QPointer<reply_t> typedReply = new reply_t(this);
+    connect(reply, &QNetworkReply::finished, typedReply, [typedReply, reply]() {
+        QVariant var;
+        emit typedReply->finished(var);
 
-            reply->deleteLater();
-        }
-    );
+        reply->deleteLater();
+    });
 
-    return typed_reply;
+    return typedReply;
 }
+
+
+/*
+ * +--------------+
+ * | patch querys |
+ * +--------------+
+ */
+template <>
+reply_t *THttpClient::patch<QJsonObject, QJsonObject>(
+    const QString &url, const QJsonObject &data
+) {
+    auto request = create_request(url);
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+
+    QByteArray sendData = QJsonDocument(data).toJson();
+    QNetworkReply *reply =
+        m_manager.sendCustomRequest(request, "PATCH", sendData);
+
+    QPointer<reply_t> typedReply = new reply_t(this);
+    connect(reply, &QNetworkReply::finished, typedReply, [typedReply, reply]() {
+        if (auto jsonOpt = json_from_byte_array(reply->readAll())) {
+            const QJsonObject &obj = *jsonOpt;
+            emit typedReply->finished(obj);
+        }
+        else {
+            emit typedReply->reply_error(
+                "Can not cast received data to type QJsonObject!"
+            );
+        }
+
+        reply->deleteLater();
+    });
+
+    return typedReply;
+}
+
 
 /*
  * +--------------------+

@@ -26,9 +26,7 @@ public:
         qreal beginLat, qreal beginLon, qreal endLat, qreal endLon
     ) override;
 
-    bool enterCode(int index, const QString &code) override;
-
-    void completeOrder(int index) override;
+    void enterCode(int index, const QString &code) override;
 
     void cancelOrder(int index) override;
 

@@ -109,11 +109,12 @@ public:
     /// список dto остановок
     [[nodiscard]] QVariantList getStops() const;
     [[nodiscard]] QList<bool> finishedOrders() const;
-    Q_INVOKABLE void completeOrder(int index);
     Q_INVOKABLE void cancelOrder(int index);
     [[nodiscard]] bool hasOrders() const;
 
     Q_INVOKABLE void enterCode(int index, const QString &code);
+
+    Q_INVOKABLE void startNewTrip();
 
     void onRouteUpdated();
 
@@ -141,6 +142,7 @@ signals:
     void ordersUpdated();
     /// сигнал об изменении состояния маршрута
     void routeUpdated();
+    void enterCodeSuccess(bool success);
 };
 
 

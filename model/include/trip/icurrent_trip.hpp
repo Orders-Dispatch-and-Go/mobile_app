@@ -98,8 +98,7 @@ public:
         }
     }
 
-    virtual bool enterCode(int index, const QString &code) = 0;
-    virtual void completeOrder(int index)                  = 0;
+    virtual void enterCode(int index, const QString &code) = 0;
     virtual void cancelOrder(int index)                    = 0;
 
     [[nodiscard]] QList<bool> finishedOrders() const {
@@ -183,8 +182,10 @@ public:
 signals:
     void committed();
     void tripCreated(const QString &id);
+    void tripStarted();
     void recvRouteForTrip(const TRouteInfo &);
     void tripError(const QString &);
+    void orderFinished(bool success);
 
 private:
     // ID поездки

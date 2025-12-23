@@ -7,7 +7,7 @@ Kirigami.Dialog {
     id: root
     property var dto
     property int index
-    title: qsTr("Finish order #") + dto.id
+    title: qsTr("Finish order #") + ("" + dto.id).split("-")[1]
 
     property int pinLength: 8
     property string pin: ""
@@ -88,6 +88,27 @@ Kirigami.Dialog {
         anchors.margins: 20
         spacing: 16
 
+        Kirigami.InlineMessage {
+            id: errorMessage
+            type: Kirigami.MessageType.Error
+            text: ""
+            visible: false
+            Layout.fillWidth: true
+
+            Timer {
+                id: hideTimer
+                interval: 3000
+                repeat: false
+                onTriggered: errorMessage.visible = false
+            }
+
+            function show(msg) {
+                text = msg;
+                visible = true;
+                hideTimer.restart();
+            }
+        }
+
         Label {
             text: qsTr("Введите PIN-код")
             font.pointSize: 18
@@ -155,7 +176,19 @@ Kirigami.Dialog {
         target: root
         onPinAccepted: {
             backend.enterCode(index, pin);
-            root.close();
+        }
+    }
+    Connections {
+        target: backend
+        onEnterCodeSuccess: status => {
+            console.log(status);
+            if (status) {
+                root.close();
+            } else {
+                pin = "";
+                errorMessage.show(qsTr("Неверный код"));
+                shuffleDigits();
+            }
         }
     }
 }

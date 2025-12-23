@@ -30,11 +30,8 @@ public:
         qreal beginLat, qreal beginLon, qreal endLat, qreal endLon
     ) override;
 
-    bool enterCode(int index, const QString &code) override;
+    void enterCode(int index, const QString &code) override;
 
-    void completeOrder(int index) override {
-        finishOneOrder(index);
-    }
 
     void cancelOrder(int index) override {
         finishOneOrder(index);

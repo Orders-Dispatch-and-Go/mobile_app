@@ -6,11 +6,11 @@ import org.kde.kirigami as Kirigami
 import untitled
 
 Kirigami.Page {
-    title: qsTr("Route Finished")
+    title: qsTr("Поездка завершена")
     ColumnLayout {
         anchors.fill: parent
         Kirigami.Heading {
-            text: qsTr("You can start a new route")
+            text: qsTr("Вы можете начать новую")
             level: 1
         }
         Item {
@@ -25,10 +25,10 @@ Kirigami.Page {
             }
         }
         Button {
-            text: qsTr("Start New Route")
+            text: qsTr("Новая поездка")
             Layout.fillWidth: true
             onClicked: {
-                backend.switchScreen(screens.pStartRoute);
+                backend.startNewTrip();
             }
         }
     }

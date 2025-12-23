@@ -2,6 +2,7 @@
 //
 #include <QDebug>
 
+#include <qjsonarray.h>
 #include <qjsonobject.h>
 #include <qlogging.h>
 #include <qurl.h>
@@ -13,6 +14,8 @@
 #include "dto/station_dto.hpp"
 
 const QString kTripCreate = BackendConfig::Address + "/trip";
+const QString kTripFinish = BackendConfig::Address + "/cargo_request/";
+const QString kTripPatch  = BackendConfig::Address + "/trip";
 const QString kGetRoute   = BackendConfig::Address + "/trip";
 
 
@@ -55,15 +58,27 @@ void TCurrentTrip::startTrip(
     );
 }
 
-bool TCurrentTrip::enterCode(int index, const QString &code) {
+
+void TCurrentTrip::enterCode(int index, const QString &code) {
     // TODO
-    return true;
-}
+    const auto url =
+        kTripFinish + "/" + currentTripId() + "/finish/code/" + code;
+    QJsonObject createObject;
+    auto *reply = m_client->post<QJsonObject, QJsonObject>(url, createObject);
 
+    connect(
+        reply, &reply_t::finished, this, [reply, this](const QVariant &data) {
+            emit orderFinished(true);
+            reply->deleteLater();
+        }
+    );
 
-void TCurrentTrip::completeOrder(int index) {
-    // TODO: make request
-    finishOneOrder(index);
+    connect(
+        reply, &reply_t::reply_error, this, [reply, this](const QString &err) {
+            orderFinished(false);
+            reply->deleteLater();
+        }
+    );
 }
 
 void TCurrentTrip::cancelOrder(int index) {
@@ -72,6 +87,30 @@ void TCurrentTrip::cancelOrder(int index) {
 }
 
 void TCurrentTrip::commitChoosen() {
+    const auto patchUrl = kTripPatch + "/" + currentTripId() + "/start";
+    QJsonObject createObject;
+    QJsonArray uuids;
+    const auto list = choosenOrderIds();
+    for (const auto &id : list) {
+        uuids.append(id);
+    }
+    createObject["cargoRequest"] = uuids;
+    auto *reply =
+        m_client->patch<QJsonObject, QJsonObject>(patchUrl, createObject);
+
+    connect(
+        reply, &reply_t::finished, this, [reply, this](const QVariant &data) {
+            emit tripStarted();
+            reply->deleteLater();
+        }
+    );
+
+    connect(
+        reply, &reply_t::reply_error, this, [reply, this](const QString &err) {
+            qDebug() << "error: " << err;
+            reply->deleteLater();
+        }
+    );
     setStarted(true);
     emit committed();
 }

@@ -36,6 +36,12 @@ TBackend::TBackend(QObject *parent) : QObject(parent) {
         emit screenSwitched();
     });
     connect(this, &TBackend::routeUpdated, this, &TBackend::onRouteUpdated);
+    connect(
+        m_currentTripPtr,
+        &ICurrentTrip::orderFinished,
+        this,
+        &TBackend::enterCodeSuccess
+    );
 }
 
 void TBackend::login(const QString &email, const QString &password) {
@@ -212,11 +218,6 @@ QList<bool> TBackend::finishedOrders() const {
     return m_currentTripPtr->finishedOrders();
 }
 
-Q_INVOKABLE void TBackend::completeOrder(int index) {
-    qDebug() << "completeOrder " << index;
-    m_currentTripPtr->completeOrder(index);
-    emit routeUpdated();
-}
 
 Q_INVOKABLE void TBackend::cancelOrder(int index) {
     m_currentTripPtr->cancelOrder(index);
@@ -236,9 +237,11 @@ bool TBackend::hasOrders() const {
 
 void TBackend::enterCode(int index, const QString &code) {
     m_currentTripPtr->enterCode(index, code);
-    qDebug() << "enterCode " << code;
-    m_currentTripPtr->completeOrder(index);
     emit routeUpdated();
+}
+void TBackend::startNewTrip() {
+    m_state.setCurrentScreen(TScreens::pStartRoute);
+    emit screenSwitched();
 }
 
 void TBackend::onRouteUpdated() {
