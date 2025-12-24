@@ -255,7 +255,7 @@ void TBackend::startNewTrip() {
 void TBackend::onRouteUpdated() {
     qDebug() << "onRouteUpdated";
     if (!hasOrders()) {
-        qDebug() << "No orders";
+        m_currentTripPtr->finishRoute();
         m_state.setCurrentScreen(TScreens::pFinishRoute);
         emit screenSwitched();
     }

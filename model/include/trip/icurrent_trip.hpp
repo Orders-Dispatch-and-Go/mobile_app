@@ -100,6 +100,7 @@ public:
 
     virtual void enterCode(int index, const QString &code) = 0;
     virtual void cancelOrder(int index)                    = 0;
+    virtual void finishRoute()                             = 0;
 
     [[nodiscard]] QList<bool> finishedOrders() const {
         return m_finished;

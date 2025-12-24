@@ -29,6 +29,7 @@ public:
     void enterCode(int index, const QString &code) override;
 
     void cancelOrder(int index) override;
+    void finishRoute() override;
 
     Q_INVOKABLE void commitChoosen() override;
 

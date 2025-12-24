@@ -157,8 +157,24 @@ void TCurrentTrip::enterCode(int index, const QString &code) {
 }
 
 void TCurrentTrip::cancelOrder(int index) {
-    // TODO: make request
     finishOneOrder(index);
+}
+
+void TCurrentTrip::finishRoute() {
+    auto *reply = m_client->patch<bool, QJsonObject>(
+        BackendConfig::Address + "/trip/" + currentTripId()
+            + "/finish/status/COMPLETED",
+        QJsonObject()
+    );
+    connect(reply, &reply_t::finished, this, [reply, this]() {
+        reply->deleteLater();
+    });
+    connect(
+        reply, &reply_t::reply_error, this, [reply, this](const QString &err) {
+            qDebug() << "error: " << err;
+            reply->deleteLater();
+        }
+    );
 }
 
 void TCurrentTrip::commitChoosen() {
@@ -171,8 +187,6 @@ void TCurrentTrip::commitChoosen() {
         uuids.append(id);
     }
     createObject["cargoRequests"] = uuids;
-    qDebug() << "request: " << createObject;
-    qDebug() << "url: " << patchUrl;
     auto *reply = m_client->patch<bool, QJsonObject>(patchUrl, createObject);
 
     connect(reply, &reply_t::finished, this, [reply, this]() {

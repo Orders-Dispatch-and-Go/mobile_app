@@ -32,6 +32,7 @@ public:
 
     void enterCode(int index, const QString &code) override;
 
+    void finishRoute() override { }
 
     void cancelOrder(int index) override {
         finishOneOrder(index);
